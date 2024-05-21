@@ -1,0 +1,27 @@
+{
+  "name": "cambridge-mcq-checker-rework",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "keywords": [
+    "restaurant",
+    "food"
+  ],
+  "author": "Zied",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZiedDev/cambridge-mcq-checker/issues"
+  },
+  "homepage": "https://github.com/ZiedDev/cambridge-mcq-checker#readme",
+  "devDependencies": {
+    "css-loader": "^7.1.1",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  }
+}
