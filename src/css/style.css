@@ -32,6 +32,11 @@ body * {
     color: #E6EDF3;
 }
 
+a {
+    color: #6c96bb;
+    text-decoration: underline 1.5pt;
+}
+
 .hidden {
     display: none !important;
 }
@@ -116,12 +121,23 @@ header>.content>.credits:hover {
     border-radius: 100%;
     width: 2.5rem;
     height: 2.5rem;
-    cursor: pointer;
-    transition: background-color 100ms ease-in-out;
+    transition: background-color 200ms ease;
 }
 
-.top-bar button:hover {
-    background-color: rgba(231, 238, 243, 0.25);
+.top-bar button svg path {
+    fill: #abafb2;
+}
+
+.top-bar .active {
+    cursor: pointer;
+}
+
+.top-bar .active svg path {
+    fill: #E6EDF3;
+}
+
+.top-bar .active:hover {
+    background-color: rgba(231, 238, 243, 0.125);
 }
 
 .top-bar .bar {
@@ -146,6 +162,10 @@ header>.content>.credits:hover {
     height: 100%;
 }
 
+.top-bar .bar .path-arrow {
+    font-size: 24pt;
+}
+
 /*#endregion*/
 
 .main-section {
@@ -168,6 +188,7 @@ header>.content>.credits:hover {
     background-color: #010409;
     border-right: #21262D solid 1pt;
 
+    z-index: 9;
     position: relative;
 }
 
@@ -209,7 +230,7 @@ header>.content>.credits:hover {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: background-color 100ms ease-in-out;
+    transition: background-color 100ms ease;
 }
 
 .side-button:hover {
@@ -232,7 +253,7 @@ header>.content>.credits:hover {
 .side-container {
     display: grid;
     grid-template-rows: 1fr;
-    transition: grid-template-rows 200ms ease-in-out;
+    transition: grid-template-rows 250ms ease;
 }
 
 .collapsed {
@@ -275,6 +296,8 @@ header>.content>.credits:hover {
     padding-top: 2rem;
     padding-bottom: 1.5rem;
     text-align: center;
+    font-weight: 550;
+    font-size: 14pt;
 }
 
 .side-panel .credits::before {
@@ -327,24 +350,32 @@ header>.content>.credits:hover {
     flex-wrap: wrap;
 }
 
+.card-container {
+    margin: 2.5rem;
+    width: 15rem;
+    height: 15rem;
+    perspective: 600px;
+}
+
 .card {
     cursor: pointer;
-    margin: 2.5rem;
     width: 15rem;
     height: 15rem;
     border-radius: 1rem;
     overflow: hidden;
     position: relative;
-    transition: all 250ms ease-in-out;
+    transition: scale 150ms ease;
     border: #363B42 solid 0.5pt;
 }
 
 .card:hover {
-    transform: scale(1.05);
+    position: relative;
+    z-index: 10;
+    scale: 1.05;
 }
 
 .card:hover img {
-    transform: scale(1.06);
+    scale: 1.05;
 }
 
 .image-container img {
@@ -352,10 +383,11 @@ header>.content>.credits:hover {
     height: 100%;
     position: absolute;
     object-fit: cover;
-    transition: all 250ms ease-in-out;
+    transition: scale 150ms ease-in-out;
 }
 
 .image-container::before {
+    pointer-events: none;
     content: '';
     position: absolute;
     z-index: 1;
@@ -367,6 +399,7 @@ header>.content>.credits:hover {
 }
 
 .card-title {
+    pointer-events: none;
     z-index: 1;
     position: absolute;
     bottom: 10%;

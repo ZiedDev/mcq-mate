@@ -28,7 +28,7 @@ function generateSideButton(level, subject, year, session, variant) {
     }
 
     const title = document.createElement('div')
-    title.textContent = variant == undefined ? session == undefined ? year == undefined ? subject : year : (session == 'm' ? 'Feb / Mar' : session == 's' ? 'May / Jun' : 'Oct / Nov') : `Variant ${Number(variant) + 1}`
+    title.textContent = variant == undefined ? session == undefined ? year == undefined ? subject == 'Combined' ? 'Combined Science' : subject : year : (session == 'm' ? 'Feb / Mar' : session == 's' ? 'May / Jun' : 'Oct / Nov') : `Variant ${Number(variant) + 1}`
 
     buttonElement.appendChild(title)
 
@@ -64,6 +64,10 @@ function generateSideButton(level, subject, year, session, variant) {
 }
 
 function generateMainButton(level, subject, year, session, variant) {
+    const elementContainer = document.createElement('div')
+    elementContainer.classList.add('card-container')
+    elementContainer.id = variant == undefined ? session == undefined ? year == undefined ? `${level}-${subject}-card-container` : `${level}-${subject}-${year}-card-container` : `${level}-${subject}-${year}-${session}-card-container` : `${level}-${subject}-${year}-${session}-${variant}-card-container`
+
     const element = document.createElement('div')
     element.classList.add('card')
     element.id = variant == undefined ? session == undefined ? year == undefined ? `${level}-${subject}-card` : `${level}-${subject}-${year}-card` : `${level}-${subject}-${year}-${session}-card` : `${level}-${subject}-${year}-${session}-${variant}-card`
@@ -76,11 +80,13 @@ function generateMainButton(level, subject, year, session, variant) {
     element.appendChild(imageContainer)
 
     const title = document.createElement('div')
-    title.textContent = variant == undefined ? session == undefined ? year == undefined ? subject : year : (session == 'm' ? 'Feb / Mar' : session == 's' ? 'May / Jun' : 'Oct / Nov') : `Variant ${Number(variant) + 1}`
+    title.textContent = variant == undefined ? session == undefined ? year == undefined ? subject == 'Combined' ? 'Combined Science' : subject : year : (session == 'm' ? 'Feb / Mar' : session == 's' ? 'May / Jun' : 'Oct / Nov') : `Variant ${Number(variant) + 1}`
     title.classList.add('card-title')
     element.appendChild(title)
 
-    return element
+    elementContainer.appendChild(element)
+
+    return elementContainer
 }
 
 export { generateSideButton, generateMainButton }

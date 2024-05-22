@@ -69,6 +69,8 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
         modalButtonsContainer.appendChild(cancelButton)
     }
 
+    document.body.appendChild(modalContainer)
+
     return modalContainer
 }
 
