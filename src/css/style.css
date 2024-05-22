@@ -152,8 +152,10 @@ header>.content>.credits:hover {
 }
 
 .top-bar .bar .path-icon {
+    display: flex;
+    align-items: center;
     margin-left: 0.5rem;
-    width: 1.5rem;
+    width: 3rem;
     height: 1.5rem;
 }
 
@@ -335,17 +337,20 @@ header>.content>.credits:hover {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
-.home {
+.home,
+.sub-menu {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.home>h2 {
+.home>h2,
+.sub-menu>h2 {
     margin: 1.5rem 0 0 1.5rem;
 }
 
-.home>div {
+.home>div,
+.sub-menu>div {
     display: flex;
     flex-wrap: wrap;
 }
@@ -364,14 +369,16 @@ header>.content>.credits:hover {
     border-radius: 1rem;
     overflow: hidden;
     position: relative;
-    transition: scale 150ms ease;
+    transition: scale 150ms ease, box-shadow 150ms ease;
     border: #363B42 solid 0.5pt;
+    box-shadow: var(--shadow-elevation-medium);
 }
 
 .card:hover {
     position: relative;
     z-index: 10;
-    scale: 1.05;
+    scale: 1.025;
+    box-shadow: var(--shadow-elevation-high);
 }
 
 .card:hover img {
@@ -406,4 +413,16 @@ header>.content>.credits:hover {
     left: 10%;
     font-size: x-large;
     font-weight: bold;
+}
+
+@keyframes closeMenu {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(5rem);
+        opacity: 0;
+    }
 }
