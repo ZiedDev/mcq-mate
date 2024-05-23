@@ -56,6 +56,7 @@ function backwardPath() {
     }
 
     updatePathElement(true)
+    updatePathIcon()
 }
 
 function changePath(new_path) {
@@ -75,6 +76,7 @@ function changePath(new_path) {
     }
 
     updatePathElement()
+    updatePathIcon()
 }
 
 function forwardPath() {
@@ -93,6 +95,7 @@ function forwardPath() {
     }
 
     updatePathElement(true)
+    updatePathIcon()
 }
 
 function updatePathElement(createSheet) {
@@ -178,6 +181,24 @@ function createPathElement(title, last) {
     }
 
     return element
+}
+
+function updatePathIcon() {
+    const pathIcon = document.getElementById('path-icon')
+
+    if (current_path.split('>')[1] == undefined) {
+        pathIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="currentColor" d="m222.14 105.85l-80-80a20 20 0 0 0-28.28 0l-80 80A19.86 19.86 0 0 0 28 120v96a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-52h24v52a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-96a19.86 19.86 0 0 0-5.86-14.15M204 204h-40v-52a12 12 0 0 0-12-12h-48a12 12 0 0 0-12 12v52H52v-82.35l76-76l76 76Z" /></svg>'
+    } else if (current_path.split('>')[1] == 'Biology') {
+        pathIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M224 204h-12a92.1 92.1 0 0 0-64-143.22V32a20 20 0 0 0-20-20H80a20 20 0 0 0-20 20v96a20 20 0 0 0 20 20h48a20 20 0 0 0 20-20V85.08A68.1 68.1 0 0 1 204 152a67.39 67.39 0 0 1-24.18 52H32a12 12 0 0 0 0 24h192a12 12 0 0 0 0-24m-100-80H84V36h40Zm-52 64a12 12 0 0 1 0-24h64a12 12 0 0 1 0 24Z"/></svg>'
+    } else if (current_path.split('>')[1] == 'Physics') {
+        pathIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M209.84 47.44A91.42 91.42 0 0 0 144.62 20h-.35a91.44 91.44 0 0 0-65.12 27l-61.39 62.17a20 20 0 0 0 .08 28.21L46.5 166a19.89 19.89 0 0 0 14.15 5.86h.11a19.86 19.86 0 0 0 14.2-6l60.87-62.39a12.07 12.07 0 0 1 16.77-.12a11.63 11.63 0 0 1 3.5 8.35a12.85 12.85 0 0 1-3.66 9.11L90.19 181a20 20 0 0 0-.21 28.5l28.66 28.66a20.08 20.08 0 0 0 28.15.14l61.76-60.44l.09-.09c36.01-35.99 36.54-94.46 1.2-130.33M60.62 146.21l-23-23l18.19-18.41l22.88 22.88Zm72.2 72.18l-23-23l18.61-18l22.88 22.87Zm58.89-57.62l-23.23 22.73l-22.78-22.77L169.21 138l.15-.14a37 37 0 0 0 10.74-26.37a35.44 35.44 0 0 0-10.85-25.41a36.2 36.2 0 0 0-50.44.48l-.1.11l-23.25 23.82l-22.78-22.77l23.5-23.8A67.55 67.55 0 0 1 144.27 44h.26a67.62 67.62 0 0 1 48.21 20.29c26.11 26.49 25.64 69.76-1.03 96.48"/></svg>'
+    } else if (current_path.split('>')[1] == 'Chemistry') {
+        pathIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M225.15 197.71L164 95.81V44h4a12 12 0 0 0 0-24H88a12 12 0 0 0 0 24h4v51.81l-61.15 101.9A20 20 0 0 0 48 228h160a20 20 0 0 0 17.15-30.29M140 44v55.14a12 12 0 0 0 1.71 6.17l35.13 58.54c-10.79.86-25.15-1.31-43.42-10.56c-14-7.08-27.46-11.33-40.27-12.76l21.14-35.22a12 12 0 0 0 1.71-6.17V44ZM55.06 204L79 164.19c13-1.11 27.62 2.42 43.62 10.52c19.61 9.92 36.25 13.31 49.85 13.31a75.44 75.44 0 0 0 17.64-2.02l10.83 18Z"/></svg>'
+    } else if (current_path.split('>')[1] == 'Economics') {
+        pathIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M236 208a12 12 0 0 1-12 12H32a12 12 0 0 1-12-12V48a12 12 0 0 1 24 0v99l43.51-43.52a12 12 0 0 1 17 0L128 127l43-43h-11a12 12 0 0 1 0-24h40a12 12 0 0 1 12 12v40a12 12 0 0 1-24 0v-11l-51.51 51.52a12 12 0 0 1-17 0L96 129l-52 52v15h180a12 12 0 0 1 12 12"/></svg>'
+    } else if (current_path.split('>')[1] == 'Combined') {
+        pathIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M219.23 159.2a196.66 196.66 0 0 0-18-31.2a196.66 196.66 0 0 0 18-31.2c11.84-26.31 11.69-47.48-.43-59.6s-33.29-12.27-59.6-.43a196.66 196.66 0 0 0-31.2 18a196.66 196.66 0 0 0-31.2-18c-26.31-11.84-47.48-11.69-59.6.43s-12.27 33.29-.43 59.6a196.66 196.66 0 0 0 18 31.2a196.66 196.66 0 0 0-18 31.2c-11.84 26.31-11.69 47.48.43 59.6c6.13 6.13 14.58 9.2 24.8 9.2c10 0 21.77-2.92 34.76-8.77a196.66 196.66 0 0 0 31.2-18a196.66 196.66 0 0 0 31.2 18c13 5.85 24.74 8.77 34.76 8.77c10.26 0 18.71-3.07 24.84-9.2c12.16-12.12 12.31-33.29.47-59.6m-17.41-105c5.25 5.26 1.79 26-16 53.78c-5.61-6.66-11.65-13.25-18.07-19.67S154.7 75.83 148 70.22c27.82-17.83 48.56-21.29 53.82-16.04ZM171.24 128a288.6 288.6 0 0 1-20.51 22.73A288.6 288.6 0 0 1 128 171.24a288.6 288.6 0 0 1-22.73-20.51A288.6 288.6 0 0 1 84.76 128A298.55 298.55 0 0 1 128 84.76a286.83 286.83 0 0 1 22.73 20.51A286.83 286.83 0 0 1 171.24 128M54.18 54.18c1.46-1.45 4.1-2.24 7.75-2.24c9.53 0 25.94 5.39 46 18.28c-6.66 5.61-13.25 11.65-19.67 18.07S75.83 101.3 70.22 108C52.39 80.18 48.93 59.44 54.18 54.18m0 147.64c-5.25-5.26-1.79-26 16-53.78c5.61 6.66 11.65 13.25 18.07 19.67s13 12.46 19.67 18.07c-27.74 17.83-48.48 21.29-53.74 16.04m147.64 0c-5.26 5.25-26 1.79-53.78-16c6.66-5.61 13.25-11.65 19.67-18.07s12.46-13 18.07-19.67c17.83 27.74 21.29 48.48 16.04 53.74M144 128a16 16 0 1 1-16-16a16 16 0 0 1 16 16"/></svg>'
+    }
 }
 
 
@@ -634,7 +655,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
             createModal(
                 'Are you sure?', // title
                 [
-                    'Seems like there are some questions you missed. <br> Would you like to correct the ones you have solved',
+                    'Seems like there are some questions you missed. <br> Only the solved questions will be graded.',
                 ], // content,
                 [
                     'Confirm',
@@ -644,9 +665,11 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
                             if (modelAnswers[i] == userAnswers[i]) {
                                 correctAnswers++
                                 const correctQuestion = document.getElementById(`question-${i}-number`)
+                                correctQuestion.classList.remove('wrong-question')
                                 correctQuestion.classList.add('correct-question')
                             } else if (userAnswers[i] == '') { } else {
                                 const wrongQuestion = document.getElementById(`question-${i}-number`)
+                                wrongQuestion.classList.remove('correct-question')
                                 wrongQuestion.classList.add('wrong-question')
 
                                 const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
@@ -666,10 +689,13 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
             for (let i = 0; i < modelAnswers.length; i++) {
                 if (modelAnswers[i] == userAnswers[i]) {
                     correctAnswers++
+
                     const correctQuestion = document.getElementById(`question-${i}-number`)
+                    correctQuestion.classList.remove('wrong-question')
                     correctQuestion.classList.add('correct-question')
                 } else if (userAnswers[i] == '') { } else {
                     const wrongQuestion = document.getElementById(`question-${i}-number`)
+                    wrongQuestion.classList.remove('correct-question')
                     wrongQuestion.classList.add('wrong-question')
 
                     const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
@@ -684,7 +710,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
         createModal(
             'Are you sure?', // title
             [
-                'This will only highlight the correct answers and will not correct your answers',
+                'This will only highlight the correct answers and will not correct your answers.',
             ], // content,
             [
                 'Confirm',

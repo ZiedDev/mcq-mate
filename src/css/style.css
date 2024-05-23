@@ -151,7 +151,7 @@ header>.content>.credits:hover {
     font-weight: 500;
 }
 
-.top-bar .bar .path-icon {
+.top-bar .bar .path-icon-container {
     display: flex;
     align-items: center;
     margin-left: 0.5rem;
@@ -159,7 +159,12 @@ header>.content>.credits:hover {
     height: 1.5rem;
 }
 
-.top-bar .bar .path-icon svg {
+.top-bar .bar .path-icon-container .path-icon {
+    width: 100%;
+    height: 100%;
+}
+
+.top-bar .bar .path-icon-container svg {
     width: 100%;
     height: 100%;
 }
