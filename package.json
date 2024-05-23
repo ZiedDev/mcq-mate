@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/ZiedDev/cambridge-mcq-checker#readme",
   "devDependencies": {
+    "@pdftron/pdfjs-express": "^8.7.4",
     "css-loader": "^7.1.1",
     "style-loader": "^4.0.0",
     "webpack": "^5.91.0",

@@ -164,6 +164,22 @@ header>.content>.credits:hover {
     height: 100%;
 }
 
+.top-bar .bar .path {
+    display: flex;
+}
+
+.top-bar .bar .path div {
+    display: flex;
+    align-items: center;
+}
+
+.top-bar .bar .path div svg {
+    display: flex;
+    align-items: center;
+    width: 3rem;
+    height: 1.5rem;
+}
+
 .top-bar .bar .path-arrow {
     font-size: 24pt;
 }
@@ -413,6 +429,131 @@ header>.content>.credits:hover {
     left: 10%;
     font-size: x-large;
     font-weight: bold;
+}
+
+.bubble-sheet-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+
+    padding: 1rem 0 2rem 0;
+}
+
+.bubble-sheet-title {
+    padding: 2rem;
+    font-size: x-large;
+    font-weight: 600;
+}
+
+.bubble-sheet-container {
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding: 1rem;
+}
+
+.bubble-sheet-container div {
+    font-size: x-large;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    border: #363B42 solid 0.25pt;
+    transition: background-color 100ms ease;
+}
+
+.bubble-chosen {
+    background-color: #5E656E;
+}
+
+.bubble-choice:hover {
+    cursor: pointer;
+    background-color: #21262D;
+}
+
+.bubble-sheet-menu button {
+    font-size: x-large;
+    font-weight: bold;
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 1rem;
+    background-color: #238636;
+    border: none;
+    box-shadow: var(--shadow-elevation-medium);
+    transition: background-color 100ms ease;
+}
+
+.bubble-sheet-menu button:hover {
+    cursor: pointer;
+    background-color: #1c6b2b;
+}
+
+.bubble-sheet-menu .exam-mark {
+    margin: 1rem 0;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    background-color: #E6EDF3;
+    color: #0D1117;
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.correct-question {
+    background-color: #238636;
+}
+
+.wrong-question {
+    background-color: #862323;
+}
+
+.corrected-question {
+    position: relative;
+}
+
+.corrected-question::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    border: #E6EDF3 solid 0.25rem;
+    border-radius: 0.5rem;
+}
+
+.switch-to-pdf {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    padding: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    cursor: pointer;
+    background-color: #E6EDF3;
+    border-radius: 100%;
+    box-shadow: var(--shadow-elevation-medium);
+    transition: scale 150ms ease;
+}
+
+.switch-to-pdf:hover {
+    scale: 1.05;
+}
+
+.switch-to-pdf svg {
+    width: 100%;
+    height: 100%;
+}
+
+.switch-to-pdf svg path {
+    fill: #0D1117;
+}
+
+.pdf-viewer {
+    width: 100%;
+    height: 100%;
 }
 
 @keyframes closeMenu {
