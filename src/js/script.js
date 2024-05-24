@@ -56,6 +56,7 @@ function backwardPath() {
     forward_stack.push(current_path);
     current_path = backward_stack.pop()
 
+
     if (isBackwardAvailable()) {
         moveBackwardsArrow.classList.add('active')
     } else {
@@ -67,6 +68,8 @@ function backwardPath() {
         moveForwardsArrow.classList.remove('active')
     }
 
+    updatePathElement(true)
+    updatePathIcon()
     updatePathElement(true)
     updatePathIcon()
 }
@@ -86,6 +89,9 @@ function changePath(new_path) {
     } else {
         moveForwardsArrow.classList.remove('active')
     }
+
+    updatePathElement()
+    updatePathIcon()
 
     updatePathElement()
     updatePathIcon()
@@ -154,8 +160,14 @@ moveBackwardsArrow.addEventListener('click', () => {
     if (isBackwardAvailable()) {
         navConfirm(() => { backwardPath() })
     }
+    if (isBackwardAvailable()) {
+        navConfirm(() => { backwardPath() })
+    }
 })
 moveForwardsArrow.addEventListener('click', () => {
+    if (isForwardAvailable()) {
+        navConfirm(() => { forwardPath() })
+    }
     if (isForwardAvailable()) {
         navConfirm(() => { forwardPath() })
     }
@@ -267,6 +279,7 @@ Object.keys(olSubjectsMS).forEach(subject => {
                         changePath(`ol>${subject}>${year}>${session}`)
                     })
                 }
+
 
             })
 
