@@ -70,8 +70,6 @@ function backwardPath() {
 
     updatePathElement(true)
     updatePathIcon()
-    updatePathElement(true)
-    updatePathIcon()
 }
 
 function changePath(new_path) {
@@ -89,9 +87,6 @@ function changePath(new_path) {
     } else {
         moveForwardsArrow.classList.remove('active')
     }
-
-    updatePathElement()
-    updatePathIcon()
 
     updatePathElement()
     updatePathIcon()
@@ -133,6 +128,7 @@ function updatePathElement(createSheet) {
             path.appendChild(createPathElement(pathText[3] == 'm' ? 'Feb / Mar' : pathText[3] == 's' ? 'May / Jun' : 'Oct / Nov'))
             path.appendChild(createPathElement(`Variant ${Number(pathText[4]) + 1}`))
             main.appendChild(createBubbleSheetMenu(pathText[0], pathText[1], pathText[2], pathText[3], pathText[4]))
+            inExam = true
         } else if (pathText.length == 4) {
             path.innerHTML = ''
             path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true))
@@ -160,14 +156,8 @@ moveBackwardsArrow.addEventListener('click', () => {
     if (isBackwardAvailable()) {
         navConfirm(() => { backwardPath() })
     }
-    if (isBackwardAvailable()) {
-        navConfirm(() => { backwardPath() })
-    }
 })
 moveForwardsArrow.addEventListener('click', () => {
-    if (isForwardAvailable()) {
-        navConfirm(() => { forwardPath() })
-    }
     if (isForwardAvailable()) {
         navConfirm(() => { forwardPath() })
     }
