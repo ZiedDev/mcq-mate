@@ -540,11 +540,19 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
     menu.id = 'bubble-sheet-menu'
     menu.classList.add('bubble-sheet-menu')
 
-    const title = document.createElement('div')
+    const title = document.createElement('h2')
     title.classList.add('bubble-sheet-title')
     title.id = 'bubble-sheet-title'
     title.textContent = 'Everything is set. Now you can start solving.'
     menu.appendChild(title)
+
+    const pdfLink = document.createElement('a')
+    pdfLink.classList.add('bubble-sheet-pdf-link')
+    pdfLink.id = 'bubble-sheet-pdf-link'
+    pdfLink.textContent = 'Open pdf in external tab'
+    pdfLink.href = `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' ? 1 : 2}${Number(variant) + 1}.pdf`
+    pdfLink.setAttribute('target', '_blank')
+    menu.appendChild(pdfLink)
 
     const bubbleSheetContainer = document.createElement('div')
     bubbleSheetContainer.id = 'bubble-sheet-container'
@@ -619,6 +627,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
     menu.appendChild(bubbleSheetContainer)
 
     const buttonsContainer = document.createElement('div')
+    buttonsContainer.classList.add('bubble-sheet-buttons-container')
     const submitButton = document.createElement('button')
     submitButton.textContent = 'Submit'
     submitButton.classList.add('bubble-sheet-submit-button')
@@ -762,7 +771,8 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
                 initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' ? 1 : 2}${Number(variant) + 1}.pdf` // path to your document
             }, pdfViewer).then((instance) => {
                 instance.UI.setTheme('dark');
-                instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton']);
+                instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
+                instance.enableFeatures([instance.Feature.Download]);
             })
 
             pdfViewOpened = true

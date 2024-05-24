@@ -150,13 +150,14 @@ header>.content>.credits:hover {
     gap: 0.25rem;
     font-size: large;
     font-weight: 500;
+    overflow-x: auto;
 }
 
 .top-bar .bar .path-icon-container {
     display: flex;
     align-items: center;
     margin-left: 0.5rem;
-    width: 3rem;
+    min-width: 3rem;
     height: 1.5rem;
 }
 
@@ -177,11 +178,14 @@ header>.content>.credits:hover {
 
 .top-bar .bar .path {
     display: flex;
+    width: max-content;
+    padding: 0 1rem;
 }
 
 .top-bar .bar .path div {
     display: flex;
     align-items: center;
+    white-space: nowrap;
 }
 
 .top-bar .bar .path div svg {
@@ -351,6 +355,11 @@ header>.content>.credits:hover {
     overflow: auto;
 }
 
+.main * {
+    user-select: none;
+    -moz-user-select: none;
+}
+
 .main::-webkit-scrollbar {
     width: 0.5rem;
 }
@@ -391,8 +400,8 @@ header>.content>.credits:hover {
 
 .card {
     cursor: pointer;
-    width: 15rem;
-    height: 15rem;
+    width: 100%;
+    height: 100%;
     border-radius: 1rem;
     overflow: hidden;
     position: relative;
@@ -584,6 +593,7 @@ header>.content>.credits:hover {
 
 .pdf-viewer {
     user-select: none;
+    -moz-user-select: none;
     position: fixed;
     bottom: 0;
     width: calc(100% - 17rem);
@@ -597,7 +607,7 @@ header>.content>.credits:hover {
 
 @keyframes openMenu {
     0% {
-        margin-top: 5rem;
+        margin-top: 1.5rem;
         opacity: 0;
     }
 
@@ -614,7 +624,50 @@ header>.content>.credits:hover {
     }
 
     100% {
-        margin-top: 5rem;
+        margin-top: 1.5rem;
         opacity: 0;
+    }
+}
+
+@media only screen and (max-width: 921px) {
+    .side-panel {
+        position: absolute;
+        left: -100%;
+    }
+
+    .side-panel .credits {
+        left: -100%;
+    }
+
+    .main {
+        width: 100%;
+    }
+
+    .main>div>div {
+        justify-content: center;
+    }
+
+    .main>div>h2 {
+        text-align: center;
+    }
+
+    .card-container {
+        margin: 1rem;
+    }
+
+    .bubble-sheet-buttons-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pdf-viewer {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 551px) {
+    .card-container {
+        height: 7rem;
     }
 }
