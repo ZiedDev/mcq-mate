@@ -76,6 +76,7 @@ function changePath(new_path) {
     backward_stack.push(current_path);
     forward_stack = [];
     current_path = new_path;
+    console.log(current_path);
 
     if (isBackwardAvailable()) {
         moveBackwardsArrow.classList.add('active')
@@ -126,7 +127,7 @@ function updatePathElement(createSheet) {
             path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true))
             path.appendChild(createPathElement(pathText[2]))
             path.appendChild(createPathElement(pathText[3] == 'm' ? 'Feb / Mar' : pathText[3] == 's' ? 'May / Jun' : 'Oct / Nov'))
-            path.appendChild(createPathElement(`Variant ${Number(pathText[4]) + 1}`))
+            path.appendChild(createPathElement(`Variant ${Number(pathText[4]) + 1}`, false, true))
             main.appendChild(createBubbleSheetMenu(pathText[0], pathText[1], pathText[2], pathText[3], pathText[4]))
             inExam = true
         } else if (pathText.length == 4) {
@@ -163,6 +164,24 @@ moveForwardsArrow.addEventListener('click', () => {
     }
 })
 
+document.addEventListener('mousedown', e => {
+    if (e.buttons == 8) {
+        if (isBackwardAvailable()) {
+            navConfirm(() => { backwardPath() })
+        }
+    }
+})
+document.addEventListener('mousedown', e => {
+    if (e.buttons == 16) {
+        if (isForwardAvailable()) {
+            navConfirm(() => { forwardPath() })
+        }
+    }
+})
+document.addEventListener('mouseup', e => {
+    e.preventDefault()
+})
+
 function navConfirm(confirmCallback) {
     if (inExam) {
         createModal(
@@ -187,7 +206,7 @@ function navConfirm(confirmCallback) {
     }
 }
 
-function createPathElement(title, first) {
+function createPathElement(title, first, last) {
     const element = document.createElement('div')
 
     const pathElement = document.createElement('div')
@@ -198,7 +217,25 @@ function createPathElement(title, first) {
         element.appendChild(arrowElement)
     }
 
+    if (!last) {
+        pathElement.classList.add('path-clickable')
+    }
+
+    const pathText = current_path.split('>')
     element.appendChild(pathElement)
+    element.addEventListener('click', () => {
+        console.log(title);
+        console.log(title == `${pathText[0].toUpperCase()} ${pathText[1]}`);
+        console.log(title == pathText[2]);
+        console.log(title == 'Feb / Mar' || title == 'May / Jun' || title == 'Oct / Nov');
+        if (title == `${pathText[0].toUpperCase()} ${pathText[1]}`) {
+            navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}`) })
+        } else if (title == pathText[2]) {
+            navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}`) })
+        } else if (title == 'Feb / Mar' || title == 'May / Jun' || title == 'Oct / Nov') {
+            navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}>${pathText[3]}`) })
+        }
+    })
 
     return element
 }
