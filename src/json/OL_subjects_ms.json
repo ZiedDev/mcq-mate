@@ -114,9 +114,9 @@
                 "BCCCBADBDDDCBAAACDCCCBBCAABACADACCCADBCB"
             ],
             "w": [
-                null,
-                null,
-                null
+                "DDCABBBADACAAAABDBACBCDDCCBBCBDCBABCADCB",
+                "CCCBBDCCAADBDAAADACDBADCCCCBDDDABABCCCBD",
+                "CBABCAADAACDDDCBBBDBCBACADDBDAABBADABBCB"
             ]
         }
     },
@@ -235,9 +235,9 @@
                 "CABBBCCDBCCAABBCDBADCACABBCDDDCCCBDACCDB"
             ],
             "w": [
-                null,
-                null,
-                null
+                "CBABDCBBDCACDAABDBADCBCCDACBABDCBDBCCDCD",
+                "CBDBBABABBCBABDCCDCCDADCBCBBCBDDBACBBBDB",
+                "DBBCCDBACDBDBABBDBABDBCDBCCACBBDCCCDCAAD"
             ]
         }
     },
@@ -356,9 +356,9 @@
                 "ABDCDBCDDCCABCCBDAAADCACBCDACBDABBBBABCD"
             ],
             "w": [
-                null,
-                null,
-                null
+                "DBBACBBDCBCABCCAAADACBDCBBCDBBBDDCCCACDA",
+                "DCDBBBBAACBDAAADDDDBCBACBADDBCBACCDDCCAC",
+                "CBACDCAADCADBBBCBBDDAAABACCCBABDDACDACBA"
             ]
         }
     },
@@ -477,9 +477,9 @@
                 "CCACCCBADCADBCCBBBBDCCCABCDCCCBDBCADACBB"
             ],
             "w": [
-                null,
-                null,
-                null
+                "BBAAACADDDBCABCACBDCDACCABDDBCCBDDDCACDB",
+                "CDCACDBBCCAACCDDBBAACCCABBCCCBBCAABDDBBA",
+                "ADCDACBCDADDBAABBCCDCAACBCDBAADACCABDBCB"
             ]
         }
     },
@@ -598,9 +598,9 @@
                 "DCBBCDBCCBAADDBBCABDCCACADDACA"
             ],
             "w": [
-                null,
-                null,
-                null
+                "DBADCDDBBCCDBBACCCBACACBAAACCA",
+                "DACCDADDDAAADACDACBBCBCADBCBAB",
+                "DCADCDDABBBACBBACBDDBCBDBABCBA"
             ]
         }
     }
