@@ -249,6 +249,7 @@ header>.content>.credits {
     display: flex;
     width: max-content;
     padding-right: 1rem;
+    position: relative;
 }
 
 .top-bar .bar .path>div {
@@ -843,11 +844,25 @@ header>.content>.credits {
 }
 
 @media only screen and (max-width: 921px) {
+    header {
+        z-index: 101;
+    }
+
     .top-bar {
         padding-top: 1rem;
         position: sticky;
         top: 0;
         z-index: 100;
+    }
+
+    .top-bar::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 5rem;
+        bottom: 100%;
+        z-index: -1;
+        background-color: #010409;
     }
 
     .main-section {
