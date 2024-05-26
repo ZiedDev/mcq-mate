@@ -2,7 +2,7 @@ import "../css/style.css"
 import olSubjectsMS from "../json/OL_subjects_ms.json"
 import alSubjectsMS from "../json/AL_subjects_ms.json"
 
-import { generateSideButton, generateMainButton } from "./generateElements.js"
+import { generateSideButton, generateMainButton, generateRandomImages } from "./generateElements.js"
 import createModal from "./modal.js"
 
 import WebViewer from '@pdftron/pdfjs-express'
@@ -21,6 +21,9 @@ const subjectCode = {
     ALChemistry: '9701',
     ALPhysics: '9702',
 }
+
+let randomImagesArray = generateRandomImages()
+let randomImageCounter = 0
 
 // credits button behavior
 const creditsButton = document.getElementById('credits')
@@ -73,10 +76,11 @@ function backwardPath() {
 }
 
 function changePath(new_path) {
+    randomImagesArray = generateRandomImages()
+    randomImageCounter = 0
     backward_stack.push(current_path);
     forward_stack = [];
     current_path = new_path;
-    console.log(current_path);
 
     if (isBackwardAvailable()) {
         moveBackwardsArrow.classList.add('active')
@@ -129,21 +133,20 @@ function updatePathElement(createSheet) {
             path.appendChild(createPathElement(pathText[3] == 'm' ? 'Feb / Mar' : pathText[3] == 's' ? 'May / Jun' : 'Oct / Nov'))
             path.appendChild(createPathElement(`Variant ${Number(pathText[4]) + 1}`, false, true))
             main.appendChild(createBubbleSheetMenu(pathText[0], pathText[1], pathText[2], pathText[3], pathText[4]))
-            inExam = true
         } else if (pathText.length == 4) {
             path.innerHTML = ''
             path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true))
             path.appendChild(createPathElement(pathText[2]))
-            path.appendChild(createPathElement(pathText[3] == 'm' ? 'Feb / Mar' : pathText[3] == 's' ? 'May / Jun' : 'Oct / Nov'))
+            path.appendChild(createPathElement(pathText[3] == 'm' ? 'Feb / Mar' : pathText[3] == 's' ? 'May / Jun' : 'Oct / Nov', false, true))
             main.appendChild(CreateSubMenu(pathText[0], pathText[1], pathText[2], pathText[3]))
         } else if (pathText.length == 3) {
             path.innerHTML = ''
             path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true))
-            path.appendChild(createPathElement(pathText[2]))
+            path.appendChild(createPathElement(pathText[2], false, true))
             main.appendChild(CreateSubMenu(pathText[0], pathText[1], pathText[2]))
         } else if (pathText.length == 2) {
             path.innerHTML = ''
-            path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true))
+            path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true, true))
             main.appendChild(CreateSubMenu(pathText[0], pathText[1]))
         } else if (pathText.length <= 1) {
             path.innerHTML = ''
@@ -213,27 +216,27 @@ function createPathElement(title, first, last) {
     pathElement.textContent = title
 
     if (!first) {
-        const arrowElement = document.createElementNS("http://www.w3.org/2000/svg", "svg"); arrowElement.classList.add('side-button-arrow'); arrowElement.setAttribute('width', '32'); arrowElement.setAttribute('height', '32'); arrowElement.setAttribute('viewBox', '0 0 256 256'); arrowElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); arrowElement.innerHTML = '                    <path fill="currentColor" d="m184.49 136.49l-80 80a12 12 0 0 1-17-17L159 128L87.51 56.49a12 12 0 1 1 17-17l80 80a12 12 0 0 1-.02 17" />'
+        const arrowElement = document.createElementNS("http://www.w3.org/2000/svg", "svg"); arrowElement.setAttribute('width', '32'); arrowElement.setAttribute('height', '32'); arrowElement.setAttribute('viewBox', '0 0 256 256'); arrowElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); arrowElement.innerHTML = '                    <path fill="currentColor" d="m184.49 136.49l-80 80a12 12 0 0 1-17-17L159 128L87.51 56.49a12 12 0 1 1 17-17l80 80a12 12 0 0 1-.02 17" />'
         element.appendChild(arrowElement)
     }
 
     if (!last) {
         pathElement.classList.add('path-clickable')
+    } else {
+        pathElement.classList.add('path-not-clickable')
     }
 
     const pathText = current_path.split('>')
     element.appendChild(pathElement)
-    element.addEventListener('click', () => {
-        console.log(title);
-        console.log(title == `${pathText[0].toUpperCase()} ${pathText[1]}`);
-        console.log(title == pathText[2]);
-        console.log(title == 'Feb / Mar' || title == 'May / Jun' || title == 'Oct / Nov');
-        if (title == `${pathText[0].toUpperCase()} ${pathText[1]}`) {
-            navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}`) })
-        } else if (title == pathText[2]) {
-            navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}`) })
-        } else if (title == 'Feb / Mar' || title == 'May / Jun' || title == 'Oct / Nov') {
-            navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}>${pathText[3]}`) })
+    pathElement.addEventListener('click', () => {
+        if (true) {
+            if (title == `${pathText[0].toUpperCase()} ${pathText[1]}`) {
+                navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}`) })
+            } else if (title == pathText[2]) {
+                navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}`) })
+            } else if (title == 'Feb / Mar' || title == 'May / Jun' || title == 'Oct / Nov') {
+                navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}>${pathText[3]}`) })
+            }
         }
     })
 
@@ -265,7 +268,6 @@ pathIcon.addEventListener('click', () => {
             changePath('home')
             path.innerHTML = ''
             inExam = false
-            main.appendChild(createHomeMenu())
         }
     })
 })
@@ -319,7 +321,6 @@ Object.keys(olSubjectsMS).forEach(subject => {
                     variantElement.addEventListener('click', e => {
                         if (e.target.id == `side-ol-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-ol-${subject}-${year}-${session}-${variant}-title`) {
                             navConfirm(() => {
-                                inExam = true
                                 changePath(`ol>${subject}>${year}>${session}>${variant}`)
                             })
                         }
@@ -379,7 +380,6 @@ Object.keys(alSubjectsMS).forEach(subject => {
                     variantElement.addEventListener('click', e => {
                         if (e.target.id == `side-al-button-${subject}-${year}-${session}-${variant}-year` || e.target.id == `side-al-${subject}-${year}-${session}-${variant}-title`) {
                             navConfirm(() => {
-                                inExam = true
                                 changePath(`al>${subject}>${year}>${session}>${variant}`)
                             })
                         }
@@ -450,7 +450,8 @@ function CreateSubMenu(level, subject, year, session) {
         if (session == undefined) {
             if (year == undefined) {
                 Object.keys(olSubjectsMS[subject]).forEach(year => {
-                    const yearElement = generateMainButton('ol', subject, year)
+                    const yearElement = generateMainButton('ol', subject, year, undefined, undefined, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
                     createRotatingCard(yearElement)
                     yearElement.addEventListener('click', () => {
                         navConfirm(() => {
@@ -462,7 +463,8 @@ function CreateSubMenu(level, subject, year, session) {
                 })
             } else {
                 Object.keys(olSubjectsMS[subject][year]).forEach(session => {
-                    const sessionElement = generateMainButton('ol', subject, year, session)
+                    const sessionElement = generateMainButton('ol', subject, year, session, undefined, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
                     createRotatingCard(sessionElement)
                     sessionElement.addEventListener('click', () => {
                         navConfirm(() => {
@@ -477,11 +479,11 @@ function CreateSubMenu(level, subject, year, session) {
         } else {
             Object.keys(olSubjectsMS[subject][year][session]).forEach(variant => {
                 if (olSubjectsMS[subject][year][session][variant] != null) {
-                    const variantElement = generateMainButton('ol', subject, year, session, variant)
+                    const variantElement = generateMainButton('ol', subject, year, session, variant, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
                     createRotatingCard(variantElement)
                     variantElement.addEventListener('click', () => {
                         navConfirm(() => {
-                            inExam = true
                             changePath(`ol>${subject}>${year}>${session}>${variant}`)
                         })
                     })
@@ -494,7 +496,8 @@ function CreateSubMenu(level, subject, year, session) {
         if (session == undefined) {
             if (year == undefined) {
                 Object.keys(alSubjectsMS[subject]).forEach(year => {
-                    const yearElement = generateMainButton('al', subject, year)
+                    const yearElement = generateMainButton('al', subject, year, undefined, undefined, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
                     createRotatingCard(yearElement)
                     yearElement.addEventListener('click', () => {
                         navConfirm(() => {
@@ -506,7 +509,8 @@ function CreateSubMenu(level, subject, year, session) {
                 })
             } else {
                 Object.keys(alSubjectsMS[subject][year]).forEach(session => {
-                    const sessionElement = generateMainButton('al', subject, year, session)
+                    const sessionElement = generateMainButton('al', subject, year, session, undefined, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
                     createRotatingCard(sessionElement)
                     sessionElement.addEventListener('click', () => {
                         navConfirm(() => {
@@ -521,11 +525,11 @@ function CreateSubMenu(level, subject, year, session) {
         } else {
             Object.keys(alSubjectsMS[subject][year][session]).forEach(variant => {
                 if (olSubjectsMS[subject][year][session][variant] != null) {
-                    const variantElement = generateMainButton('al', subject, year, session, variant)
+                    const variantElement = generateMainButton('al', subject, year, session, variant, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
                     createRotatingCard(variantElement)
                     variantElement.addEventListener('click', () => {
                         navConfirm(() => {
-                            inExam = true
                             changePath(`al>${subject}>${year}>${session}>${variant}`)
                         })
                     })
@@ -611,6 +615,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
         questionA.textContent = 'A'
         questionA.id = `question-${i}-a`
         questionA.addEventListener('click', () => {
+            inExam = true
             questionA.classList.add('bubble-chosen')
             questionB.classList.remove('bubble-chosen')
             questionC.classList.remove('bubble-chosen')
@@ -625,6 +630,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
         questionB.textContent = 'B'
         questionB.id = `question-${i}-b`
         questionB.addEventListener('click', () => {
+            inExam = true
             questionA.classList.remove('bubble-chosen')
             questionB.classList.add('bubble-chosen')
             questionC.classList.remove('bubble-chosen')
@@ -639,6 +645,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
         questionC.textContent = 'C'
         questionC.id = `question-${i}-c`
         questionC.addEventListener('click', () => {
+            inExam = true
             questionA.classList.remove('bubble-chosen')
             questionB.classList.remove('bubble-chosen')
             questionC.classList.add('bubble-chosen')
@@ -653,6 +660,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
         questionD.textContent = 'D'
         questionD.id = `question-${i}-d`
         questionD.addEventListener('click', () => {
+            inExam = true
             questionA.classList.remove('bubble-chosen')
             questionB.classList.remove('bubble-chosen')
             questionC.classList.remove('bubble-chosen')

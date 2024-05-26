@@ -8,6 +8,22 @@ import ol_combined from '../media/images/ol_combined.png'
 import ol_economics from '../media/images/ol_economics.png'
 import ol_physics from '../media/images/ol_physics.jpg'
 
+import randomImage1 from '../media/images/Random/1.jpg'
+import randomImage2 from '../media/images/Random/2.jpg'
+import randomImage3 from '../media/images/Random/3.jpg'
+import randomImage4 from '../media/images/Random/4.jpg'
+import randomImage5 from '../media/images/Random/5.jpg'
+import randomImage6 from '../media/images/Random/6.jpg'
+import randomImage7 from '../media/images/Random/7.jpg'
+import randomImage8 from '../media/images/Random/8.jpg'
+import randomImage9 from '../media/images/Random/9.jpg'
+import randomImage10 from '../media/images/Random/10.jpg'
+import randomImage11 from '../media/images/Random/11.jpg'
+import randomImage12 from '../media/images/Random/12.jpg'
+import randomImage13 from '../media/images/Random/13.jpg'
+import randomImage14 from '../media/images/Random/14.jpg'
+
+const randomImages = { randomImage1, randomImage2, randomImage3, randomImage4, randomImage5, randomImage6, randomImage7, randomImage8, randomImage9, randomImage10, randomImage11, randomImage12, randomImage13, randomImage14 }
 const images = { al_biology, al_chemistry, al_physics, ol_biology, ol_chemistry, ol_combined, ol_economics, ol_physics }
 
 function generateSideButton(level, subject, year, session, variant) {
@@ -64,7 +80,7 @@ function generateSideButton(level, subject, year, session, variant) {
     return element
 }
 
-function generateMainButton(level, subject, year, session, variant) {
+function generateMainButton(level, subject, year, session, variant, randomImage) {
     const elementContainer = document.createElement('div')
     elementContainer.classList.add('card-container')
     elementContainer.id = variant == undefined ? session == undefined ? year == undefined ? `${level}-${subject}-card-container` : `${level}-${subject}-${year}-card-container` : `${level}-${subject}-${year}-${session}-card-container` : `${level}-${subject}-${year}-${session}-${variant}-card-container`
@@ -76,7 +92,11 @@ function generateMainButton(level, subject, year, session, variant) {
     const imageContainer = document.createElement('div')
     imageContainer.classList.add('image-container')
     const image = document.createElement('img')
-    image.src = images[`${level}_${subject.toLowerCase()}`]
+    if (randomImage != undefined) {
+        image.src = randomImages[`randomImage${randomImage + 1}`]
+    } else {
+        image.src = images[`${level}_${subject.toLowerCase()}`]
+    }
     imageContainer.appendChild(image)
     element.appendChild(imageContainer)
 
@@ -90,4 +110,27 @@ function generateMainButton(level, subject, year, session, variant) {
     return elementContainer
 }
 
-export { generateSideButton, generateMainButton }
+function generateRandomImages() {
+    const randomImagesArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    shuffle(randomImagesArray)
+
+    function shuffle(array) {
+        let currentIndex = array.length;
+
+        // While there remain elements to shuffle...
+        while (currentIndex != 0) {
+
+            // Pick a remaining element...
+            let randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+
+            // And swap it with the current element.
+            [array[currentIndex], array[randomIndex]] = [
+                array[randomIndex], array[currentIndex]];
+        }
+    }
+
+    return randomImagesArray
+}
+
+export { generateSideButton, generateMainButton, generateRandomImages }
