@@ -1,8 +1,8 @@
 const path = require('path');
 
 module.exports = {
-    mode: 'development',
-    devtool: 'inline-source-map',
+    mode: 'production',
+    // devtool: 'inline-source-map',
     entry: './src/js/script.js',
     output: {
         filename: 'bundle.js',

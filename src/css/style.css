@@ -15,7 +15,6 @@ html,
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden;
     background-color: #010409;
 }
 
@@ -86,7 +85,7 @@ header>.content>.credits {
     cursor: pointer;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     header>.content>.credits:hover {
         text-decoration: underline solid 2pt;
     }
@@ -100,13 +99,14 @@ header>.content>.credits {
 
     header>.title {
         width: fit-content;
-        padding-left: 0;
+        padding: 0;
     }
 
     header>.content {
         position: absolute;
         width: 100%;
         height: 100%;
+        padding: 0;
         /* display: none; */
     }
 
@@ -163,7 +163,7 @@ header>.content>.credits {
     fill: #E6EDF3;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .top-bar .active:hover {
         background-color: rgba(231, 238, 243, 0.125);
     }
@@ -176,24 +176,25 @@ header>.content>.credits {
     border-radius: 0.5rem;
     display: flex;
     align-items: center;
-    gap: 0.25rem;
     font-size: large;
     font-weight: 500;
     overflow-y: hidden;
     overflow: auto;
 }
 
-.top-bar .bar::-webkit-scrollbar {
-    height: 0.5rem;
-}
+@media (pointer: fine) {
+    .top-bar .bar::-webkit-scrollbar {
+        height: 0.5rem;
+    }
 
-.top-bar .bar::-webkit-scrollbar-thumb {
-    background-color: #abafb2;
-    border-radius: 0.125rem;
-}
+    .top-bar .bar::-webkit-scrollbar-thumb {
+        background-color: #abafb2;
+        border-radius: 0.125rem;
+    }
 
-.top-bar .bar :-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    .top-bar .bar :-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
 }
 
 .top-bar .bar .path-icon-container {
@@ -205,12 +206,12 @@ header>.content>.credits {
 }
 
 .top-bar .bar .path-icon-container .path-icon {
+    padding: 0.5rem;
     width: 100%;
     height: 100%;
 }
 
 .top-bar .bar .path-icon-container .path-icon {
-    padding: 0.5rem;
     width: 100%;
     height: 100%;
     border-radius: 100%;
@@ -218,7 +219,7 @@ header>.content>.credits {
     transition: background-color 100ms ease;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .top-bar .bar .path-icon-container .path-icon:hover {
         background-color: #363B42;
     }
@@ -241,8 +242,13 @@ header>.content>.credits {
     white-space: nowrap;
 }
 
+@media (pointer: fine) {
+    .top-bar .bar .path>div>div {
+        padding: 0.5rem;
+    }
+}
+
 .top-bar .bar .path>div>div {
-    padding: 0.5rem;
     margin: 0;
     border-radius: 1rem;
     user-select: none;
@@ -259,7 +265,7 @@ header>.content>.credits {
     transition: background-color 100ms ease;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .path-clickable:hover {
         background-color: #363B42;
     }
@@ -304,17 +310,19 @@ header>.content>.credits {
     position: relative;
 }
 
-.side-panel::-webkit-scrollbar {
-    width: 0.5rem;
-}
+@media (pointer: fine) {
+    .side-panel::-webkit-scrollbar {
+        width: 0.5rem;
+    }
 
-.side-panel::-webkit-scrollbar-thumb {
-    background-color: #21262D;
-    border-radius: 0.125rem;
-}
+    .side-panel::-webkit-scrollbar-thumb {
+        background-color: #21262D;
+        border-radius: 0.125rem;
+    }
 
-.side-panel::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    .side-panel::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
 }
 
 .side-group-title {
@@ -345,7 +353,7 @@ header>.content>.credits {
     transition: background-color 100ms ease;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .side-button:hover {
         background-color: #21262D;
     }
@@ -387,7 +395,7 @@ header>.content>.credits {
     transition: fill 100ms ease-in-out;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .side-button-arrow:hover path {
         fill: #abafb2;
     }
@@ -447,17 +455,19 @@ header>.content>.credits {
     -webkit-user-select: none;
 }
 
-.main::-webkit-scrollbar {
-    width: 0.5rem;
-}
+@media (pointer: fine) {
+    .main::-webkit-scrollbar {
+        width: 0.5rem;
+    }
 
-.main::-webkit-scrollbar-thumb {
-    background-color: #21262D;
-    border-radius: 0.125rem;
-}
+    .main::-webkit-scrollbar-thumb {
+        background-color: #21262D;
+        border-radius: 0.125rem;
+    }
 
-.main::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    .main::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
 }
 
 .home,
@@ -498,7 +508,7 @@ header>.content>.credits {
     box-shadow: var(--shadow-elevation-medium);
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .card:hover {
         scale: 1.025;
         box-shadow: var(--shadow-elevation-high);
@@ -588,7 +598,7 @@ header>.content>.credits {
     background-color: #5E656E;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .bubble-choice:hover {
         cursor: pointer;
         background-color: #21262D;
@@ -607,7 +617,7 @@ header>.content>.credits {
     transition: background-color 100ms ease;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .bubble-sheet-menu button:hover {
         cursor: pointer;
         background-color: #1c6b2b;
@@ -682,7 +692,7 @@ header>.content>.credits {
     transition: scale 150ms ease;
 }
 
-@media (hover: hover) {
+@media (pointer: fine) {
     .switch-to-pdf:hover {
         scale: 1.05;
     }
@@ -737,6 +747,23 @@ header>.content>.credits {
 }
 
 @media only screen and (max-width: 921px) {
+    .top-bar {
+        padding-top: 1rem;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .main-section {
+        overflow-y: visible;
+    }
+
+    .main {
+        overflow: visible;
+        min-height: calc(100dvh - 3.75rem - 1pt);
+        height: fit-content;
+    }
+
     .side-panel {
         display: none;
     }
@@ -780,6 +807,11 @@ header>.content>.credits {
 
     .pdf-viewer {
         width: 100%;
+    }
+
+    .switch-to-pdf {
+        width: 1.5rem;
+        height: 1.5rem;
     }
 }
 
