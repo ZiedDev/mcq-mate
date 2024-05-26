@@ -32,8 +32,8 @@ creditsButton.addEventListener('click', () => {
         'Credit', // title
         [
             'Thanks For using <br> the website <3',
-            'Website created by <br> <a href="https://github.com/ZiedDev">Zied</a> & <a href="https://github.com/omar-elsherbiny">Sherbo</a>',
-            'Repository: <br> <a href="https://github.com/ZiedDev/mcq-mate">MCQ Mate</a>'
+            'Website created by <br> <a href="https://github.com/ZiedDev" target="_blank">Zied</a> & <a href="https://github.com/omar-elsherbiny" target="_blank">Sherbo</a>',
+            'Repository: <br> <a href="https://github.com/ZiedDev/mcq-mate" target="_blank">MCQ Mate</a>'
         ], // content
     )
 })
@@ -304,19 +304,17 @@ Object.keys(olSubjectsMS).forEach(subject => {
 
         const sideYearSessions = document.getElementById(`side-ol-${subject}-${year}-sessions`)
         Object.keys(olSubjectsMS[subject][year]).forEach(session => {
-            const sessionElement = generateSideButton('ol', subject, year, session)
-            sessionElement.addEventListener('click', e => {
-                if (e.target.id == `side-ol-button-${subject}-${year}-${session}` || e.target.id == `side-ol-${subject}-${year}-${session}-title`) {
-                    navConfirm(() => {
-                        changePath(`ol>${subject}>${year}>${session}`)
-                    })
-                }
-
-
-            })
-
-            sideYearSessions.appendChild(sessionElement)
-
+            if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                const sessionElement = generateSideButton('ol', subject, year, session)
+                sessionElement.addEventListener('click', e => {
+                    if (e.target.id == `side-ol-button-${subject}-${year}-${session}` || e.target.id == `side-ol-${subject}-${year}-${session}-title`) {
+                        navConfirm(() => {
+                            changePath(`ol>${subject}>${year}>${session}`)
+                        })
+                    }
+                })
+                sideYearSessions.appendChild(sessionElement)
+            }
             const sideSessionVariants = document.getElementById(`side-ol-${subject}-${year}-${session}-variants`)
             Object.keys(olSubjectsMS[subject][year][session]).forEach(variant => {
                 if (olSubjectsMS[subject][year][session][variant] != null) {
@@ -354,7 +352,7 @@ Object.keys(alSubjectsMS).forEach(subject => {
     Object.keys(alSubjectsMS[subject]).forEach(year => {
         const yearElement = generateSideButton('al', subject, year)
         yearElement.addEventListener('click', e => {
-            if (e.target.id == `side-al-button-${subject}-${year}-year` || e.target.id == `side-al-${subject}-${year}-title`) {
+            if (e.target.id == `side-al-button-${subject}-${year}` || e.target.id == `side-al-${subject}-${year}-title`) {
                 navConfirm(() => {
                     changePath(`al>${subject}>${year}`)
                 })
@@ -365,23 +363,24 @@ Object.keys(alSubjectsMS).forEach(subject => {
 
         const sideYearSessions = document.getElementById(`side-al-${subject}-${year}-sessions`)
         Object.keys(alSubjectsMS[subject][year]).forEach(session => {
-            const sessionElement = generateSideButton('al', subject, year, session)
-            sessionElement.addEventListener('click', e => {
-                if (e.target.id == `side-al-button-${subject}-${year}-${session}-year` || e.target.id == `side-al-${subject}-${year}-${session}-title`) {
-                    navConfirm(() => {
-                        changePath(`al>${subject}>${year}>${session}`)
-                    })
-                }
-            })
-
-            sideYearSessions.appendChild(sessionElement)
+            if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                const sessionElement = generateSideButton('al', subject, year, session)
+                sessionElement.addEventListener('click', e => {
+                    if (e.target.id == `side-al-button-${subject}-${year}-${session}` || e.target.id == `side-al-${subject}-${year}-${session}-title`) {
+                        navConfirm(() => {
+                            changePath(`al>${subject}>${year}>${session}`)
+                        })
+                    }
+                })
+                sideYearSessions.appendChild(sessionElement)
+            }
 
             const sideSessionVariants = document.getElementById(`side-al-${subject}-${year}-${session}-variants`)
             Object.keys(alSubjectsMS[subject][year][session]).forEach(variant => {
                 if (olSubjectsMS[subject][year][session][variant] != null) {
                     const variantElement = generateSideButton('al', subject, year, session, variant)
                     variantElement.addEventListener('click', e => {
-                        if (e.target.id == `side-al-button-${subject}-${year}-${session}-${variant}-year` || e.target.id == `side-al-${subject}-${year}-${session}-${variant}-title`) {
+                        if (e.target.id == `side-al-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-al-${subject}-${year}-${session}-${variant}-title`) {
                             navConfirm(() => {
                                 changePath(`al>${subject}>${year}>${session}>${variant}`)
                             })
@@ -466,17 +465,17 @@ function CreateSubMenu(level, subject, year, session) {
                 })
             } else {
                 Object.keys(olSubjectsMS[subject][year]).forEach(session => {
-                    const sessionElement = generateMainButton('ol', subject, year, session, undefined, randomImagesArray[randomImageCounter])
-                    randomImageCounter++
-                    createRotatingCard(sessionElement)
-                    sessionElement.addEventListener('click', () => {
-                        navConfirm(() => {
-                            changePath(`ol>${subject}>${year}>${session}`)
+                    if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                        const sessionElement = generateMainButton('ol', subject, year, session, undefined, randomImagesArray[randomImageCounter])
+                        randomImageCounter++
+                        createRotatingCard(sessionElement)
+                        sessionElement.addEventListener('click', () => {
+                            navConfirm(() => {
+                                changePath(`ol>${subject}>${year}>${session}`)
+                            })
                         })
-                    })
-
-                    cardsContainer.appendChild(sessionElement)
-
+                        cardsContainer.appendChild(sessionElement)
+                    }
                 })
             }
         } else {
@@ -512,17 +511,18 @@ function CreateSubMenu(level, subject, year, session) {
                 })
             } else {
                 Object.keys(alSubjectsMS[subject][year]).forEach(session => {
-                    const sessionElement = generateMainButton('al', subject, year, session, undefined, randomImagesArray[randomImageCounter])
-                    randomImageCounter++
-                    createRotatingCard(sessionElement)
-                    sessionElement.addEventListener('click', () => {
-                        navConfirm(() => {
-                            changePath(`al>${subject}>${year}>${session}`)
+                    if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+
+                        const sessionElement = generateMainButton('al', subject, year, session, undefined, randomImagesArray[randomImageCounter])
+                        randomImageCounter++
+                        createRotatingCard(sessionElement)
+                        sessionElement.addEventListener('click', () => {
+                            navConfirm(() => {
+                                changePath(`al>${subject}>${year}>${session}`)
+                            })
                         })
-                    })
-
-                    cardsContainer.appendChild(sessionElement)
-
+                        cardsContainer.appendChild(sessionElement)
+                    }
                 })
             }
         } else {
@@ -832,6 +832,44 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
 
     })
     menu.appendChild(switchToPdf)
+
+    const iButton = document.createElement('div')
+    iButton.classList.add('i-button')
+    iButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 5 15"><circle cx="2" cy="2" r="2"/><path d="M5,13.51c0,.65-.42,1.21-1.01,1.4-.15,.06-.31,.09-.48,.09h-.01c-1.37,0-2.49-1.11-2.49-2.49v-4.11C.42,8.21,0,7.65,0,6.99s.42-1.21,1.01-1.4c.15-.06,.31-.09,.48-.09h.01c1.37,0,2.49,1.11,2.49,2.49v4.11c.59,.19,1.01,.75,1.01,1.41Z"/></svg>`
+    iButton.addEventListener('click', () => {
+        createModal(
+            'Color Code for answers', // title
+            [
+                '<span class="green">Green</span> → Correct Answer',
+                '<span class="red">Red</span> → Correct Answer',
+                `<span class="purple">Purple</span> → Discounted Answer <button id="i-button-discounted"><svg class="discounted-question-info" id="discounted-question-info" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 5 15"><circle cx="2" cy="2" r="2"/><path d="M5,13.51c0,.65-.42,1.21-1.01,1.4-.15,.06-.31,.09-.48,.09h-.01c-1.37,0-2.49-1.11-2.49-2.49v-4.11C.42,8.21,0,7.65,0,6.99s.42-1.21,1.01-1.4c.15-.06,.31-.09,.48-.09h.01c1.37,0,2.49,1.11,2.49,2.49v4.11c.59,.19,1.01,.75,1.01,1.41Z"/></svg><button>`
+            ], // content
+            [
+                'Close',
+                () => {
+
+                },
+            ]
+        )
+
+        const iButtonDiscounted = document.getElementById('i-button-discounted')
+        iButtonDiscounted.addEventListener('click', () => {
+            document.getElementById('modal-container').parentNode.removeChild(document.getElementById('modal-container'))
+            createModal(
+                'Discounted Questions',
+                [
+                    'These are disqualified question from the mark scheme.',
+                ],
+                [
+                    'Close',
+                    () => {
+
+                    },
+                ]
+            )
+        })
+    })
+    menu.appendChild(iButton)
 
     return menu
 }

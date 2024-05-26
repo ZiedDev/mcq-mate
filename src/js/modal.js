@@ -24,6 +24,7 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
     }
 
     modalContainer.classList.add('modal-container')
+    modalContainer.id = 'modal-container'
     modal.classList.add('modal')
     backdrop.classList.add('backdrop')
 

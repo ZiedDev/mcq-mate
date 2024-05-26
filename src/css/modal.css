@@ -49,15 +49,22 @@
 .modal>.modal-buttons-container>button {
     cursor: pointer;
 
-    padding: 0.5rem;
+    padding: 1rem;
     border-radius: 0.5rem;
-    border: solid 3pt #0D1117;
-    color: #0D1117;
+    border: none;
+    background-color: #0D1117;
 
     font-size: large;
     font-weight: bold;
 
     outline: none;
+    transition: background-color 100ms ease;
+}
+
+@media (pointer: fine) {
+    .modal>.modal-buttons-container>button:hover {
+        background-color: #21262D;
+    }
 }
 
 .modal input[type="checkbox"] {

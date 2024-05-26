@@ -1,7 +1,7 @@
 {
     "name": "MCQ Mate",
     "short_name": "MCQ Mate",
-    "theme_color": "#E6EDF3",
+    "theme_color": "#0D1117",
     "background_color": "#0D1117",
     "display": "standalone",
     "Scope": "/",

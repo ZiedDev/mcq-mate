@@ -23,6 +23,21 @@ body {
     min-height: 100dvh;
 }
 
+@media (pointer: fine) {
+    body::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background-color: #363B42;
+        border-radius: 0.125rem;
+    }
+
+    body :-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+}
+
 body * {
     font-family: 'Mona Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 
@@ -443,9 +458,15 @@ header>.content>.credits {
 
 /*#endregion*/
 
-.main {
+.main-container {
     width: calc(100% - 17rem);
     height: calc(100dvh - 7.75rem - 1pt);
+    overflow: hidden;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
     overflow: auto;
 }
 
@@ -676,6 +697,28 @@ header>.content>.credits {
     border-radius: 0.5rem;
 }
 
+#i-button-discounted {
+    cursor: pointer;
+    background-color: #abafb2;
+    border: none;
+    padding: 0.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 100%;
+    transition: background-color 100ms ease;
+}
+
+@media (pointer: fine) {
+    #i-button-discounted:hover {
+        background-color: #797e85;
+    }
+}
+
+.discounted-question-info {
+    width: 1rem;
+    height: 1rem;
+}
+
 .switch-to-pdf {
     position: fixed;
     z-index: 1;
@@ -692,6 +735,32 @@ header>.content>.credits {
     transition: scale 150ms ease;
 }
 
+.i-button {
+    position: absolute;
+    z-index: 1;
+    top: 1rem;
+    right: 1rem;
+    padding: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+
+    cursor: pointer;
+    background-color: #E6EDF3;
+    border-radius: 100%;
+    box-shadow: var(--shadow-elevation-medium);
+    transition: scale 150ms ease;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (pointer: fine) {
+    .i-button:hover {
+        scale: 1.05;
+    }
+}
+
 @media (pointer: fine) {
     .switch-to-pdf:hover {
         scale: 1.05;
@@ -703,7 +772,19 @@ header>.content>.credits {
     height: 100%;
 }
 
+.i-button svg {
+    width: 70%;
+    height: 70%;
+}
+
 .switch-to-pdf svg path {
+    fill: #0D1117;
+}
+
+.switch-to-pdf svg path,
+.i-button svg path {
+    width: 100%;
+    height: 100%;
     fill: #0D1117;
 }
 
@@ -720,6 +801,21 @@ header>.content>.credits {
 
 .hide-viewer {
     bottom: -100%;
+}
+
+.green {
+    color: #238636;
+    text-shadow: 1px 0 10px #238636;
+}
+
+.red {
+    color: #862323;
+    text-shadow: 1px 0 10px #862323;
+}
+
+.purple {
+    color: #86237e;
+    text-shadow: 1px 0 10px #86237e;
 }
 
 @keyframes openMenu {
@@ -760,7 +856,23 @@ header>.content>.credits {
 
     .main {
         overflow: visible;
+        height: fit-content;
+    }
+
+    .main-container {
+        width: 100%;
         min-height: calc(100dvh - 3.75rem - 1pt);
+        height: fit-content;
+        overflow: hidden;
+    }
+
+    .main {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+    }
+
+    .main-container {
         height: fit-content;
     }
 
@@ -781,6 +893,7 @@ header>.content>.credits {
     }
 
     .main>div>h2 {
+        margin: 1.5rem 0 0 0;
         text-align: center;
     }
 
@@ -812,6 +925,11 @@ header>.content>.credits {
     .switch-to-pdf {
         width: 1.5rem;
         height: 1.5rem;
+    }
+
+    .i-button {
+        width: 1rem;
+        height: 1rem;
     }
 }
 
