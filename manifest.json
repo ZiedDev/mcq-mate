@@ -5,7 +5,7 @@
     "background_color": "#0D1117",
     "display": "standalone",
     "Scope": "/",
-    "start_url": "/",
+    "start_url": "/mcq-mate/",
     "icons": [
         {
             "src": "media/icon/icon-x16.png",
