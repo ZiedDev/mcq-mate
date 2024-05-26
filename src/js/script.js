@@ -55,10 +55,11 @@ function isForwardAvailable() {
 }
 
 function backwardPath() {
+    randomImagesArray = generateRandomImages()
+    randomImageCounter = 0
     if (backward_stack.length == 0) return 0;
     forward_stack.push(current_path);
     current_path = backward_stack.pop()
-
 
     if (isBackwardAvailable()) {
         moveBackwardsArrow.classList.add('active')
@@ -98,6 +99,8 @@ function changePath(new_path) {
 }
 
 function forwardPath() {
+    randomImagesArray = generateRandomImages()
+    randomImageCounter = 0
     if (forward_stack.length == 0) return 0;
     backward_stack.push(current_path);
     current_path = forward_stack.pop();

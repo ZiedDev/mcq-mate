@@ -279,6 +279,7 @@ header>.content>.credits {
 /*#endregion*/
 
 .main-section {
+    background-color: #0D1117;
     display: flex;
 }
 
@@ -437,8 +438,6 @@ header>.content>.credits {
 .main {
     width: calc(100% - 17rem);
     height: calc(100dvh - 7.75rem - 1pt);
-
-    background-color: #0D1117;
     overflow: auto;
 }
 
