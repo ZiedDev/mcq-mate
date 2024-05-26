@@ -8,57 +8,57 @@
     "start_url": "/",
     "icons": [
         {
-            "src": "/media/icon/icon-x16.png",
+            "src": "mcq-mate/media/icon/icon-x16.png",
             "sizes": "16x16",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x32.png",
+            "src": "mcq-mate/media/icon/icon-x32.png",
             "sizes": "32x32",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x72.png",
+            "src": "mcq-mate/media/icon/icon-x72.png",
             "sizes": "72x72",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x96.png",
+            "src": "mcq-mate/media/icon/icon-x96.png",
             "sizes": "96x96",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x128.png",
+            "src": "mcq-mate/media/icon/icon-x128.png",
             "sizes": "128x128",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x144.png",
+            "src": "mcq-mate/media/icon/icon-x144.png",
             "sizes": "144x144",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x152.png",
+            "src": "mcq-mate/media/icon/icon-x152.png",
             "sizes": "152x152",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x180.png",
+            "src": "mcq-mate/media/icon/icon-x180.png",
             "sizes": "180x180",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x192.png",
+            "src": "mcq-mate/media/icon/icon-x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x384.png",
+            "src": "mcq-mate/media/icon/icon-x384.png",
             "sizes": "384x384",
             "type": "image/png"
         },
         {
-            "src": "/media/icon/icon-x512.png",
+            "src": "mcq-mate/media/icon/icon-x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
