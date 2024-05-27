@@ -658,14 +658,17 @@ header>.content>.credits {
 
 .correct-question {
     background-color: #238636;
+    box-shadow: 15px 0px 20px -5px #2386364d, -15px 0px 20px -5px #2386364d;
 }
 
 .wrong-question {
     background-color: #862323;
+    box-shadow: 15px 0px 20px -5px #8623234d, -15px 0px 20px -5px #8623234d;
 }
 
 .discounted-question {
     background-color: #86237e;
+    box-shadow: 15px 0px 20px -5px #86237e4d, -15px 0px 20px -5px #86237e4d;
 }
 
 .corrected-discounted-question {
