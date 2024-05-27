@@ -612,7 +612,7 @@ header>.content>.credits {
     justify-content: center;
     align-items: center;
     padding: 1.5rem 1rem;
-    border: #363B42 solid 0.25pt;
+    border: #363B42 solid 0.5pt;
     transition: background-color 100ms ease;
 }
 
@@ -720,9 +720,14 @@ header>.content>.credits {
     height: 1rem;
 }
 
+.pdf-viewer-container {
+    width: 100%;
+    height: 100dvh;
+}
+
 .switch-to-pdf {
     position: fixed;
-    z-index: 1;
+    z-index: 151;
     bottom: 1rem;
     right: 1rem;
     padding: 1rem;
@@ -794,6 +799,7 @@ header>.content>.credits {
     -moz-user-select: none;
     -webkit-user-select: none;
     position: fixed;
+    z-index: 150;
     bottom: 0;
     width: calc(100% - 17rem);
     height: calc(100dvh - 7.75rem - 1pt);
@@ -935,6 +941,7 @@ header>.content>.credits {
 
     .pdf-viewer {
         width: 100%;
+        height: 100dvh;
     }
 
     .switch-to-pdf {

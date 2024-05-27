@@ -8,6 +8,7 @@ import createModal from "./modal.js"
 import WebViewer from '@pdftron/pdfjs-express'
 
 // GLOBAL VARIABLES
+let globalPdfViewer
 let userAnswers = []
 let inExam = false
 let confirm = false
@@ -129,6 +130,10 @@ function updatePathElement(createSheet) {
 
     timeout = setTimeout(() => {
         main.innerHTML = ''
+        if (globalPdfViewer != undefined) {
+            globalPdfViewer.parentNode.removeChild(globalPdfViewer)
+            globalPdfViewer = undefined
+        }
         if (pathText.length == 5) {
             path.innerHTML = ''
             path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true))
@@ -804,6 +809,8 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
 
     // pdf viewer
     let pdfViewOpened = false
+    const pdfViewerContainer = document.createElement('div')
+    pdfViewerContainer.classList.add('pdf-viewer-container')
     const switchToPdf = document.createElement('div')
     switchToPdf.classList.add('switch-to-pdf')
     switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M200 164v8h12a12 12 0 0 1 0 24h-12v12a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h32a12 12 0 0 1 0 24Zm-108 8a32 32 0 0 1-32 32h-4v4a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h16a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8h-4v16h4a8 8 0 0 0 8-8m100 8a40 40 0 0 1-40 40h-16a12 12 0 0 1-12-12v-56a12 12 0 0 1 12-12h16a40 40 0 0 1 40 40m-24 0a16 16 0 0 0-16-16h-4v32h4a16 16 0 0 0 16-16M36 108V40a20 20 0 0 1 20-20h96a12 12 0 0 1 8.49 3.52l56 56A12 12 0 0 1 220 88v20a12 12 0 0 1-24 0v-4h-48a12 12 0 0 1-12-12V44H60v64a12 12 0 0 1-24 0m124-51v23h23Z"/></svg>`
@@ -824,14 +831,17 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
             })
 
             pdfViewOpened = true
-            menu.appendChild(pdfViewer)
+            pdfViewerContainer.appendChild(pdfViewer)
         } else {
             const pdfViewer = document.getElementById('pdf-viewer')
             pdfViewer.classList.toggle('hide-viewer')
         }
 
     })
-    menu.appendChild(switchToPdf)
+    pdfViewerContainer.appendChild(switchToPdf)
+
+    globalPdfViewer = pdfViewerContainer
+    document.body.appendChild(pdfViewerContainer)
 
     const iButton = document.createElement('div')
     iButton.classList.add('i-button')
