@@ -9,9 +9,9 @@ import WebViewer from '@pdftron/pdfjs-express'
 
 // GLOBAL VARIABLES
 let globalPdfViewer
-let userAnswers = []
-let inExam = false
-let confirm = false
+let globalPeriodicTablePdfViewer
+let userAnswers
+let confirm = true
 const subjectCode = {
     OLBiology: '0610',
     OLChemistry: '0620',
@@ -134,6 +134,10 @@ function updatePathElement(createSheet) {
             globalPdfViewer.parentNode.removeChild(globalPdfViewer)
             globalPdfViewer = undefined
         }
+        if (globalPeriodicTablePdfViewer != undefined) {
+            globalPeriodicTablePdfViewer.parentNode.removeChild(globalPeriodicTablePdfViewer)
+            globalPeriodicTablePdfViewer = undefined
+        }
         if (pathText.length == 5) {
             path.innerHTML = ''
             path.appendChild(createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true))
@@ -166,56 +170,32 @@ function updatePathElement(createSheet) {
 
 moveBackwardsArrow.addEventListener('click', () => {
     if (isBackwardAvailable()) {
-        navConfirm(() => { backwardPath() })
+        backwardPath()
     }
 })
 moveForwardsArrow.addEventListener('click', () => {
     if (isForwardAvailable()) {
-        navConfirm(() => { forwardPath() })
+        forwardPath()
     }
 })
 
 document.addEventListener('mousedown', e => {
     if (e.buttons == 8) {
         if (isBackwardAvailable()) {
-            navConfirm(() => { backwardPath() })
+            backwardPath()
         }
     }
 })
 document.addEventListener('mousedown', e => {
     if (e.buttons == 16) {
         if (isForwardAvailable()) {
-            navConfirm(() => { forwardPath() })
+            forwardPath()
         }
     }
 })
 document.addEventListener('mouseup', e => {
     e.preventDefault()
 })
-
-function navConfirm(confirmCallback) {
-    if (inExam) {
-        createModal(
-            'Are you sure?', // title
-            [
-                'Navigating will lose your past progress on the current exam',
-            ], // content,
-            [
-                'Confirm',
-                () => {
-                    inExam = false
-                    confirmCallback()
-                },
-            ],
-            [
-                'Cancel',
-                () => { }
-            ]
-        )
-    } else {
-        confirmCallback()
-    }
-}
 
 function createPathElement(title, first, last) {
     const element = document.createElement('div')
@@ -239,11 +219,11 @@ function createPathElement(title, first, last) {
     pathElement.addEventListener('click', () => {
         if (true) {
             if (title == `${pathText[0].toUpperCase()} ${pathText[1]}`) {
-                navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}`) })
+                changePath(`${pathText[0]}>${pathText[1]}`)
             } else if (title == pathText[2]) {
-                navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}`) })
+                changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}`)
             } else if (title == 'Feb / Mar' || title == 'May / Jun' || title == 'Oct / Nov') {
-                navConfirm(() => { changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}>${pathText[3]}`) })
+                changePath(`${pathText[0]}>${pathText[1]}>${pathText[2]}>${pathText[3]}`)
             }
         }
     })
@@ -271,13 +251,10 @@ function updatePathIcon() {
 
 const pathIcon = document.getElementById('path-icon')
 pathIcon.addEventListener('click', () => {
-    navConfirm(() => {
-        if (current_path != 'home') {
-            changePath('home')
-            path.innerHTML = ''
-            inExam = false
-        }
-    })
+    if (current_path != 'home') {
+        changePath('home')
+        path.innerHTML = ''
+    }
 })
 
 // creating side buttons for ol subjects
@@ -286,9 +263,7 @@ Object.keys(olSubjectsMS).forEach(subject => {
     const subjectElement = generateSideButton('ol', subject)
     subjectElement.addEventListener('click', e => {
         if (e.target.id == `side-ol-button-${subject}` || e.target.id == `side-ol-${subject}-title`) {
-            navConfirm(() => {
-                changePath(`ol>${subject}`)
-            })
+            changePath(`ol>${subject}`)
         }
     })
 
@@ -299,9 +274,7 @@ Object.keys(olSubjectsMS).forEach(subject => {
         const yearElement = generateSideButton('ol', subject, year)
         yearElement.addEventListener('click', e => {
             if (e.target.id == `side-ol-button-${subject}-${year}` || e.target.id == `side-ol-${subject}-${year}-title`) {
-                navConfirm(() => {
-                    changePath(`ol>${subject}>${year}`)
-                })
+                changePath(`ol>${subject}>${year}`)
             }
         })
 
@@ -313,9 +286,7 @@ Object.keys(olSubjectsMS).forEach(subject => {
                 const sessionElement = generateSideButton('ol', subject, year, session)
                 sessionElement.addEventListener('click', e => {
                     if (e.target.id == `side-ol-button-${subject}-${year}-${session}` || e.target.id == `side-ol-${subject}-${year}-${session}-title`) {
-                        navConfirm(() => {
-                            changePath(`ol>${subject}>${year}>${session}`)
-                        })
+                        changePath(`ol>${subject}>${year}>${session}`)
                     }
                 })
                 sideYearSessions.appendChild(sessionElement)
@@ -326,9 +297,7 @@ Object.keys(olSubjectsMS).forEach(subject => {
                     const variantElement = generateSideButton('ol', subject, year, session, variant)
                     variantElement.addEventListener('click', e => {
                         if (e.target.id == `side-ol-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-ol-${subject}-${year}-${session}-${variant}-title`) {
-                            navConfirm(() => {
-                                changePath(`ol>${subject}>${year}>${session}>${variant}`)
-                            })
+                            changePath(`ol>${subject}>${year}>${session}>${variant}`)
                         }
                     })
 
@@ -345,9 +314,7 @@ Object.keys(alSubjectsMS).forEach(subject => {
     const subjectElement = generateSideButton('al', subject)
     subjectElement.addEventListener('click', e => {
         if (e.target.id == `side-al-button-${subject}` || e.target.id == `side-al-${subject}-title`) {
-            navConfirm(() => {
-                changePath(`al>${subject}`)
-            })
+            changePath(`al>${subject}`)
         }
     })
 
@@ -358,9 +325,7 @@ Object.keys(alSubjectsMS).forEach(subject => {
         const yearElement = generateSideButton('al', subject, year)
         yearElement.addEventListener('click', e => {
             if (e.target.id == `side-al-button-${subject}-${year}` || e.target.id == `side-al-${subject}-${year}-title`) {
-                navConfirm(() => {
-                    changePath(`al>${subject}>${year}`)
-                })
+                changePath(`al>${subject}>${year}`)
             }
         })
 
@@ -372,9 +337,7 @@ Object.keys(alSubjectsMS).forEach(subject => {
                 const sessionElement = generateSideButton('al', subject, year, session)
                 sessionElement.addEventListener('click', e => {
                     if (e.target.id == `side-al-button-${subject}-${year}-${session}` || e.target.id == `side-al-${subject}-${year}-${session}-title`) {
-                        navConfirm(() => {
-                            changePath(`al>${subject}>${year}>${session}`)
-                        })
+                        changePath(`al>${subject}>${year}>${session}`)
                     }
                 })
                 sideYearSessions.appendChild(sessionElement)
@@ -386,9 +349,7 @@ Object.keys(alSubjectsMS).forEach(subject => {
                     const variantElement = generateSideButton('al', subject, year, session, variant)
                     variantElement.addEventListener('click', e => {
                         if (e.target.id == `side-al-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-al-${subject}-${year}-${session}-${variant}-title`) {
-                            navConfirm(() => {
-                                changePath(`al>${subject}>${year}>${session}>${variant}`)
-                            })
+                            changePath(`al>${subject}>${year}>${session}>${variant}`)
                         }
                     })
 
@@ -413,9 +374,7 @@ function createHomeMenu() {
         const subjectElement = generateMainButton('ol', subject)
         createRotatingCard(subjectElement)
         subjectElement.addEventListener('click', () => {
-            navConfirm(() => {
-                changePath(`ol>${subject}`)
-            })
+            changePath(`ol>${subject}`)
         })
 
         olCardsContainer.appendChild(subjectElement)
@@ -431,9 +390,7 @@ function createHomeMenu() {
         const subjectElement = generateMainButton('al', subject)
         createRotatingCard(subjectElement)
         subjectElement.addEventListener('click', () => {
-            navConfirm(() => {
-                changePath(`al>${subject}`)
-            })
+            changePath(`al>${subject}`)
         })
 
         alCardsContainer.appendChild(subjectElement)
@@ -461,9 +418,7 @@ function CreateSubMenu(level, subject, year, session) {
                     randomImageCounter++
                     createRotatingCard(yearElement)
                     yearElement.addEventListener('click', () => {
-                        navConfirm(() => {
-                            changePath(`ol>${subject}>${year}`)
-                        })
+                        changePath(`ol>${subject}>${year}`)
                     })
 
                     cardsContainer.appendChild(yearElement)
@@ -475,9 +430,7 @@ function CreateSubMenu(level, subject, year, session) {
                         randomImageCounter++
                         createRotatingCard(sessionElement)
                         sessionElement.addEventListener('click', () => {
-                            navConfirm(() => {
-                                changePath(`ol>${subject}>${year}>${session}`)
-                            })
+                            changePath(`ol>${subject}>${year}>${session}`)
                         })
                         cardsContainer.appendChild(sessionElement)
                     }
@@ -490,9 +443,7 @@ function CreateSubMenu(level, subject, year, session) {
                     randomImageCounter++
                     createRotatingCard(variantElement)
                     variantElement.addEventListener('click', () => {
-                        navConfirm(() => {
-                            changePath(`ol>${subject}>${year}>${session}>${variant}`)
-                        })
+                        changePath(`ol>${subject}>${year}>${session}>${variant}`)
                     })
 
                     cardsContainer.appendChild(variantElement)
@@ -507,9 +458,7 @@ function CreateSubMenu(level, subject, year, session) {
                     randomImageCounter++
                     createRotatingCard(yearElement)
                     yearElement.addEventListener('click', () => {
-                        navConfirm(() => {
-                            changePath(`al>${subject}>${year}`)
-                        })
+                        changePath(`al>${subject}>${year}`)
                     })
 
                     cardsContainer.appendChild(yearElement)
@@ -522,9 +471,7 @@ function CreateSubMenu(level, subject, year, session) {
                         randomImageCounter++
                         createRotatingCard(sessionElement)
                         sessionElement.addEventListener('click', () => {
-                            navConfirm(() => {
-                                changePath(`al>${subject}>${year}>${session}`)
-                            })
+                            changePath(`al>${subject}>${year}>${session}`)
                         })
                         cardsContainer.appendChild(sessionElement)
                     }
@@ -537,9 +484,7 @@ function CreateSubMenu(level, subject, year, session) {
                     randomImageCounter++
                     createRotatingCard(variantElement)
                     variantElement.addEventListener('click', () => {
-                        navConfirm(() => {
-                            changePath(`al>${subject}>${year}>${session}>${variant}`)
-                        })
+                        changePath(`al>${subject}>${year}>${session}>${variant}`)
                     })
 
                     cardsContainer.appendChild(variantElement)
@@ -584,7 +529,7 @@ function createRotatingCard(elementContainer) {
     }
 }
 
-function createBubbleSheetMenu(level, subject, year, session, variant) {
+function createBubbleSheetMenu(level, subject, year, session, variant, useLocalAnswers) {
     const menu = document.createElement('div')
     menu.id = 'bubble-sheet-menu'
     menu.classList.add('bubble-sheet-menu')
@@ -608,7 +553,18 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
     bubbleSheetContainer.classList.add('bubble-sheet-container')
 
     let modelAnswers = level == 'ol' ? olSubjectsMS[subject][year][session][variant] : alSubjectsMS[subject][year][session][variant]
-    userAnswers = Array(modelAnswers.length).fill('')
+    let localKey = `${subject.toLowerCase().substring(0, 3)}${level.toLowerCase().substring(0, 1)}${Number(year) - 2000}${session}${Number(variant) + 1}`
+
+    if (localStorage.getItem(localKey) == null) {
+        localStorage.setItem(localKey, Array.from({ length: 40 }).fill('N').join(''))
+        localStorage.setItem(localKey + 's', '')
+    }
+
+    if (useLocalAnswers) {
+        userAnswers = localStorage.getItem(localKey).split('')
+    } else {
+        userAnswers = Array(40).fill('N')
+    }
 
     for (let i = 0; i < modelAnswers.length; i++) {
         const questionNumber = document.createElement('div')
@@ -622,62 +578,116 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
         questionA.classList.add('bubble-choice')
         questionA.textContent = 'A'
         questionA.id = `question-${i}-a`
-        questionA.addEventListener('click', () => {
-            inExam = true
-            questionA.classList.add('bubble-chosen')
-            questionB.classList.remove('bubble-chosen')
-            questionC.classList.remove('bubble-chosen')
-            questionD.classList.remove('bubble-chosen')
-            userAnswers[i] = 'A'
-        })
-        bubbleSheetContainer.appendChild(questionA)
 
         const questionB = document.createElement('div')
         questionB.classList.add('bubble-box')
         questionB.classList.add('bubble-choice')
         questionB.textContent = 'B'
         questionB.id = `question-${i}-b`
-        questionB.addEventListener('click', () => {
-            inExam = true
-            questionA.classList.remove('bubble-chosen')
-            questionB.classList.add('bubble-chosen')
-            questionC.classList.remove('bubble-chosen')
-            questionD.classList.remove('bubble-chosen')
-            userAnswers[i] = 'B'
-        })
-        bubbleSheetContainer.appendChild(questionB)
 
         const questionC = document.createElement('div')
         questionC.classList.add('bubble-box')
         questionC.classList.add('bubble-choice')
         questionC.textContent = 'C'
         questionC.id = `question-${i}-c`
-        questionC.addEventListener('click', () => {
-            inExam = true
-            questionA.classList.remove('bubble-chosen')
-            questionB.classList.remove('bubble-chosen')
-            questionC.classList.add('bubble-chosen')
-            questionD.classList.remove('bubble-chosen')
-            userAnswers[i] = 'C'
-        })
-        bubbleSheetContainer.appendChild(questionC)
 
         const questionD = document.createElement('div')
         questionD.classList.add('bubble-box')
         questionD.classList.add('bubble-choice')
         questionD.textContent = 'D'
         questionD.id = `question-${i}-d`
+
+        if (userAnswers[i] == 'A') {
+            questionA.classList.add('bubble-chosen')
+            questionB.classList.remove('bubble-chosen')
+            questionC.classList.remove('bubble-chosen')
+            questionD.classList.remove('bubble-chosen')
+        } else if (userAnswers[i] == 'B') {
+            questionA.classList.remove('bubble-chosen')
+            questionB.classList.add('bubble-chosen')
+            questionC.classList.remove('bubble-chosen')
+            questionD.classList.remove('bubble-chosen')
+        } else if (userAnswers[i] == 'C') {
+            questionA.classList.remove('bubble-chosen')
+            questionB.classList.remove('bubble-chosen')
+            questionC.classList.add('bubble-chosen')
+            questionD.classList.remove('bubble-chosen')
+        } else if (userAnswers[i] == 'D') {
+            questionA.classList.remove('bubble-chosen')
+            questionB.classList.remove('bubble-chosen')
+            questionC.classList.remove('bubble-chosen')
+            questionD.classList.add('bubble-chosen')
+        }
+
+        questionA.addEventListener('click', () => {
+            questionA.classList.add('bubble-chosen')
+            questionB.classList.remove('bubble-chosen')
+            questionC.classList.remove('bubble-chosen')
+            questionD.classList.remove('bubble-chosen')
+            userAnswers[i] = 'A'
+            let localAnswersString = localStorage.getItem(localKey).split('')
+            localAnswersString[i] = 'A'
+            localStorage.setItem(localKey, localAnswersString.join(''))
+        })
+        bubbleSheetContainer.appendChild(questionA)
+
+        questionB.addEventListener('click', () => {
+            questionA.classList.remove('bubble-chosen')
+            questionB.classList.add('bubble-chosen')
+            questionC.classList.remove('bubble-chosen')
+            questionD.classList.remove('bubble-chosen')
+            userAnswers[i] = 'B'
+            let localAnswersString = localStorage.getItem(localKey).split('')
+            localAnswersString[i] = 'B'
+            localStorage.setItem(localKey, localAnswersString.join(''))
+
+        })
+        bubbleSheetContainer.appendChild(questionB)
+
+        questionC.addEventListener('click', () => {
+            questionA.classList.remove('bubble-chosen')
+            questionB.classList.remove('bubble-chosen')
+            questionC.classList.add('bubble-chosen')
+            questionD.classList.remove('bubble-chosen')
+            userAnswers[i] = 'C'
+            let localAnswersString = localStorage.getItem(localKey).split('')
+            localAnswersString[i] = 'C'
+            localStorage.setItem(localKey, localAnswersString.join(''))
+
+        })
+        bubbleSheetContainer.appendChild(questionC)
+
         questionD.addEventListener('click', () => {
-            inExam = true
             questionA.classList.remove('bubble-chosen')
             questionB.classList.remove('bubble-chosen')
             questionC.classList.remove('bubble-chosen')
             questionD.classList.add('bubble-chosen')
             userAnswers[i] = 'D'
+            let localAnswersString = localStorage.getItem(localKey).split('')
+            localAnswersString[i] = 'D'
+            localStorage.setItem(localKey, localAnswersString.join(''))
+
         })
         bubbleSheetContainer.appendChild(questionD)
     }
     menu.appendChild(bubbleSheetContainer)
+
+    if (useLocalAnswers) {
+        let waitForBubbleSheet = setTimeout(() => {
+            let focus = userAnswers.length - 1
+            for (let i = 0; i < userAnswers.length; i++) {
+                if (userAnswers[i] == 'N') {
+                    focus = i
+                    break;
+                }
+            }
+            if (focus > 3) {
+                const focusElement = document.getElementById(`question-${focus - 2}-number`)
+                focusElement.scrollIntoView({ behavior: 'smooth' })
+                clearTimeout(waitForBubbleSheet)
+            }
+        }, 1);
+    }
 
     const buttonsContainer = document.createElement('div')
     buttonsContainer.classList.add('bubble-sheet-buttons-container')
@@ -696,8 +706,88 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
     mark.classList.add('exam-mark')
     mark.textContent = `- / ${modelAnswers.length}`
 
+    if (localStorage.getItem(localKey + 's') != '') {
+        let waitForBubbleSheet = setTimeout(() => {
+            submitBehavior(localStorage.getItem(localKey + 's'))
+            revealBehavior()
+            for (let i = 0; i < localStorage.getItem(localKey + 's').length; i++) {
+                if (localStorage.getItem(localKey + 's').split('')[i] == 'A') {
+                    document.getElementById(`question-${i}-a`).classList.add('bubble-chosen')
+                    document.getElementById(`question-${i}-b`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-c`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-d`).classList.remove('bubble-chosen')
+                } else if (localStorage.getItem(localKey + 's').split('')[i] == 'B') {
+                    document.getElementById(`question-${i}-a`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-b`).classList.add('bubble-chosen')
+                    document.getElementById(`question-${i}-c`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-d`).classList.remove('bubble-chosen')
+                } else if (localStorage.getItem(localKey + 's').split('')[i] == 'C') {
+                    document.getElementById(`question-${i}-a`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-b`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-c`).classList.add('bubble-chosen')
+                    document.getElementById(`question-${i}-d`).classList.remove('bubble-chosen')
+                } else if (localStorage.getItem(localKey + 's').split('')[i] == 'D') {
+                    document.getElementById(`question-${i}-a`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-b`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-c`).classList.remove('bubble-chosen')
+                    document.getElementById(`question-${i}-d`).classList.add('bubble-chosen')
+                }
+            }
+            createModal(
+                '', // title
+                [
+                    `You have already submitted this exam before and got ${recalculatePastExam(localStorage.getItem(localKey + 's'))} / ${localStorage.getItem(localKey + 's').length}.`,
+                    `Do you want to Solve it again? or inspect your answers?`,
+                ], // content,
+                [
+                    'Resolve',
+                    () => {
+                        localStorage.setItem(localKey, Array.from({ length: 40 }).fill('N').join(''))
+                        localStorage.setItem(localKey + 's', '')
+                        resetBubbleSheet()
+                    },
+                ],
+                [
+                    'Inspect',
+                    () => { }
+                ]
+            )
+
+            clearTimeout(waitForBubbleSheet)
+        }, 1);
+    } else if (localStorage.getItem(localKey) != '' && localStorage.getItem(localKey) != null && localStorage.getItem(localKey) != 'NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN' && !useLocalAnswers) {
+        let waitForBubbleSheet = setTimeout(() => {
+            createModal(
+                '', // title
+                [
+                    `You already started solving this exam before.`,
+                    `Do you want to continue where you left?`,
+                ], // content,
+                [
+                    'Continue',
+                    () => {
+                        resetBubbleSheet(true)
+                    },
+                ],
+                [
+                    'Restart',
+                    () => {
+                        localStorage.setItem(localKey, Array.from({ length: 40 }).fill('N').join(''))
+                        localStorage.setItem(localKey + 's', '')
+                    }
+                ],
+                () => {
+                    resetBubbleSheet(true)
+                }
+            )
+
+            clearTimeout(waitForBubbleSheet)
+        }, 1);
+    }
+
     submitButton.addEventListener('click', () => {
-        if (userAnswers.includes('')) {
+        localStorage.setItem(localKey + 's', localStorage.getItem(localKey).split('').join(''))
+        if (userAnswers.includes('N')) {
             createModal(
                 'Are you sure?', // title
                 [
@@ -706,31 +796,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
                 [
                     'Confirm',
                     () => {
-                        let correctAnswers = 0;
-                        for (let i = 0; i < modelAnswers.length; i++) {
-                            if (modelAnswers[i] == 'Q') {
-                                correctAnswers++
-
-                                const discountedQuestion = document.getElementById(`question-${i}-number`)
-                                discountedQuestion.classList.remove('wrong-question')
-                                discountedQuestion.classList.remove('correct-question')
-                                discountedQuestion.classList.add('discounted-question')
-
-                            } else if (modelAnswers[i] == userAnswers[i]) {
-                                correctAnswers++
-                                const correctQuestion = document.getElementById(`question-${i}-number`)
-                                correctQuestion.classList.remove('wrong-question')
-                                correctQuestion.classList.add('correct-question')
-                            } else if (userAnswers[i] == '') { } else {
-                                const wrongQuestion = document.getElementById(`question-${i}-number`)
-                                wrongQuestion.classList.remove('correct-question')
-                                wrongQuestion.classList.add('wrong-question')
-
-                                const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
-                                correctedQuestion.classList.add('corrected-question')
-                            }
-                        }
-                        mark.textContent = `${correctAnswers} / ${modelAnswers.length}`
+                        submitBehavior(localStorage.getItem(localKey + 's'))
                     },
                 ],
                 [
@@ -777,22 +843,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
             [
                 'Confirm',
                 () => {
-                    for (let i = 0; i < modelAnswers.length; i++) {
-                        if (modelAnswers[i].toLowerCase() != 'q') {
-                            const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
-                            correctedQuestion.classList.add('corrected-question')
-                        } else {
-                            const discountedQuestionA = document.getElementById(`question-${i}-a`)
-                            const discountedQuestionB = document.getElementById(`question-${i}-b`)
-                            const discountedQuestionC = document.getElementById(`question-${i}-c`)
-                            const discountedQuestionD = document.getElementById(`question-${i}-d`)
-
-                            discountedQuestionA.classList.add('corrected-discounted-question')
-                            discountedQuestionB.classList.add('corrected-discounted-question')
-                            discountedQuestionC.classList.add('corrected-discounted-question')
-                            discountedQuestionD.classList.add('corrected-discounted-question')
-                        }
-                    }
+                    revealBehavior()
                 },
             ],
             [
@@ -836,7 +887,6 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
             const pdfViewer = document.getElementById('pdf-viewer')
             pdfViewer.classList.toggle('hide-viewer')
         }
-
     })
     pdfViewerContainer.appendChild(switchToPdf)
 
@@ -880,6 +930,114 @@ function createBubbleSheetMenu(level, subject, year, session, variant) {
         })
     })
     menu.appendChild(iButton)
+
+    if (subject == 'Chemistry' || subject == 'Combined') {
+        let periodicTablePdfViewOpened = false
+        const periodicTablePdfViewContainer = document.createElement('div')
+        periodicTablePdfViewContainer.classList.add('periodic-table-pdf-viewer-container')
+        const switchToPdf = document.createElement('div')
+        switchToPdf.classList.add('switch-to-periodic-table-pdf')
+        switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 25.52 22.13"><path d="M21.58,22.13H3.94c-.55,0-1-.45-1-1v-2.87c0-.55,.45-1,1-1H21.58c.55,0,1,.45,1,1v2.87c0,.55-.45,1-1,1Zm-16.64-2h15.64v-.87H4.94v.87Z"/><path d="M24.52,16.83H1c-.55,0-1-.45-1-1V1C0,.45,.45,0,1,0H3.94c.55,0,1,.45,1,1v1.94h1.94c.55,0,1,.45,1,1v1.94h3.88v-1.94c0-.55,.45-1,1-1h7.82V1c0-.55,.45-1,1-1h2.94c.55,0,1,.45,1,1V15.83c0,.55-.45,1-1,1ZM2,14.83H23.52V2h-.94v1.94c0,.55-.45,1-1,1h-7.82v1.94c0,.55-.45,1-1,1H6.88c-.55,0-1-.45-1-1v-1.94h-1.94c-.55,0-1-.45-1-1v-1.94h-.94V14.83Z"/></svg>`
+        switchToPdf.addEventListener('click', () => {
+            if (!periodicTablePdfViewOpened) {
+                const pdfViewer = document.createElement('div')
+                pdfViewer.id = 'periodic-table-pdf-viewer'
+                pdfViewer.classList.add('periodic-table-pdf-viewer')
+
+                WebViewer({
+                    licenseKey: 'QFn6U78TMfzwzFamsiBl',
+                    path: './pdf-viewer', // point to where the files you copied are served from
+                    initialDoc: `./pdfs/periodic-table.pdf` // path to your document
+                }, pdfViewer).then((instance) => {
+                    instance.UI.setTheme('dark');
+                    instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
+                    instance.enableFeatures([instance.Feature.Download]);
+                })
+
+                periodicTablePdfViewOpened = true
+                periodicTablePdfViewContainer.appendChild(pdfViewer)
+            } else {
+                const pdfViewer = document.getElementById('periodic-table-pdf-viewer')
+                pdfViewer.classList.toggle('hide-viewer')
+            }
+        })
+
+        periodicTablePdfViewContainer.appendChild(switchToPdf)
+
+        globalPeriodicTablePdfViewer = periodicTablePdfViewContainer
+        document.body.appendChild(periodicTablePdfViewContainer)
+    }
+
+    function recalculatePastExam(userAnswers) {
+        let correctAnswers = 0;
+        for (let i = 0; i < userAnswers.length; i++) {
+            if (modelAnswers[i] == 'Q' || modelAnswers[i] == userAnswers[i]) {
+                correctAnswers++
+            }
+        }
+
+        return correctAnswers
+    }
+
+    function resetBubbleSheet(useLocalAnswers) {
+        main.innerHTML = ''
+        if (globalPdfViewer != undefined) {
+            globalPdfViewer.parentNode.removeChild(globalPdfViewer)
+            globalPdfViewer = undefined
+        }
+        if (globalPeriodicTablePdfViewer != undefined) {
+            globalPeriodicTablePdfViewer.parentNode.removeChild(globalPeriodicTablePdfViewer)
+            globalPeriodicTablePdfViewer = undefined
+        }
+        main.appendChild(createBubbleSheetMenu(level, subject, year, session, variant, useLocalAnswers))
+    }
+
+    function submitBehavior(userAnswers) {
+        let correctAnswers = 0;
+        for (let i = 0; i < modelAnswers.length; i++) {
+            if (modelAnswers[i] == 'Q') {
+                correctAnswers++
+
+                const discountedQuestion = document.getElementById(`question-${i}-number`)
+                discountedQuestion.classList.remove('wrong-question')
+                discountedQuestion.classList.remove('correct-question')
+                discountedQuestion.classList.add('discounted-question')
+
+            } else if (modelAnswers[i] == userAnswers[i]) {
+                correctAnswers++
+                const correctQuestion = document.getElementById(`question-${i}-number`)
+                correctQuestion.classList.remove('wrong-question')
+                correctQuestion.classList.add('correct-question')
+            } else if (userAnswers[i] == '') { } else {
+                const wrongQuestion = document.getElementById(`question-${i}-number`)
+                wrongQuestion.classList.remove('correct-question')
+                wrongQuestion.classList.add('wrong-question')
+
+                const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
+                correctedQuestion.classList.add('corrected-question')
+            }
+        }
+        mark.textContent = `${correctAnswers} / ${modelAnswers.length}`
+    }
+
+    function revealBehavior() {
+        for (let i = 0; i < modelAnswers.length; i++) {
+            if (modelAnswers[i].toLowerCase() != 'q') {
+                const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
+                correctedQuestion.classList.add('corrected-question')
+            } else {
+                const discountedQuestionA = document.getElementById(`question-${i}-a`)
+                const discountedQuestionB = document.getElementById(`question-${i}-b`)
+                const discountedQuestionC = document.getElementById(`question-${i}-c`)
+                const discountedQuestionD = document.getElementById(`question-${i}-d`)
+
+                discountedQuestionA.classList.add('corrected-discounted-question')
+                discountedQuestionB.classList.add('corrected-discounted-question')
+                discountedQuestionC.classList.add('corrected-discounted-question')
+                discountedQuestionD.classList.add('corrected-discounted-question')
+            }
+        }
+    }
 
     return menu
 }

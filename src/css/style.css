@@ -584,6 +584,8 @@ header>.content>.credits {
 }
 
 .bubble-sheet-menu {
+    scroll-behavior: smooth;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -723,7 +725,8 @@ header>.content>.credits {
     height: 1rem;
 }
 
-.pdf-viewer-container {
+.pdf-viewer-container,
+.periodic-table-pdf-viewer-container {
     pointer-events: none;
     position: absolute;
     top: 0;
@@ -732,11 +735,13 @@ header>.content>.credits {
     right: 0;
 }
 
-.pdf-viewer-container * {
+.pdf-viewer-container *,
+.periodic-table-pdf-viewer * {
     pointer-events: all;
 }
 
-.switch-to-pdf {
+.switch-to-pdf,
+.switch-to-periodic-table-pdf {
     position: fixed;
     z-index: 151;
     bottom: 1rem;
@@ -750,6 +755,27 @@ header>.content>.credits {
     border-radius: 100%;
     box-shadow: var(--shadow-elevation-medium);
     transition: scale 150ms ease;
+}
+
+.switch-to-periodic-table-pdf {
+    pointer-events: all;
+    position: fixed;
+    z-index: 151;
+    bottom: 6rem;
+    right: 1rem;
+    padding: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    cursor: pointer;
+    background-color: #E6EDF3;
+    border-radius: 100%;
+    box-shadow: var(--shadow-elevation-medium);
+    transition: scale 150ms ease;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .i-button {
@@ -779,33 +805,35 @@ header>.content>.credits {
 }
 
 @media (pointer: fine) {
-    .switch-to-pdf:hover {
+
+    .switch-to-pdf:hover,
+    .switch-to-periodic-table-pdf:hover {
         scale: 1.05;
     }
 }
 
-.switch-to-pdf svg {
+.switch-to-pdf svg,
+.switch-to-periodic-table-pdf svg {
     width: 100%;
     height: 100%;
 }
 
-.i-button svg {
-    width: 70%;
-    height: 70%;
-}
-
-.switch-to-pdf svg path {
-    fill: #0D1117;
+.i-button svg,
+.switch-to-periodic-table-pdfsvg {
+    width: 90%;
+    height: 90%;
 }
 
 .switch-to-pdf svg path,
-.i-button svg path {
+.i-button svg path,
+.switch-to-periodic-table-pdf svg path {
     width: 100%;
     height: 100%;
     fill: #0D1117;
 }
 
-.pdf-viewer {
+.pdf-viewer,
+.periodic-table-pdf-viewer {
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -951,17 +979,20 @@ header>.content>.credits {
         top: calc(100% + 9rem);
     }
 
-    .pdf-viewer-container {
+    .pdf-viewer-container,
+    .periodic-table-pdf-viewer-container {
         width: 100%;
         height: 100dvh;
     }
 
-    .pdf-viewer {
+    .pdf-viewer,
+    .periodic-table-pdf-viewer {
         width: 100%;
         height: 100dvh;
     }
 
-    .switch-to-pdf {
+    .switch-to-pdf,
+    .switch-to-periodic-table-pdf {
         width: 1.5rem;
         height: 1.5rem;
     }

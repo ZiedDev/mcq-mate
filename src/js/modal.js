@@ -1,6 +1,6 @@
 import '../css/modal.css'
 
-function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior) {
+function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior, defaultBehavior = () => { }) {
     const modalContainer = document.createElement('div')
     const modal = document.createElement('div')
     const backdrop = document.createElement('div')
@@ -30,6 +30,7 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
 
     backdrop.addEventListener('click', () => {
         modalContainer.parentNode.removeChild(modalContainer)
+        defaultBehavior()
     })
 
     document.addEventListener('keydown', e => {
@@ -39,6 +40,7 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
             }
 
             modalContainer.parentNode.removeChild(modalContainer)
+            defaultBehavior()
         }
 
     })
