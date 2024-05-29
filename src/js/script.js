@@ -709,7 +709,6 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     if (localStorage.getItem(localKey + 's') != '') {
         let waitForBubbleSheet = setTimeout(() => {
             submitBehavior(localStorage.getItem(localKey + 's'))
-            revealBehavior()
             for (let i = 0; i < localStorage.getItem(localKey + 's').length; i++) {
                 if (localStorage.getItem(localKey + 's').split('')[i] == 'A') {
                     document.getElementById(`question-${i}-a`).classList.add('bubble-chosen')
@@ -736,8 +735,8 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
             createModal(
                 '', // title
                 [
-                    `You have already submitted this exam before and got ${recalculatePastExam(localStorage.getItem(localKey + 's'))} / ${localStorage.getItem(localKey + 's').length}.`,
-                    `Do you want to Solve it again? or inspect your answers?`,
+                    `You have already submitted this exam before and got ${recalculatePastExam(localStorage.getItem(localKey + 's'))[0]} / ${recalculatePastExam(localStorage.getItem(localKey + 's'))[1]}.`,
+                    `Do you want to solve it again or inspect your answers?`,
                 ], // content,
                 [
                     'Resolve',
@@ -786,8 +785,11 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     }
 
     submitButton.addEventListener('click', () => {
-        localStorage.setItem(localKey + 's', localStorage.getItem(localKey).split('').join(''))
-        if (userAnswers.includes('N')) {
+        let userAnswersTemp = userAnswers
+        if (subject == 'Economics') {
+            userAnswersTemp = userAnswersTemp.join('').substring(0, 30).split('')
+        }
+        if (userAnswersTemp.includes('N')) {
             createModal(
                 'Are you sure?', // title
                 [
@@ -796,6 +798,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                 [
                     'Confirm',
                     () => {
+                        localStorage.setItem(localKey + 's', localStorage.getItem(localKey).split('').join(''))
                         submitBehavior(localStorage.getItem(localKey + 's'))
                     },
                 ],
@@ -805,32 +808,8 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                 ]
             )
         } else {
-            let correctAnswers = 0;
-            for (let i = 0; i < modelAnswers.length; i++) {
-                if (modelAnswers[i] == 'Q') {
-                    correctAnswers++
-
-                    const discountedQuestion = document.getElementById(`question-${i}-number`)
-                    discountedQuestion.classList.remove('wrong-question')
-                    discountedQuestion.classList.remove('correct-question')
-                    discountedQuestion.classList.add('discounted-question')
-
-                } else if (modelAnswers[i] == userAnswers[i]) {
-                    correctAnswers++
-
-                    const correctQuestion = document.getElementById(`question-${i}-number`)
-                    correctQuestion.classList.remove('wrong-question')
-                    correctQuestion.classList.add('correct-question')
-                } else if (userAnswers[i] == '') { } else {
-                    const wrongQuestion = document.getElementById(`question-${i}-number`)
-                    wrongQuestion.classList.remove('correct-question')
-                    wrongQuestion.classList.add('wrong-question')
-
-                    const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
-                    correctedQuestion.classList.add('corrected-question')
-                }
-            }
-            mark.textContent = `${correctAnswers} / ${modelAnswers.length}`
+            localStorage.setItem(localKey + 's', localStorage.getItem(localKey).split('').join(''))
+            submitBehavior(localStorage.getItem(localKey + 's'))
         }
     })
 
@@ -970,13 +949,13 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
 
     function recalculatePastExam(userAnswers) {
         let correctAnswers = 0;
-        for (let i = 0; i < userAnswers.length; i++) {
+        for (let i = 0; i < modelAnswers.length; i++) {
             if (modelAnswers[i] == 'Q' || modelAnswers[i] == userAnswers[i]) {
                 correctAnswers++
             }
         }
 
-        return correctAnswers
+        return [correctAnswers, modelAnswers.length]
     }
 
     function resetBubbleSheet(useLocalAnswers) {
@@ -1008,7 +987,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                 const correctQuestion = document.getElementById(`question-${i}-number`)
                 correctQuestion.classList.remove('wrong-question')
                 correctQuestion.classList.add('correct-question')
-            } else if (userAnswers[i] == '') { } else {
+            } else if (userAnswers[i] == '' || userAnswers[i] == 'N') { } else {
                 const wrongQuestion = document.getElementById(`question-${i}-number`)
                 wrongQuestion.classList.remove('correct-question')
                 wrongQuestion.classList.add('wrong-question')
