@@ -2,9 +2,9 @@
 
 MCQ Mate is an mcq checker for Cambridge IGCSE and A-Level subjects that have an mcq (Multiple-Choice-Questions) paper.
 
-## Current limitation
+## Now Supports all Exams
 
-At the current version there is no support for the core papers, only the extended IGCSE and the A-Level papers are available. If you would like to see core papers, please let me know and we will try our best to add them
+At the current version all the Extended and Core IGCSE subjects are here as well as the A-Level subjects from 2010 till the current latest exams
 
 ## This is a remake
 
