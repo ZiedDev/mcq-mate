@@ -48,6 +48,7 @@
     <meta property="og:title" content="MCQ Mate" />
     <meta property="og:description"
         content="MCQ Mate is an mcq checker for Cambridge IGCSE and A-Level subjects that have an mcq (Multiple-Choice-Questions) paper." />
+    <meta property="og:type" content="website" />
     <meta property="og:image" content="./media/icon/icon-x512.png" />
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1800">
@@ -66,15 +67,14 @@
             right: 0;
             background-color: black;
             z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .loader-svg {
             width: 5rem;
             height: 5rem;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             animation: loader 1000ms 500ms infinite ease;
         }
 
@@ -114,6 +114,10 @@
         const loader = document.querySelector('.loader')
         document.addEventListener('DOMContentLoaded', () => {
             loader.style.animation = 'fade-out 1000ms ease forwards'
+            let timeout = setTimeout(() => {
+                loader.parentElement.removeChild(loader)
+                clearTimeout(timeout)
+            }, 1000);
         })
     </script>
 
@@ -160,16 +164,16 @@
     <div class="main-section">
         <aside class="side-panel" id="side-panel">
             <div>
-                <div class="side-group-title" id="side-group-title-cr">Core Subjects</div>
-                <div class="side-group" id="side-group-cr"></div>
-            </div>
-            <div>
                 <div class="side-group-title" id="side-group-title-ol">OL Subjects</div>
                 <div class="side-group" id="side-group-ol"></div>
             </div>
             <div>
                 <div class="side-group-title" id="side-group-title-al">AL Subjects</div>
                 <div class="side-group" id="side-group-al"></div>
+            </div>
+            <div>
+                <div class="side-group-title" id="side-group-title-cr">Core Subjects</div>
+                <div class="side-group" id="side-group-cr"></div>
             </div>
 
             <div class="credits">

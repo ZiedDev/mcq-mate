@@ -16,20 +16,7 @@ let globalPdfViewer
 let globalPeriodicTablePdfViewer
 let userAnswers
 let confirm = true
-const subjectCode = {
-    CRBiology: '0610',
-    CRChemistry: '0620',
-    CRCombined: '0653',
-    CRPhysics: '0625',
-    OLBiology: '0610',
-    OLChemistry: '0620',
-    OLCombined: '0653',
-    OLEconomics: '0455',
-    OLPhysics: '0625',
-    ALBiology: '9700',
-    ALChemistry: '9701',
-    ALPhysics: '9702',
-}
+const subjectCode = { CRBiology: '0610', CRChemistry: '0620', CRCombined: '0653', CRPhysics: '0625', OLBiology: '0610', OLChemistry: '0620', OLCombined: '0653', OLEconomics: '0455', OLPhysics: '0625', ALBiology: '9700', ALChemistry: '9701', ALPhysics: '9702' }
 
 let randomImagesArray = generateRandomImages()
 let randomImageCounter = 0
@@ -268,62 +255,84 @@ pathIcon.addEventListener('click', () => {
     }
 })
 
-// creating side button for core subjects
-const sideGroupCr = document.getElementById('side-group-cr')
-Object.keys(crSubjectsMS).forEach(subject => {
-    const subjectElement = generateSideButton('cr', subject)
-    subjectElement.addEventListener('click', e => {
-        if (e.target.id == `side-cr-button-${subject}` || e.target.id == `side-cr-${subject}-title`) {
-            changePath(`cr>${subject}`)
-        }
-    })
-
-    sideGroupCr.appendChild(subjectElement)
-
-    const sideSubjectYears = document.getElementById(`side-cr-${subject}-years`)
-    Object.keys(crSubjectsMS[subject]).forEach(year => {
-        const yearElement = generateSideButton('cr', subject, year)
-        yearElement.addEventListener('click', e => {
-            if (e.target.id == `side-cr-button-${subject}-${year}` || e.target.id == `side-cr-${subject}-${year}-title`) {
-                changePath(`cr>${subject}>${year}`)
-            }
-        })
-
-        sideSubjectYears.appendChild(yearElement)
-
-        const sideYearSessions = document.getElementById(`side-cr-${subject}-${year}-sessions`)
-        Object.keys(crSubjectsMS[subject][year]).forEach(session => {
-            if (JSON.stringify(crSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
-                const sessionElement = generateSideButton('cr', subject, year, session)
-                sessionElement.addEventListener('click', e => {
-                    if (e.target.id == `side-cr-button-${subject}-${year}-${session}` || e.target.id == `side-cr-${subject}-${year}-${session}-title`) {
-                        changePath(`cr>${subject}>${year}>${session}`)
-                    }
-                })
-                sideYearSessions.appendChild(sessionElement)
-            }
-            const sideSessionVariants = document.getElementById(`side-cr-${subject}-${year}-${session}-variants`)
-            Object.keys(crSubjectsMS[subject][year][session]).forEach(variant => {
-                if (crSubjectsMS[subject][year][session][variant] != null) {
-                    const variantElement = generateSideButton('cr', subject, year, session, variant)
-                    variantElement.addEventListener('click', e => {
-                        if (e.target.id == `side-cr-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-cr-${subject}-${year}-${session}-${variant}-title`) {
-                            changePath(`cr>${subject}>${year}>${session}>${variant}`)
-                        }
-                    })
-
-                    sideSessionVariants.appendChild(variantElement)
-                }
-            })
-        })
-    })
-})
-
-
 // creating side buttons for ol subjects
 const sideGroupOl = document.getElementById('side-group-ol')
 Object.keys(olSubjectsMS).forEach(subject => {
-    const subjectElement = generateSideButton('ol', subject)
+    const subjectElement = generateSideButton({
+        level: 'ol', subject: subject, generateContainerCallback: () => {
+            const sideSubjectYears = document.getElementById(`side-ol-${subject}-years`)
+            Object.keys(olSubjectsMS[subject]).forEach(year => {
+                const yearElement = generateSideButton({
+                    level: 'ol', subject: subject, year: year, generateContainerCallback: () => {
+                        const sideYearSessions = document.getElementById(`side-ol-${subject}-${year}-sessions`)
+                        Object.keys(olSubjectsMS[subject][year]).forEach(session => {
+                            if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                                const sessionElement = generateSideButton({
+                                    level: 'ol', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                        const sideSessionVariants = document.getElementById(`side-ol-${subject}-${year}-${session}-variants`)
+                                        Object.keys(olSubjectsMS[subject][year][session]).forEach(variant => {
+                                            if (olSubjectsMS[subject][year][session][variant] != null) {
+                                                const variantElement = generateSideButton({ level: 'ol', subject: subject, year: year, session: session, variant: variant })
+                                                variantElement.addEventListener('click', e => {
+                                                    if (e.target.id == `side-ol-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-ol-${subject}-${year}-${session}-${variant}-title`) {
+                                                        changePath(`ol>${subject}>${year}>${session}>${variant}`)
+                                                    }
+                                                })
+                                                sideSessionVariants.appendChild(variantElement)
+                                            }
+                                        })
+                                    }
+                                    , removeContainerCallback: () => {
+                                        const sideSessionVariants = document.getElementById(`side-ol-${subject}-${year}-${session}-variants`)
+                                        const variantsLength = sideSessionVariants.childNodes.length
+                                        for (let i = 0; i < variantsLength; i++) {
+                                            let timeout = setTimeout(() => {
+                                                sideSessionVariants.removeChild(sideSessionVariants.childNodes[0])
+                                                clearTimeout(timeout)
+                                            }, 100);
+                                        }
+                                    }
+                                })
+                                sessionElement.addEventListener('click', e => {
+                                    if (e.target.id == `side-ol-button-${subject}-${year}-${session}` || e.target.id == `side-ol-${subject}-${year}-${session}-title`) {
+                                        changePath(`ol>${subject}>${year}>${session}`)
+                                    }
+                                })
+                                sideYearSessions.appendChild(sessionElement)
+                            }
+                        })
+                    }
+                    , removeContainerCallback: () => {
+                        const sideYearSessions = document.getElementById(`side-ol-${subject}-${year}-sessions`)
+                        const sessionsLength = sideYearSessions.childNodes.length
+                        for (let i = 0; i < sessionsLength; i++) {
+                            let timeout = setTimeout(() => {
+                                sideYearSessions.removeChild(sideYearSessions.childNodes[0])
+                                clearTimeout(timeout)
+                            }, 100);
+                        }
+                    }
+                })
+                yearElement.addEventListener('click', e => {
+                    if (e.target.id == `side-ol-button-${subject}-${year}` || e.target.id == `side-ol-${subject}-${year}-title`) {
+                        changePath(`ol>${subject}>${year}`)
+                    }
+                })
+
+                sideSubjectYears.appendChild(yearElement)
+            })
+        }
+        , removeContainerCallback: () => {
+            const sideSubjectYears = document.getElementById(`side-ol-${subject}-years`)
+            const yearLength = sideSubjectYears.childNodes.length
+            for (let i = 0; i < yearLength; i++) {
+                let timeout = setTimeout(() => {
+                    sideSubjectYears.removeChild(sideSubjectYears.childNodes[0])
+                    clearTimeout(timeout)
+                }, 100);
+            }
+        }
+    })
     subjectElement.addEventListener('click', e => {
         if (e.target.id == `side-ol-button-${subject}` || e.target.id == `side-ol-${subject}-title`) {
             changePath(`ol>${subject}`)
@@ -331,50 +340,86 @@ Object.keys(olSubjectsMS).forEach(subject => {
     })
 
     sideGroupOl.appendChild(subjectElement)
-
-    const sideSubjectYears = document.getElementById(`side-ol-${subject}-years`)
-    Object.keys(olSubjectsMS[subject]).forEach(year => {
-        const yearElement = generateSideButton('ol', subject, year)
-        yearElement.addEventListener('click', e => {
-            if (e.target.id == `side-ol-button-${subject}-${year}` || e.target.id == `side-ol-${subject}-${year}-title`) {
-                changePath(`ol>${subject}>${year}`)
-            }
-        })
-
-        sideSubjectYears.appendChild(yearElement)
-
-        const sideYearSessions = document.getElementById(`side-ol-${subject}-${year}-sessions`)
-        Object.keys(olSubjectsMS[subject][year]).forEach(session => {
-            if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
-                const sessionElement = generateSideButton('ol', subject, year, session)
-                sessionElement.addEventListener('click', e => {
-                    if (e.target.id == `side-ol-button-${subject}-${year}-${session}` || e.target.id == `side-ol-${subject}-${year}-${session}-title`) {
-                        changePath(`ol>${subject}>${year}>${session}`)
-                    }
-                })
-                sideYearSessions.appendChild(sessionElement)
-            }
-            const sideSessionVariants = document.getElementById(`side-ol-${subject}-${year}-${session}-variants`)
-            Object.keys(olSubjectsMS[subject][year][session]).forEach(variant => {
-                if (olSubjectsMS[subject][year][session][variant] != null) {
-                    const variantElement = generateSideButton('ol', subject, year, session, variant)
-                    variantElement.addEventListener('click', e => {
-                        if (e.target.id == `side-ol-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-ol-${subject}-${year}-${session}-${variant}-title`) {
-                            changePath(`ol>${subject}>${year}>${session}>${variant}`)
-                        }
-                    })
-
-                    sideSessionVariants.appendChild(variantElement)
-                }
-            })
-        })
-    })
 })
 
 // creating side buttons for al subjects
 const sideGroupAl = document.getElementById('side-group-al')
 Object.keys(alSubjectsMS).forEach(subject => {
-    const subjectElement = generateSideButton('al', subject)
+    const subjectElement = generateSideButton({
+        level: 'al', subject: subject, generateContainerCallback: () => {
+            const sideSubjectYears = document.getElementById(`side-al-${subject}-years`)
+            Object.keys(alSubjectsMS[subject]).forEach(year => {
+                const yearElement = generateSideButton({
+                    level: 'al', subject: subject, year: year, generateContainerCallback: () => {
+                        const sideYearSessions = document.getElementById(`side-al-${subject}-${year}-sessions`)
+                        Object.keys(alSubjectsMS[subject][year]).forEach(session => {
+                            if (JSON.stringify(aSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                                const sessionElement = generateSideButton({
+                                    level: 'al', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                        const sideSessionVariants = document.getElementById(`side-al-${subject}-${year}-${session}-variants`)
+                                        Object.keys(alSubjectsMS[subject][year][session]).forEach(variant => {
+                                            if (alSubjectsMS[subject][year][session][variant] != null) {
+                                                const variantElement = generateSideButton({ level: 'al', subject: subject, year: year, session: session, variant: variant })
+                                                variantElement.addEventListener('click', e => {
+                                                    if (e.target.id == `side-al-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-al-${subject}-${year}-${session}-${variant}-title`) {
+                                                        changePath(`al>${subject}>${year}>${session}>${variant}`)
+                                                    }
+                                                })
+                                                sideSessionVariants.appendChild(variantElement)
+                                            }
+                                        })
+                                    }
+                                    , removeContainerCallback: () => {
+                                        const sideSessionVariants = document.getElementById(`side-al-${subject}-${year}-${session}-variants`)
+                                        const variantsLength = sideSessionVariants.childNodes.length
+                                        for (let i = 0; i < variantsLength; i++) {
+                                            let timeout = setTimeout(() => {
+                                                sideSessionVariants.removeChild(sideSessionVariants.childNodes[0])
+                                                clearTimeout(timeout)
+                                            }, 100);
+                                        }
+                                    }
+                                })
+                                sessionElement.addEventListener('click', e => {
+                                    if (e.target.id == `side-al-button-${subject}-${year}-${session}` || e.target.id == `side-al-${subject}-${year}-${session}-title`) {
+                                        changePath(`al>${subject}>${year}>${session}`)
+                                    }
+                                })
+                                sideYearSessions.appendChild(sessionElement)
+                            }
+                        })
+                    }
+                    , removeContainerCallback: () => {
+                        const sideYearSessions = document.getElementById(`side-al-${subject}-${year}-sessions`)
+                        const sessionsLength = sideYearSessions.childNodes.length
+                        for (let i = 0; i < sessionsLength; i++) {
+                            let timeout = setTimeout(() => {
+                                sideYearSessions.removeChild(sideYearSessions.childNodes[0])
+                                clearTimeout(timeout)
+                            }, 100);
+                        }
+                    }
+                })
+                yearElement.addEventListener('click', e => {
+                    if (e.target.id == `side-al-button-${subject}-${year}` || e.target.id == `side-al-${subject}-${year}-title`) {
+                        changePath(`al>${subject}>${year}`)
+                    }
+                })
+
+                sideSubjectYears.appendChild(yearElement)
+            })
+        }
+        , removeContainerCallback: () => {
+            const sideSubjectYears = document.getElementById(`side-al-${subject}-years`)
+            const yearLength = sideSubjectYears.childNodes.length
+            for (let i = 0; i < yearLength; i++) {
+                let timeout = setTimeout(() => {
+                    sideSubjectYears.removeChild(sideSubjectYears.childNodes[0])
+                    clearTimeout(timeout)
+                }, 100);
+            }
+        }
+    })
     subjectElement.addEventListener('click', e => {
         if (e.target.id == `side-al-button-${subject}` || e.target.id == `side-al-${subject}-title`) {
             changePath(`al>${subject}`)
@@ -382,68 +427,100 @@ Object.keys(alSubjectsMS).forEach(subject => {
     })
 
     sideGroupAl.appendChild(subjectElement)
-
-    const sideSubjectYears = document.getElementById(`side-al-${subject}-years`)
-    Object.keys(alSubjectsMS[subject]).forEach(year => {
-        const yearElement = generateSideButton('al', subject, year)
-        yearElement.addEventListener('click', e => {
-            if (e.target.id == `side-al-button-${subject}-${year}` || e.target.id == `side-al-${subject}-${year}-title`) {
-                changePath(`al>${subject}>${year}`)
-            }
-        })
-
-        sideSubjectYears.appendChild(yearElement)
-
-        const sideYearSessions = document.getElementById(`side-al-${subject}-${year}-sessions`)
-        Object.keys(alSubjectsMS[subject][year]).forEach(session => {
-            if (JSON.stringify(alSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
-                const sessionElement = generateSideButton('al', subject, year, session)
-                sessionElement.addEventListener('click', e => {
-                    if (e.target.id == `side-al-button-${subject}-${year}-${session}` || e.target.id == `side-al-${subject}-${year}-${session}-title`) {
-                        changePath(`al>${subject}>${year}>${session}`)
-                    }
-                })
-                sideYearSessions.appendChild(sessionElement)
-            }
-
-            const sideSessionVariants = document.getElementById(`side-al-${subject}-${year}-${session}-variants`)
-            Object.keys(alSubjectsMS[subject][year][session]).forEach(variant => {
-                if (alSubjectsMS[subject][year][session][variant] != null) {
-                    const variantElement = generateSideButton('al', subject, year, session, variant)
-                    variantElement.addEventListener('click', e => {
-                        if (e.target.id == `side-al-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-al-${subject}-${year}-${session}-${variant}-title`) {
-                            changePath(`al>${subject}>${year}>${session}>${variant}`)
-                        }
-                    })
-
-                    sideSessionVariants.appendChild(variantElement)
-                }
-            })
-        })
-    })
 })
 
+// // creating side button for core subjects
+const sideGroupCr = document.getElementById('side-group-cr')
+Object.keys(crSubjectsMS).forEach(subject => {
+    const subjectElement = generateSideButton({
+        level: 'cr', subject: subject, generateContainerCallback: () => {
+            const sideSubjectYears = document.getElementById(`side-cr-${subject}-years`)
+            Object.keys(crSubjectsMS[subject]).forEach(year => {
+                const yearElement = generateSideButton({
+                    level: 'cr', subject: subject, year: year, generateContainerCallback: () => {
+                        const sideYearSessions = document.getElementById(`side-cr-${subject}-${year}-sessions`)
+                        Object.keys(crSubjectsMS[subject][year]).forEach(session => {
+                            if (JSON.stringify(crSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                                const sessionElement = generateSideButton({
+                                    level: 'cr', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                        const sideSessionVariants = document.getElementById(`side-cr-${subject}-${year}-${session}-variants`)
+                                        Object.keys(crSubjectsMS[subject][year][session]).forEach(variant => {
+                                            if (crSubjectsMS[subject][year][session][variant] != null) {
+                                                const variantElement = generateSideButton({ level: 'cr', subject: subject, year: year, session: session, variant: variant })
+                                                variantElement.addEventListener('click', e => {
+                                                    if (e.target.id == `side-cr-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-cr-${subject}-${year}-${session}-${variant}-title`) {
+                                                        changePath(`cr>${subject}>${year}>${session}>${variant}`)
+                                                    }
+                                                })
+                                                sideSessionVariants.appendChild(variantElement)
+                                            }
+                                        })
+                                    }
+                                    , removeContainerCallback: () => {
+                                        const sideSessionVariants = document.getElementById(`side-cr-${subject}-${year}-${session}-variants`)
+                                        const variantsLength = sideSessionVariants.childNodes.length
+                                        for (let i = 0; i < variantsLength; i++) {
+                                            let timeout = setTimeout(() => {
+                                                sideSessionVariants.removeChild(sideSessionVariants.childNodes[0])
+                                                clearTimeout(timeout)
+                                            }, 100);
+                                        }
+                                    }
+                                })
+                                sessionElement.addEventListener('click', e => {
+                                    if (e.target.id == `side-cr-button-${subject}-${year}-${session}` || e.target.id == `side-cr-${subject}-${year}-${session}-title`) {
+                                        changePath(`cr>${subject}>${year}>${session}`)
+                                    }
+                                })
+                                sideYearSessions.appendChild(sessionElement)
+                            }
+                        })
+                    }
+                    , removeContainerCallback: () => {
+                        const sideYearSessions = document.getElementById(`side-cr-${subject}-${year}-sessions`)
+                        const sessionsLength = sideYearSessions.childNodes.length
+                        for (let i = 0; i < sessionsLength; i++) {
+                            let timeout = setTimeout(() => {
+                                sideYearSessions.removeChild(sideYearSessions.childNodes[0])
+                                clearTimeout(timeout)
+                            }, 100);
+                        }
+                    }
+                })
+                yearElement.addEventListener('click', e => {
+                    if (e.target.id == `side-cr-button-${subject}-${year}` || e.target.id == `side-cr-${subject}-${year}-title`) {
+                        changePath(`cr>${subject}>${year}`)
+                    }
+                })
+
+                sideSubjectYears.appendChild(yearElement)
+            })
+        }
+        , removeContainerCallback: () => {
+            const sideSubjectYears = document.getElementById(`side-cr-${subject}-years`)
+            const yearLength = sideSubjectYears.childNodes.length
+            for (let i = 0; i < yearLength; i++) {
+                let timeout = setTimeout(() => {
+                    sideSubjectYears.removeChild(sideSubjectYears.childNodes[0])
+                    clearTimeout(timeout)
+                }, 100);
+            }
+        }
+    })
+    subjectElement.addEventListener('click', e => {
+        if (e.target.id == `side-cr-button-${subject}` || e.target.id == `side-cr-${subject}-title`) {
+            changePath(`cr>${subject}`)
+        }
+    })
+
+    sideGroupCr.appendChild(subjectElement)
+})
 // creating home menu
+
 function createHomeMenu() {
     const home = document.createElement('div')
     home.id = 'home'
     home.classList.add('home')
-
-    const crTitle = document.createElement('h2')
-    crTitle.textContent = 'Core Subjects'
-    home.appendChild(crTitle)
-
-    const crCardsContainer = document.createElement('div')
-    Object.keys(crSubjectsMS).forEach(subject => {
-        const subjectElement = generateMainButton('cr', subject)
-        createRotatingCard(subjectElement)
-        subjectElement.addEventListener('click', () => {
-            changePath(`cr>${subject}`)
-        })
-
-        crCardsContainer.appendChild(subjectElement)
-    })
-    home.appendChild(crCardsContainer)
 
     const olTitle = document.createElement('h2')
     olTitle.textContent = 'OL Subjects'
@@ -476,6 +553,22 @@ function createHomeMenu() {
         alCardsContainer.appendChild(subjectElement)
     })
     home.appendChild(alCardsContainer)
+
+    const crTitle = document.createElement('h2')
+    crTitle.textContent = 'Core Subjects'
+    home.appendChild(crTitle)
+
+    const crCardsContainer = document.createElement('div')
+    Object.keys(crSubjectsMS).forEach(subject => {
+        const subjectElement = generateMainButton('cr', subject)
+        createRotatingCard(subjectElement)
+        subjectElement.addEventListener('click', () => {
+            changePath(`cr>${subject}`)
+        })
+
+        crCardsContainer.appendChild(subjectElement)
+    })
+    home.appendChild(crCardsContainer)
 
     return home
 }

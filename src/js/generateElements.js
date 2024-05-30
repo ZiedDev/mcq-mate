@@ -31,7 +31,7 @@ import randomImage14 from '../media/images/Random/14.jpg'
 const randomImages = { randomImage1, randomImage2, randomImage3, randomImage4, randomImage5, randomImage6, randomImage7, randomImage8, randomImage9, randomImage10, randomImage11, randomImage12, randomImage13, randomImage14 }
 const images = { al_biology, al_chemistry, al_physics, ol_biology, ol_chemistry, ol_combined, ol_economics, ol_physics, cr_biology, cr_chemistry, cr_physics, cr_combined }
 
-function generateSideButton(level, subject, year, session, variant) {
+function generateSideButton({ level, subject, year, session, variant, generateContainerCallback, removeContainerCallback = () => { } }) {
     const element = document.createElement('div')
     element.classList.add('side-container')
     element.id = variant == undefined ? session == undefined ? year == undefined ? `side-${level}-${subject}` : `side-${level}-${subject}-${year}` : `side-${level}-${subject}-${year}-${session}` : `side-${level}-${subject}-${year}-${session}-${variant}`
@@ -72,12 +72,14 @@ function generateSideButton(level, subject, year, session, variant) {
         arrowDownSvg.addEventListener('click', () => {
             arrowDownSvg.classList.add('hidden')
             arrowUpSvg.classList.remove('hidden')
+            generateContainerCallback()
             container.classList.remove('collapsed')
         })
 
         arrowUpSvg.addEventListener('click', () => {
             arrowDownSvg.classList.remove('hidden')
             arrowUpSvg.classList.add('hidden')
+            removeContainerCallback()
             container.classList.add('collapsed')
         })
     }
