@@ -1,6 +1,0 @@
-User-Agent: *
-Disallow: 
-Allow: /index.html
-Allow: /pdfs/
-Disallow: /media/
-Disallow: /pdf-viewer/
