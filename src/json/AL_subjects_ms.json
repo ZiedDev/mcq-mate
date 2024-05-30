@@ -1,5 +1,124 @@
 {
     "Physics": {
+        "2010": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "DAABCBBCBACDACBDABDDACBACCADDADDAAADCACC",
+                "BDBABCABCDAACCDBBADADCACBDDACDADAAADACCC",
+                "ACBBBDACDCAABCABDBADDBCCADDCADAADDAACCCA"
+            ],
+            "w": [
+                "DCBABCBACBBBABDBDDDDABACAADADBCABCCBACDC",
+                "ABACDDDACBBCDDDBCCCDAACCDCBAADACDBBBBDCB",
+                "BBCDAACBBBBCDABDDBADBDAACDADBACCCBAABCCD"
+            ]
+        },
+        "2011": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "CCCCAABBADBDCCABCCDBADBADBDACDCAACCCDDBD",
+                "CBADDDDADBABDABCCDDACBCBCBDCBABCDDACBCCB",
+                "CCCACBABDADCBCACBCDABADBBDDDACACCACDCDDB"
+            ],
+            "w": [
+                "DBCBBADBBCAAACCCABCACCBBCBADACACADABDBBD",
+                "CDDDBCBDDBADDBBBADAACABDBBBADAACDAACBACC",
+                "CDBBBDABBACACACACCABBBCCBCDACACADAADBBDB"
+            ]
+        },
+        "2012": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "ADCDCCDBDDBACDDBCBDDDBCBBCBBCCDCCACBACAB",
+                "CDDBBAADAABDABDDBDBDCCCBCDCDCBCCDBDDDCBB",
+                "CADCDDCDBADBDCDCBDBBBCBDDBCCBCDACCBCCABA"
+            ],
+            "w": [
+                "BCDBBCADACCAAABBCAACDDABBDABCBBACDCCBCAB",
+                "BABCBADACDADDDBDCCADDAADDDBCADABCCCCCBCD",
+                "BDBCBACBDABCBBDDABADBABBCBBABAACDBDBDACB"
+            ]
+        },
+        "2013": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "DCCDDDBDADDACBACBBBBDAACACACBBDAAABDDCAB",
+                "BBADCBDBDBDABDBBCACDCBBDDBCBCDACAADDCCBB",
+                "BACADBBCBBABDAAACACADACCCBDDCDDCCBCBCCDB"
+            ],
+            "w": [
+                "BCBBCCCCDBCDADBBACBDACDADCADBABCCBBADCCA",
+                "BCBBCCCCDBCDADBBACBDACDADCADBABCCBBADCCA",
+                "DBDADDBBDCBBABCADDCBCCDCAADBACDCCABDCCDA"
+            ]
+        },
+        "2014": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "ABADBDDABABCBDCBDDBBCDBDBBDDAADBADBACBBA",
+                "CBBCDBCCCBADACBBCBDACCCCBDDADBAAADBBBCCC",
+                "CDABCCCDCCBCCADDCBCCDDADCCBABBACDDAAACCD"
+            ],
+            "w": [
+                "BCADCACAADAACACABCBAABDDDDBBABACACBCDDBC",
+                "BCADCACAADAACACABCBAABDDDDBBABACACBCDDBC",
+                "ACADDDDACBBCCCDCAADABACBCAACCDDCDDBAAACC"
+            ]
+        },
+        "2015": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "CBADABDCDDCCACCCCBDACABDBDABDBDBBDCDACCB",
+                "CDCCDCDDCCDCABCDDDABABCCBCBBBBCAADABAACC",
+                "CDDBBCDDBCCBCAAAACBBBACDCDDDCBDDCCAACDAC"
+            ],
+            "w": [
+                "BBAABCCBDDADCABDBDDBBABCAADABACABCAADDDB",
+                "CBCBDABCAACACCABCCBBDDCBDDADCCAAACABADCD",
+                "ADABBBABCCCDDABDBCABCCCDBBBCBAAADAAADCCD"
+            ]
+        },
+        "2016": {
+            "m": [
+                null,
+                "CDCCBCABBBCABBCCDDBABBABCCDAACCBDDDAAACB",
+                null
+            ],
+            "s": [
+                "BCCADBADADCABBCCDADCBABADDDADCDCDAABBADA",
+                "CCABDAAACCDDADCBACBDDABCCDDCBCCABBDBDCBD",
+                "DBCCCABBAABCBBCCAADCDCBBDBADDADACACBBDBC"
+            ],
+            "w": [
+                "DBAADBBCACADAADBCCACDAADDCAACABACBBDAACB",
+                "BDDCADBBDCADBDCCCBCCDBABABDCCBACDBBBCACA",
+                "DBAADBBCACADAADBCCACDAADDCAACABACBBDAACB"
+            ]
+        },
         "2017": {
             "m": [
                 null,
@@ -121,6 +240,125 @@
         }
     },
     "Biology": {
+        "2010": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "DCCCDBADABACBADCDDCBCCAADBABCDBCABDACACB",
+                "BCBDDDBACBACCDCDBCBCCAAADAADCBACBACDCDBA",
+                "DACACDDABCDCDADCBADBCABDCCBCABBCDCBCABAA"
+            ],
+            "w": [
+                "DBAABBCADACCBDBABCBBCBDCBADBCBBAADDDDBAD",
+                "DCBBCBCCDBDDACBABCCACDAADBADABDDABBDCBCC",
+                "BDCAACBBABBADCCCDDADDDABABBDDCCBBBABBADB"
+            ]
+        },
+        "2011": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "BDDCBABAABADACCBACDCDACCBCADCBCADCDBBADB",
+                "CADCDBBCDDDCCACCADBBCCAADDAADBCABCBACBBA",
+                "DBAACBCDBCDBCABDCDBDCCADCDCCADABABAAABBC"
+            ],
+            "w": [
+                "BADCCAAADCDDDDBCBABBAABCBBADBBCACCBDDCBD",
+                "DACABCAABCDACDBDDBDCCCCADCBDBDAACCAABBBD",
+                "CDBABCCDAACCCBDDDDAACDDBDCBAAABBBBCBABDB"
+            ]
+        },
+        "2012": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "DDCBDAACACBADBDCBADCCACBBDACDDBADCACDCCB",
+                "CACDDBBDBBAABDCDDAAABABADCDDDDCACBBCCCAB",
+                "CCBDCDDBBDCCAABACDABADACCCDBABACCDCDBDDA"
+            ],
+            "w": [
+                "BADABBCDACDABBDACACDDCDCBABDABCCDDAACBAA",
+                "AABCBCBBBCDCCADADADCBCAABDCBDBBCDCABCCCD",
+                "ADBBDDABBADADBACCDBCCDDAAABCBBDDDCCCBCDC"
+            ]
+        },
+        "2013": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "DCCCACDADCCCBBBABBDBDDCABABAACADAAABDDAA",
+                "CBCADAABBACBDCBDDCABCCCBCABBACDDBBCADDAA",
+                "BCAAADCACABBBCCDBACDDDBBDBCDABDBDAACCADA"
+            ],
+            "w": [
+                "DBCCBCACBDAABCABABBDCDBCADBCCACCBADDCBBC",
+                "CABDCACCABBDABDBDCCBACDDDBCBCABACACBCCDD",
+                "BDDCCADBADBBCABCDDCCBDDBDADBBAABADBBADAC"
+            ]
+        },
+        "2014": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "AACCCBCCCCAABACDBBBDBDDABCBBDAACBDDCADAD",
+                "DADCCABACDCABADCDACCCADBBBACDDDABDCABDDB",
+                "DCBBDCCDCCDACAADCDBBDCDADADCAADABCCDBBCC"
+            ],
+            "w": [
+                "CDABABBADCADCCDBCCBAADBDCCCDDDBBDABBACCD",
+                "DDBBCCAADABAADDBDACDCCABAABADBDCCACDCBAB",
+                "BDCDACBDCDBABDBDCACCABABCCDCADCBCADBADDA"
+            ]
+        },
+        "2015": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "CDBADBBDBBAADBCACCBBACCDBABBABACABADBDAD",
+                "ACCBCBBDCBBCDCDCDBDDDADADDBACAABDABBBADC",
+                "ACACDBDCDCDBDCBBBBDACAADDCBBCBBACDCBACCA"
+            ],
+            "w": [
+                "BAADABCCDADBADADBCDDBCDACDDDCAACCBBAACAA",
+                "BCCCBDBDCCAACABBBDBACBDADCACABACDBBACCDB",
+                "BBCBACCBBABACDCBCDCDBCABAABDCBCDADDDCDCA"
+            ]
+        },
+        "2016": {
+            "m": [
+                null,
+                "CBCDADBCADAACDCACACBDBCAABBBDBCCBDBCDADC",
+                null
+            ],
+            "s": [
+                "DCBDACBCDACDDCCACBCCABACCDABDDABADDDCBDA",
+                "DDCDBCCAACBDADDACBABABCABCDACACCDBCCACCA",
+                "AABBABBACDCDQBDADADDABCDBBACAADDADABCBCD"
+            ],
+            "w": [
+                "DBACCAACDACCADBBDABAADDBCDDDCADBACCCABDB",
+                "BCCCBBDDDACBADAABABDDBCABDCBCDACDCDCBCAC",
+                "BBABBDDDACDDCDCDADBCCDDDBACDACBCCCADBAAA"
+            ]
+        },
         "2017": {
             "m": [
                 null,
@@ -175,7 +413,7 @@
         "2020": {
             "m": [
                 null,
-                "CACCDACACBCBDBDBAABDCADDCBDBABAACCDDADBA",
+                null,
                 null
             ],
             "s": [
@@ -242,6 +480,125 @@
         }
     },
     "Chemistry": {
+        "2010": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "CACCBDADCDADAAACBDACCBDCBDADBDBDBBCBACAB",
+                "CCACBDCDDAAADAADACBCBDCBCDBDDABBDBCBAACB",
+                "CACBCCDADDAADAAACBDCBCCDBDDADBDBBCBBCAAB"
+            ],
+            "w": [
+                "DBBDADCBBBCCADDDABCCDABBDDBCCDACADAADBBD",
+                "DBCBDAADCBCDBCDCDBCCBCBADBABDDDBCAADACAD",
+                "BBDDACDADBBBCCDADBCACDDBBDBCCDAACADDABDB"
+            ]
+        },
+        "2011": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "BACCDABDCCCBCDBDCCCCCABBBDDBBDDBDBADBCAA",
+                "BCBCBBCCACCBDBABDBABDCBACDCCDADDDCAAADAD",
+                "BDCABACCDCBCCDCBDCCACCBDBBBDDBBDDBDBCAAA"
+            ],
+            "w": [
+                "BCDCBCCADDACABBBCCACAADACDDCDCBDBABABBDC",
+                "AADCCBDCDACBCCDBCDCCCDABBAABDAACADBDDBCA",
+                "CDBBCCCDAACDABBCBCACDAAACCDDCDBBBDAACDBB"
+            ]
+        },
+        "2012": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "ADDBCBCBBDACCBACDCCDCABCACDBADBBDBAABACD",
+                "CCDBACDDCBCDCBADBBACAABACCDDCBACDBADBACB",
+                "DABDCCBBADBCCABCCDDCCBCACAADBDDBBAABABDC"
+            ],
+            "w": [
+                "BCDABDDCACABACBADCADDCCCDCBCABBABDDBDBCD",
+                "BCDABDDCACABACBADCADDCCCDCBCABBABDDBDBCD",
+                "DDCAABCCDCACADDABCDCCBBDABDCCCABABDBABCB"
+            ]
+        },
+        "2013": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "CCDADCADACBDCDADAACBBDDAACADBBDBBADBCBBC",
+                "BBDDCDBDCABCADCBBCBDACBCDADBBBACCACDADAD",
+                "DBCCBADDACCABCDBDABBBDCBBDACDCACABCABDDA"
+            ],
+            "w": [
+                "DABCCDBDADBDABCCDCDBCCBABBCBDAACCAABBAAD",
+                "DABCCDBDADBDABCCDCDBCCBABBCBDAACCAABBAAD",
+                "DABDCDCCBAACCBBDADDABDACCDCDBABCDBCDBABB"
+            ]
+        },
+        "2014": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "BBDDBCBADCCDCBBCABBABCBCDADCCACDDBACCBAA",
+                "CCAABCBBBABADDDBADAADACCCACBCCABBADDDCBA",
+                "BBADABCCDACAACADADBACADBBADDDDABBBBCCDBC"
+            ],
+            "w": [
+                "ADBABABACABBDCBACCDADDCCDCACDBACBCBBBDBD",
+                "ADBABABACABBDCBACCDADDCCDCACDBACBCBBBDBD",
+                "BDDABCDDDACBACDCABCCADDCCCBABCABABAABCDA"
+            ]
+        },
+        "2015": {
+            "m": [
+                null,
+                null,
+                null
+            ],
+            "s": [
+                "DDABCBBCAABCDBCADACCBAADDCBABDADDDBDCCAC",
+                "BBADDCABAABDBCBBDCCBCDCBDAADCBDDBBCABACA",
+                "CDBCCABACAACBDBDCBBCCDDBABBCAADCDBDADAAB"
+            ],
+            "w": [
+                "CABACDBDBBCAAADDBAACCDBCDADBBBCBBDBACCDB",
+                "BCDADACCBCCDBDBADDCBBDAACDBCAADADCDBCCBA",
+                "CABACDBDBBCAAADDBAACCDBCDADBBBCBBDBACCDB"
+            ]
+        },
+        "2016": {
+            "m": [
+                null,
+                "ADDDDCCACACDCDABABADBBCDBDDCABBDBCADCBAC",
+                null
+            ],
+            "s": [
+                "CBCACDCDDDCADACCBCCDDABABCBBAAAACADABBBB",
+                "DDACDCDBCCDDADCBCACBBAABABABDBCBABACADDC",
+                "BDBCCACBCADDDBADCDBCCBBDABBCDCAABAABCADB"
+            ],
+            "w": [
+                "CDDBCADCAACDCDCDBDBBADADCDBAABBABDCBACDB",
+                "DCBDDADCBAADADCACCDCCBCCDCCBDBABBDBABBAB",
+                "CDDBCADCAACDCDCDBDBBADADCDBAABBABDCBACDB"
+            ]
+        },
         "2017": {
             "m": [
                 null,
