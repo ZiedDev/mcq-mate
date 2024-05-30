@@ -4,13 +4,13 @@ import al_physics from '../media/images/al_physics.jpg'
 
 import ol_biology from '../media/images/ol_biology.jpg'
 import ol_chemistry from '../media/images/ol_chemistry.jpg'
-import ol_combined from '../media/images/ol_combined.png'
-import ol_economics from '../media/images/ol_economics.png'
+import ol_combined from '../media/images/ol_combined.jpg'
+import ol_economics from '../media/images/ol_economics.jpg'
 import ol_physics from '../media/images/ol_physics.jpg'
 
 import cr_biology from '../media/images/cr_biology.jpg'
 import cr_chemistry from '../media/images/cr_chemistry.jpg'
-import cr_combined from '../media/images/cr_combined.png'
+import cr_combined from '../media/images/cr_combined.jpg'
 import cr_physics from '../media/images/cr_physics.jpg'
 
 import randomImage1 from '../media/images/Random/1.jpg'

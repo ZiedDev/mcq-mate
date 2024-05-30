@@ -446,7 +446,9 @@ header>.content>.credits {
 
 .side-panel .credits::before {
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 25%, rgba(0, 0, 0, 0) 100%);
     background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 0) 100%);
     z-index: -1;
     content: '';
