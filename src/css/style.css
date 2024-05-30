@@ -98,6 +98,7 @@ header>.content>.credits {
     background: transparent;
     border: none;
     cursor: pointer;
+    font-size: larger;
 }
 
 @media (pointer: fine) {
@@ -132,7 +133,7 @@ header>.content>.credits {
         color: transparent;
     }
 
-    header>.content>.credits>h2 {
+    header>.content>.credits>strong {
         color: transparent;
     }
 }
@@ -189,12 +190,13 @@ header>.content>.credits {
     background-color: #21262D;
     margin: 0.25rem;
     border-radius: 0.5rem;
-    display: flex;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 4rem 1fr;
     align-items: center;
     font-size: large;
     font-weight: 500;
-    overflow-y: hidden;
-    overflow: auto;
+    overflow-x: auto;
 }
 
 @media (pointer: fine) {
@@ -217,6 +219,7 @@ header>.content>.credits {
     align-items: center;
     margin-left: 0.5rem;
     min-width: 4rem;
+    width: 4rem;
     height: 1.5rem;
 }
 
@@ -429,9 +432,6 @@ header>.content>.credits {
     align-items: end;
     justify-content: center;
     gap: 0.25rem;
-
-    /* margin-top: auto;
-    text-align: center; */
 }
 
 .side-panel .credits div {
@@ -546,6 +546,14 @@ header>.content>.credits {
     border-radius: 1rem;
     width: 100%;
     height: 100%;
+    position: relative;
+}
+
+.image-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .image-container img {
@@ -848,6 +856,10 @@ header>.content>.credits {
 
 .hide-viewer {
     bottom: -100%;
+}
+
+.ACE {
+    box-shadow: 1px 0 20px 9px #23863680, inset 1px 0 20px 9px #23863680;
 }
 
 .green {

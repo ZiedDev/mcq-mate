@@ -1,11 +1,15 @@
 import "../css/style.css"
 import olSubjectsMS from "../json/OL_subjects_ms.json"
 import alSubjectsMS from "../json/AL_subjects_ms.json"
+import crSubjectsMS from "../json/CR_subjects_ms.json"
 
 import { generateSideButton, generateMainButton, generateRandomImages } from "./generateElements.js"
 import createModal from "./modal.js"
 
 import WebViewer from '@pdftron/pdfjs-express'
+
+import JSConfetti from 'js-confetti'
+const jsConfetti = new JSConfetti()
 
 // GLOBAL VARIABLES
 let globalPdfViewer
@@ -13,6 +17,10 @@ let globalPeriodicTablePdfViewer
 let userAnswers
 let confirm = true
 const subjectCode = {
+    CRBiology: '0610',
+    CRChemistry: '0620',
+    CRCombined: '0653',
+    CRPhysics: '0625',
     OLBiology: '0610',
     OLChemistry: '0620',
     OLCombined: '0653',
@@ -202,9 +210,12 @@ function createPathElement(title, first, last) {
 
     const pathElement = document.createElement('div')
     pathElement.textContent = title
+    if (title.split(' ')[0] == 'CR') {
+        pathElement.textContent = `Core ${title.split(' ')[1]}`
+    }
 
     if (!first) {
-        const arrowElement = document.createElementNS("http://www.w3.org/2000/svg", "svg"); arrowElement.setAttribute('width', '32'); arrowElement.setAttribute('height', '32'); arrowElement.setAttribute('viewBox', '0 0 256 256'); arrowElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); arrowElement.innerHTML = '                    <path fill="currentColor" d="m184.49 136.49l-80 80a12 12 0 0 1-17-17L159 128L87.51 56.49a12 12 0 1 1 17-17l80 80a12 12 0 0 1-.02 17" />'
+        const arrowElement = document.createElementNS("http://www.w3.org/2000/svg", "svg"); arrowElement.setAttribute('width', '32'); arrowElement.setAttribute('height', '32'); arrowElement.setAttribute('viewBox', '0 0 256 256'); arrowElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg'); arrowElement.innerHTML = '<path fill="currentColor" d="m184.49 136.49l-80 80a12 12 0 0 1-17-17L159 128L87.51 56.49a12 12 0 1 1 17-17l80 80a12 12 0 0 1-.02 17" />'
         element.appendChild(arrowElement)
     }
 
@@ -256,6 +267,58 @@ pathIcon.addEventListener('click', () => {
         path.innerHTML = ''
     }
 })
+
+// creating side button for core subjects
+const sideGroupCr = document.getElementById('side-group-cr')
+Object.keys(crSubjectsMS).forEach(subject => {
+    const subjectElement = generateSideButton('cr', subject)
+    subjectElement.addEventListener('click', e => {
+        if (e.target.id == `side-cr-button-${subject}` || e.target.id == `side-cr-${subject}-title`) {
+            changePath(`cr>${subject}`)
+        }
+    })
+
+    sideGroupCr.appendChild(subjectElement)
+
+    const sideSubjectYears = document.getElementById(`side-cr-${subject}-years`)
+    Object.keys(crSubjectsMS[subject]).forEach(year => {
+        const yearElement = generateSideButton('cr', subject, year)
+        yearElement.addEventListener('click', e => {
+            if (e.target.id == `side-cr-button-${subject}-${year}` || e.target.id == `side-cr-${subject}-${year}-title`) {
+                changePath(`cr>${subject}>${year}`)
+            }
+        })
+
+        sideSubjectYears.appendChild(yearElement)
+
+        const sideYearSessions = document.getElementById(`side-cr-${subject}-${year}-sessions`)
+        Object.keys(crSubjectsMS[subject][year]).forEach(session => {
+            if (JSON.stringify(crSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                const sessionElement = generateSideButton('cr', subject, year, session)
+                sessionElement.addEventListener('click', e => {
+                    if (e.target.id == `side-cr-button-${subject}-${year}-${session}` || e.target.id == `side-cr-${subject}-${year}-${session}-title`) {
+                        changePath(`cr>${subject}>${year}>${session}`)
+                    }
+                })
+                sideYearSessions.appendChild(sessionElement)
+            }
+            const sideSessionVariants = document.getElementById(`side-cr-${subject}-${year}-${session}-variants`)
+            Object.keys(crSubjectsMS[subject][year][session]).forEach(variant => {
+                if (crSubjectsMS[subject][year][session][variant] != null) {
+                    const variantElement = generateSideButton('cr', subject, year, session, variant)
+                    variantElement.addEventListener('click', e => {
+                        if (e.target.id == `side-cr-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-cr-${subject}-${year}-${session}-${variant}-title`) {
+                            changePath(`cr>${subject}>${year}>${session}>${variant}`)
+                        }
+                    })
+
+                    sideSessionVariants.appendChild(variantElement)
+                }
+            })
+        })
+    })
+})
+
 
 // creating side buttons for ol subjects
 const sideGroupOl = document.getElementById('side-group-ol')
@@ -333,7 +396,7 @@ Object.keys(alSubjectsMS).forEach(subject => {
 
         const sideYearSessions = document.getElementById(`side-al-${subject}-${year}-sessions`)
         Object.keys(alSubjectsMS[subject][year]).forEach(session => {
-            if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+            if (JSON.stringify(alSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
                 const sessionElement = generateSideButton('al', subject, year, session)
                 sessionElement.addEventListener('click', e => {
                     if (e.target.id == `side-al-button-${subject}-${year}-${session}` || e.target.id == `side-al-${subject}-${year}-${session}-title`) {
@@ -345,7 +408,7 @@ Object.keys(alSubjectsMS).forEach(subject => {
 
             const sideSessionVariants = document.getElementById(`side-al-${subject}-${year}-${session}-variants`)
             Object.keys(alSubjectsMS[subject][year][session]).forEach(variant => {
-                if (olSubjectsMS[subject][year][session][variant] != null) {
+                if (alSubjectsMS[subject][year][session][variant] != null) {
                     const variantElement = generateSideButton('al', subject, year, session, variant)
                     variantElement.addEventListener('click', e => {
                         if (e.target.id == `side-al-button-${subject}-${year}-${session}-${variant}` || e.target.id == `side-al-${subject}-${year}-${session}-${variant}-title`) {
@@ -365,6 +428,23 @@ function createHomeMenu() {
     const home = document.createElement('div')
     home.id = 'home'
     home.classList.add('home')
+
+    const crTitle = document.createElement('h2')
+    crTitle.textContent = 'Core Subjects'
+    home.appendChild(crTitle)
+
+    const crCardsContainer = document.createElement('div')
+    Object.keys(crSubjectsMS).forEach(subject => {
+        const subjectElement = generateMainButton('cr', subject)
+        createRotatingCard(subjectElement)
+        subjectElement.addEventListener('click', () => {
+            changePath(`cr>${subject}`)
+        })
+
+        crCardsContainer.appendChild(subjectElement)
+    })
+    home.appendChild(crCardsContainer)
+
     const olTitle = document.createElement('h2')
     olTitle.textContent = 'OL Subjects'
     home.appendChild(olTitle)
@@ -410,7 +490,48 @@ function CreateSubMenu(level, subject, year, session) {
     menu.appendChild(title)
 
     const cardsContainer = document.createElement('div')
-    if (level.toLowerCase() == 'ol') {
+
+    if (level.toLowerCase() == 'cr') {
+        if (session == undefined) {
+            if (year == undefined) {
+                Object.keys(crSubjectsMS[subject]).forEach(year => {
+                    const yearElement = generateMainButton('cr', subject, year, undefined, undefined, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
+                    createRotatingCard(yearElement)
+                    yearElement.addEventListener('click', () => {
+                        changePath(`cr>${subject}>${year}`)
+                    })
+
+                    cardsContainer.appendChild(yearElement)
+                })
+            } else {
+                Object.keys(crSubjectsMS[subject][year]).forEach(session => {
+                    if (JSON.stringify(crSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                        const sessionElement = generateMainButton('cr', subject, year, session, undefined, randomImagesArray[randomImageCounter])
+                        randomImageCounter++
+                        createRotatingCard(sessionElement)
+                        sessionElement.addEventListener('click', () => {
+                            changePath(`cr>${subject}>${year}>${session}`)
+                        })
+                        cardsContainer.appendChild(sessionElement)
+                    }
+                })
+            }
+        } else {
+            Object.keys(crSubjectsMS[subject][year][session]).forEach(variant => {
+                if (crSubjectsMS[subject][year][session][variant] != null) {
+                    const variantElement = generateMainButton('cr', subject, year, session, variant, randomImagesArray[randomImageCounter])
+                    randomImageCounter++
+                    createRotatingCard(variantElement)
+                    variantElement.addEventListener('click', () => {
+                        changePath(`cr>${subject}>${year}>${session}>${variant}`)
+                    })
+
+                    cardsContainer.appendChild(variantElement)
+                }
+            })
+        }
+    } else if (level.toLowerCase() == 'ol') {
         if (session == undefined) {
             if (year == undefined) {
                 Object.keys(olSubjectsMS[subject]).forEach(year => {
@@ -465,7 +586,7 @@ function CreateSubMenu(level, subject, year, session) {
                 })
             } else {
                 Object.keys(alSubjectsMS[subject][year]).forEach(session => {
-                    if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                    if (JSON.stringify(alSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
 
                         const sessionElement = generateMainButton('al', subject, year, session, undefined, randomImagesArray[randomImageCounter])
                         randomImageCounter++
@@ -479,7 +600,7 @@ function CreateSubMenu(level, subject, year, session) {
             }
         } else {
             Object.keys(alSubjectsMS[subject][year][session]).forEach(variant => {
-                if (olSubjectsMS[subject][year][session][variant] != null) {
+                if (alSubjectsMS[subject][year][session][variant] != null) {
                     const variantElement = generateMainButton('al', subject, year, session, variant, randomImagesArray[randomImageCounter])
                     randomImageCounter++
                     createRotatingCard(variantElement)
@@ -544,7 +665,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     pdfLink.classList.add('bubble-sheet-pdf-link')
     pdfLink.id = 'bubble-sheet-pdf-link'
     pdfLink.textContent = 'Open pdf in external tab'
-    pdfLink.href = `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' ? 1 : 2}${Number(variant) + 1}.pdf`
+    pdfLink.href = `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' || level == 'cr' ? 1 : 2}${Number(variant) + 1}.pdf`
     pdfLink.setAttribute('target', '_blank')
     menu.appendChild(pdfLink)
 
@@ -552,7 +673,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     bubbleSheetContainer.id = 'bubble-sheet-container'
     bubbleSheetContainer.classList.add('bubble-sheet-container')
 
-    let modelAnswers = level == 'ol' ? olSubjectsMS[subject][year][session][variant] : alSubjectsMS[subject][year][session][variant]
+    let modelAnswers = level == 'cr' ? crSubjectsMS[subject][year][session][variant] : level == 'ol' ? olSubjectsMS[subject][year][session][variant] : level == 'al' ? alSubjectsMS[subject][year][session][variant] : ''
     let localKey = `${subject.toLowerCase().substring(0, 3)}${level.toLowerCase().substring(0, 1)}${Number(year) - 2000}${session}${Number(variant) + 1}`
 
     if (localStorage.getItem(localKey) == null) {
@@ -560,7 +681,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         localStorage.setItem(localKey + 's', '')
     }
 
-    if (useLocalAnswers) {
+    if (useLocalAnswers || localStorage.getItem(localKey + 's', '') != '' || localStorage.getItem(localKey + 's', '') != null) {
         userAnswers = localStorage.getItem(localKey).split('')
     } else {
         userAnswers = Array(40).fill('N')
@@ -800,6 +921,9 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                     () => {
                         localStorage.setItem(localKey + 's', localStorage.getItem(localKey).split('').join(''))
                         submitBehavior(localStorage.getItem(localKey + 's'))
+                        if (recalculatePastExam(localStorage.getItem(localKey + 's'))[0] == recalculatePastExam(localStorage.getItem(localKey + 's'))[1]) {
+                            jsConfetti.addConfetti()
+                        }
                     },
                 ],
                 [
@@ -810,6 +934,9 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         } else {
             localStorage.setItem(localKey + 's', localStorage.getItem(localKey).split('').join(''))
             submitBehavior(localStorage.getItem(localKey + 's'))
+            if (recalculatePastExam(localStorage.getItem(localKey + 's'))[0] == recalculatePastExam(localStorage.getItem(localKey + 's'))[1]) {
+                jsConfetti.addConfetti()
+            }
         }
     })
 
@@ -853,7 +980,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
             WebViewer({
                 licenseKey: 'QFn6U78TMfzwzFamsiBl',
                 path: './pdf-viewer', // point to where the files you copied are served from
-                initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' ? 1 : 2}${Number(variant) + 1}.pdf` // path to your document
+                initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' || level == 'cr' ? 1 : 2}${Number(variant) + 1}.pdf` // path to your document
             }, pdfViewer).then((instance) => {
                 instance.UI.setTheme('dark');
                 instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
@@ -997,6 +1124,9 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
             }
         }
         mark.textContent = `${correctAnswers} / ${modelAnswers.length}`
+        if (correctAnswers == modelAnswers.length) {
+            mark.classList.add('ACE')
+        }
     }
 
     function revealBehavior() {

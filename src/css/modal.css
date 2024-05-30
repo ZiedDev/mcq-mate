@@ -28,6 +28,16 @@
     animation: zoomIn forwards 100ms ease-out;
 }
 
+@media only screen and (max-width: 425px) {
+    .modal {
+        padding: 1rem;
+    }
+
+    .modal h2 {
+        font-size: 1.4em;
+    }
+}
+
 .modal h1,
 .modal h2 {
     text-align: center;

@@ -141,6 +141,16 @@
                 null,
                 "BBCADDABABACCBCCDDACBDADCBBBCACADCBCCADA",
                 null
+            ],
+            "s": [
+                null,
+                null,
+                null
+            ],
+            "w": [
+                null,
+                null,
+                null
             ]
         }
     },
@@ -286,6 +296,16 @@
                 null,
                 "ACBCABBBDCADCBABADBCCDACABAADCBBABACDDBD",
                 null
+            ],
+            "s": [
+                null,
+                null,
+                null
+            ],
+            "w": [
+                null,
+                null,
+                null
             ]
         }
     },
@@ -430,6 +450,16 @@
             "m": [
                 null,
                 "BCABDAADDDBADABABBCCDACADBCDCCDBBAABBABC",
+                null
+            ],
+            "s": [
+                null,
+                null,
+                null
+            ],
+            "w": [
+                null,
+                null,
                 null
             ]
         }
