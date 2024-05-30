@@ -255,6 +255,9 @@ pathIcon.addEventListener('click', () => {
     }
 })
 
+// side bar
+const openedSideBarArray = []
+
 // creating side buttons for ol subjects
 const sideGroupOl = document.getElementById('side-group-ol')
 Object.keys(olSubjectsMS).forEach(subject => {
@@ -262,13 +265,21 @@ Object.keys(olSubjectsMS).forEach(subject => {
         level: 'ol', subject: subject, generateContainerCallback: () => {
             const sideSubjectYears = document.getElementById(`side-ol-${subject}-years`)
             Object.keys(olSubjectsMS[subject]).forEach(year => {
+                let opened = openedSideBarArray.indexOf(`ol-${subject}-${year}`) == -1 ? false : true
                 const yearElement = generateSideButton({
-                    level: 'ol', subject: subject, year: year, generateContainerCallback: () => {
+                    opened: opened, level: 'ol', subject: subject, year: year, generateContainerCallback: () => {
+                        if (!opened) {
+                            openedSideBarArray.push(`ol-${subject}-${year}`)
+                        }
                         const sideYearSessions = document.getElementById(`side-ol-${subject}-${year}-sessions`)
                         Object.keys(olSubjectsMS[subject][year]).forEach(session => {
                             if (JSON.stringify(olSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                                let opened = openedSideBarArray.indexOf(`ol-${subject}-${year}-${session}`) == -1 ? false : true
                                 const sessionElement = generateSideButton({
-                                    level: 'ol', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                    opened: opened, level: 'ol', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                        if (!opened) {
+                                            openedSideBarArray.push(`ol-${subject}-${year}-${session}`)
+                                        }
                                         const sideSessionVariants = document.getElementById(`side-ol-${subject}-${year}-${session}-variants`)
                                         Object.keys(olSubjectsMS[subject][year][session]).forEach(variant => {
                                             if (olSubjectsMS[subject][year][session][variant] != null) {
@@ -283,6 +294,10 @@ Object.keys(olSubjectsMS).forEach(subject => {
                                         })
                                     }
                                     , removeContainerCallback: () => {
+                                        let index = openedSideBarArray.indexOf(`ol-${subject}-${year}-${session}`)
+                                        if (index != -1) {
+                                            openedSideBarArray.splice(index, 1)
+                                        }
                                         const sideSessionVariants = document.getElementById(`side-ol-${subject}-${year}-${session}-variants`)
                                         const variantsLength = sideSessionVariants.childNodes.length
                                         for (let i = 0; i < variantsLength; i++) {
@@ -303,6 +318,10 @@ Object.keys(olSubjectsMS).forEach(subject => {
                         })
                     }
                     , removeContainerCallback: () => {
+                        let index = openedSideBarArray.indexOf(`ol-${subject}-${year}`)
+                        if (index != -1) {
+                            openedSideBarArray.splice(index, 1)
+                        }
                         const sideYearSessions = document.getElementById(`side-ol-${subject}-${year}-sessions`)
                         const sessionsLength = sideYearSessions.childNodes.length
                         for (let i = 0; i < sessionsLength; i++) {
@@ -349,13 +368,21 @@ Object.keys(alSubjectsMS).forEach(subject => {
         level: 'al', subject: subject, generateContainerCallback: () => {
             const sideSubjectYears = document.getElementById(`side-al-${subject}-years`)
             Object.keys(alSubjectsMS[subject]).forEach(year => {
+                let opened = openedSideBarArray.indexOf(`al-${subject}-${year}`) == -1 ? false : true
                 const yearElement = generateSideButton({
-                    level: 'al', subject: subject, year: year, generateContainerCallback: () => {
+                    opened: opened, level: 'al', subject: subject, year: year, generateContainerCallback: () => {
+                        if (!opened) {
+                            openedSideBarArray.push(`al-${subject}-${year}`)
+                        }
                         const sideYearSessions = document.getElementById(`side-al-${subject}-${year}-sessions`)
                         Object.keys(alSubjectsMS[subject][year]).forEach(session => {
-                            if (JSON.stringify(aSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                            if (JSON.stringify(alSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                                let opened = openedSideBarArray.indexOf(`al-${subject}-${year}-${session}`) == -1 ? false : true
                                 const sessionElement = generateSideButton({
-                                    level: 'al', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                    opened: opened, level: 'al', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                        if (!opened) {
+                                            openedSideBarArray.push(`al-${subject}-${year}-${session}`)
+                                        }
                                         const sideSessionVariants = document.getElementById(`side-al-${subject}-${year}-${session}-variants`)
                                         Object.keys(alSubjectsMS[subject][year][session]).forEach(variant => {
                                             if (alSubjectsMS[subject][year][session][variant] != null) {
@@ -370,6 +397,10 @@ Object.keys(alSubjectsMS).forEach(subject => {
                                         })
                                     }
                                     , removeContainerCallback: () => {
+                                        let index = openedSideBarArray.indexOf(`al-${subject}-${year}-${session}`)
+                                        if (index != -1) {
+                                            openedSideBarArray.splice(index, 1)
+                                        }
                                         const sideSessionVariants = document.getElementById(`side-al-${subject}-${year}-${session}-variants`)
                                         const variantsLength = sideSessionVariants.childNodes.length
                                         for (let i = 0; i < variantsLength; i++) {
@@ -390,6 +421,10 @@ Object.keys(alSubjectsMS).forEach(subject => {
                         })
                     }
                     , removeContainerCallback: () => {
+                        let index = openedSideBarArray.indexOf(`al-${subject}-${year}`)
+                        if (index != -1) {
+                            openedSideBarArray.splice(index, 1)
+                        }
                         const sideYearSessions = document.getElementById(`side-al-${subject}-${year}-sessions`)
                         const sessionsLength = sideYearSessions.childNodes.length
                         for (let i = 0; i < sessionsLength; i++) {
@@ -436,13 +471,21 @@ Object.keys(crSubjectsMS).forEach(subject => {
         level: 'cr', subject: subject, generateContainerCallback: () => {
             const sideSubjectYears = document.getElementById(`side-cr-${subject}-years`)
             Object.keys(crSubjectsMS[subject]).forEach(year => {
+                let opened = openedSideBarArray.indexOf(`cr-${subject}-${year}`) == -1 ? false : true
                 const yearElement = generateSideButton({
-                    level: 'cr', subject: subject, year: year, generateContainerCallback: () => {
+                    opened: opened, level: 'cr', subject: subject, year: year, generateContainerCallback: () => {
+                        if (!opened) {
+                            openedSideBarArray.push(`cr-${subject}-${year}`)
+                        }
                         const sideYearSessions = document.getElementById(`side-cr-${subject}-${year}-sessions`)
                         Object.keys(crSubjectsMS[subject][year]).forEach(session => {
                             if (JSON.stringify(crSubjectsMS[subject][year][session]) != JSON.stringify([null, null, null])) {
+                                let opened = openedSideBarArray.indexOf(`cr-${subject}-${year}-${session}`) == -1 ? false : true
                                 const sessionElement = generateSideButton({
-                                    level: 'cr', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                    opened: opened, level: 'cr', subject: subject, year: year, session: session, generateContainerCallback: () => {
+                                        if (!opened) {
+                                            openedSideBarArray.push(`cr-${subject}-${year}-${session}`)
+                                        }
                                         const sideSessionVariants = document.getElementById(`side-cr-${subject}-${year}-${session}-variants`)
                                         Object.keys(crSubjectsMS[subject][year][session]).forEach(variant => {
                                             if (crSubjectsMS[subject][year][session][variant] != null) {
@@ -457,6 +500,10 @@ Object.keys(crSubjectsMS).forEach(subject => {
                                         })
                                     }
                                     , removeContainerCallback: () => {
+                                        let index = openedSideBarArray.indexOf(`cr-${subject}-${year}-${session}`)
+                                        if (index != -1) {
+                                            openedSideBarArray.splice(index, 1)
+                                        }
                                         const sideSessionVariants = document.getElementById(`side-cr-${subject}-${year}-${session}-variants`)
                                         const variantsLength = sideSessionVariants.childNodes.length
                                         for (let i = 0; i < variantsLength; i++) {
@@ -477,6 +524,10 @@ Object.keys(crSubjectsMS).forEach(subject => {
                         })
                     }
                     , removeContainerCallback: () => {
+                        let index = openedSideBarArray.indexOf(`cr-${subject}-${year}`)
+                        if (index != -1) {
+                            openedSideBarArray.splice(index, 1)
+                        }
                         const sideYearSessions = document.getElementById(`side-cr-${subject}-${year}-sessions`)
                         const sessionsLength = sideYearSessions.childNodes.length
                         for (let i = 0; i < sessionsLength; i++) {
@@ -515,6 +566,7 @@ Object.keys(crSubjectsMS).forEach(subject => {
 
     sideGroupCr.appendChild(subjectElement)
 })
+
 // creating home menu
 
 function createHomeMenu() {
