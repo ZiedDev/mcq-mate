@@ -113,7 +113,9 @@ function generateMainButton(level, subject, year, session, variant, randomImage)
     }
 
     imageIcon.classList.add('hidden')
+    image.classList.add('hidden'); imageIcon.classList.remove('hidden')
     image.onerror = () => { image.classList.add('hidden'); imageIcon.classList.remove('hidden') }
+    image.onload = () => { image.classList.remove('hidden'); imageIcon.classList.add('hidden') }
     if (randomImage != undefined) {
         image.src = randomImages[`randomImage${randomImage + 1}`]
         image.alt = 'random image'
