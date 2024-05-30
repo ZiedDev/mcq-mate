@@ -3,12 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#010409">
 
     <!-- Webapp shortcut ios -->
-    <link rel="apple-touch-startup-image" href="./media/icon/icon-x512.png"
-        media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+    <link rel="apple-touch-startup-image" href="./media/icon/icon-x512.png" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -33,6 +32,13 @@
     <script src="./bundle.js" defer></script>
     <meta name="description"
         content="MCQ Mate is an mcq checker for Cambridge IGCSE and A-Level subjects that have an mcq (Multiple-Choice-Questions) paper.">
+    <meta property="og:title" content="MCQ Mate" />
+    <meta property="og:type" content="image.png" />
+    <meta property="og:url" content="https://zieddev.github.io/mcq-mate" />
+    <meta property="og:image" content="./media/icon/icon-x512.png" />
+    <meta property="og:description"
+        content="MCQ Mate is an mcq checker for Cambridge IGCSE and A-Level subjects that have an mcq (Multiple-Choice-Questions) paper." />
+    <meta property="og:site_name" content="MCQ Mate" />
     <title>MCQ Mate</title>
 </head>
 
@@ -43,7 +49,7 @@
         </div>
         <div class="content" id="content">
             <button class="credits" id="credits">
-                <h2>Credits</h2>
+                <strong>Credits</strong>
             </button>
         </div>
     </header>
@@ -77,8 +83,12 @@
             </div>
         </div>
     </section>
-    <section class="main-section">
-        <div class="side-panel" id="side-panel">
+    <div class="main-section">
+        <aside class="side-panel" id="side-panel">
+            <div>
+                <div class="side-group-title" id="side-group-title-cr">Core Subjects</div>
+                <div class="side-group" id="side-group-cr"></div>
+            </div>
             <div>
                 <div class="side-group-title" id="side-group-title-ol">OL Subjects</div>
                 <div class="side-group" id="side-group-ol"></div>
@@ -92,12 +102,12 @@
                 <div>© <a href="http://www.github.com/ZiedDev" target="_blank">Zied</a> ● <a
                         href="https://github.com/omar-elsherbiny" target="_blank">Sherbo</a></div>
             </div>
-        </div>
+        </aside>
 
         <div class="main-container">
             <main class="main" id="main"></main>
         </div>
-    </section>
+    </div>
 </body>
 
 </html>
