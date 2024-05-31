@@ -8,6 +8,9 @@ import createModal from "./modal.js"
 
 import WebViewer from '@pdftron/pdfjs-express'
 
+import registerServiceWorker from "./serviceWorkerRegistration.js"
+registerServiceWorker()
+
 import JSConfetti from 'js-confetti'
 const jsConfetti = new JSConfetti()
 
@@ -1118,26 +1121,40 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M200 164v8h12a12 12 0 0 1 0 24h-12v12a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h32a12 12 0 0 1 0 24Zm-108 8a32 32 0 0 1-32 32h-4v4a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h16a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8h-4v16h4a8 8 0 0 0 8-8m100 8a40 40 0 0 1-40 40h-16a12 12 0 0 1-12-12v-56a12 12 0 0 1 12-12h16a40 40 0 0 1 40 40m-24 0a16 16 0 0 0-16-16h-4v32h4a16 16 0 0 0 16-16M36 108V40a20 20 0 0 1 20-20h96a12 12 0 0 1 8.49 3.52l56 56A12 12 0 0 1 220 88v20a12 12 0 0 1-24 0v-4h-48a12 12 0 0 1-12-12V44H60v64a12 12 0 0 1-24 0m124-51v23h23Z"/></svg>`
     switchToPdf.addEventListener('click', () => {
         if (!pdfViewOpened) {
-            const pdfViewer = document.createElement('div')
-            pdfViewer.id = 'pdf-viewer'
-            pdfViewer.classList.add('pdf-viewer')
+            if (navigator.onLine) {
+                const pdfViewer = document.createElement('div')
+                pdfViewer.id = 'pdf-viewer'
+                pdfViewer.classList.add('pdf-viewer')
 
-            WebViewer({
-                licenseKey: 'QFn6U78TMfzwzFamsiBl',
-                path: './pdf-viewer', // point to where the files you copied are served from
-                initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' || level == 'cr' ? 1 : 2}${Number(variant) + 1}.pdf` // path to your document
-            }, pdfViewer).then((instance) => {
-                instance.UI.setTheme('dark');
-                instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
-                instance.enableFeatures([instance.Feature.Download]);
-            })
-
-            pdfViewOpened = true
-            pdfViewerContainer.appendChild(pdfViewer)
+                WebViewer({
+                    licenseKey: 'QFn6U78TMfzwzFamsiBl',
+                    path: './pdf-viewer', // point to where the files you copied are served from
+                    initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == 's' ? 'May-Jun' : session == 'w' ? 'Oct-Nov' : 'Feb-Mar'}/${subjectCode[`${level.toUpperCase()}${subject}`]}_${session}${Number(year) - 2000}_qp_${subject == 'Economics' ? 1 : level == 'al' || level == 'cr' ? 1 : 2}${Number(variant) + 1}.pdf` // path to your document
+                }, pdfViewer).then((instance) => {
+                    instance.UI.setTheme('dark');
+                    instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
+                    instance.enableFeatures([instance.Feature.Download]);
+                    pdfViewOpened = true
+                })
+                pdfViewerContainer.appendChild(pdfViewer)
+            } else {
+                createModal(
+                    'You are currently offline', // title
+                    [
+                        'Unable to load the pdfs while in offline.',
+                        'Check you internet connectivity and try again.'
+                    ], // content,
+                    [
+                        'Close',
+                        () => { },
+                    ]
+                )
+            }
         } else {
             const pdfViewer = document.getElementById('pdf-viewer')
             pdfViewer.classList.toggle('hide-viewer')
         }
+
     })
     pdfViewerContainer.appendChild(switchToPdf)
 
@@ -1191,22 +1208,37 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 25.52 22.13"><path d="M21.58,22.13H3.94c-.55,0-1-.45-1-1v-2.87c0-.55,.45-1,1-1H21.58c.55,0,1,.45,1,1v2.87c0,.55-.45,1-1,1Zm-16.64-2h15.64v-.87H4.94v.87Z"/><path d="M24.52,16.83H1c-.55,0-1-.45-1-1V1C0,.45,.45,0,1,0H3.94c.55,0,1,.45,1,1v1.94h1.94c.55,0,1,.45,1,1v1.94h3.88v-1.94c0-.55,.45-1,1-1h7.82V1c0-.55,.45-1,1-1h2.94c.55,0,1,.45,1,1V15.83c0,.55-.45,1-1,1ZM2,14.83H23.52V2h-.94v1.94c0,.55-.45,1-1,1h-7.82v1.94c0,.55-.45,1-1,1H6.88c-.55,0-1-.45-1-1v-1.94h-1.94c-.55,0-1-.45-1-1v-1.94h-.94V14.83Z"/></svg>`
         switchToPdf.addEventListener('click', () => {
             if (!periodicTablePdfViewOpened) {
-                const pdfViewer = document.createElement('div')
-                pdfViewer.id = 'periodic-table-pdf-viewer'
-                pdfViewer.classList.add('periodic-table-pdf-viewer')
+                if (navigator.onLine) {
+                    const pdfViewer = document.createElement('div')
+                    pdfViewer.id = 'periodic-table-pdf-viewer'
+                    pdfViewer.classList.add('periodic-table-pdf-viewer')
 
-                WebViewer({
-                    licenseKey: 'QFn6U78TMfzwzFamsiBl',
-                    path: './pdf-viewer', // point to where the files you copied are served from
-                    initialDoc: `./pdfs/periodic-table.pdf` // path to your document
-                }, pdfViewer).then((instance) => {
-                    instance.UI.setTheme('dark');
-                    instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
-                    instance.enableFeatures([instance.Feature.Download]);
-                })
+                    WebViewer({
+                        licenseKey: 'QFn6U78TMfzwzFamsiBl',
+                        path: './pdf-viewer', // point to where the files you copied are served from
+                        initialDoc: `./pdfs/periodic-table.pdf` // path to your document
+                    }, pdfViewer).then((instance) => {
+                        instance.UI.setTheme('dark');
+                        instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
+                        instance.enableFeatures([instance.Feature.Download]);
+                    })
 
-                periodicTablePdfViewOpened = true
-                periodicTablePdfViewContainer.appendChild(pdfViewer)
+                    periodicTablePdfViewOpened = true
+                    periodicTablePdfViewContainer.appendChild(pdfViewer)
+
+                } else {
+                    createModal(
+                        'You are currently offline', // title
+                        [
+                            'Unable to load the pdfs while in offline.',
+                            'Check you internet connectivity and try again.'
+                        ], // content,
+                        [
+                            'Close',
+                            () => { },
+                        ]
+                    )
+                }
             } else {
                 const pdfViewer = document.getElementById('periodic-table-pdf-viewer')
                 pdfViewer.classList.toggle('hide-viewer')

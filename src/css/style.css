@@ -718,8 +718,8 @@ header>.content>.credits {
     background-color: #abafb2;
     border: none;
     padding: 0.5rem;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 100%;
     transition: background-color 100ms ease;
 }

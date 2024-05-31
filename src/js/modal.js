@@ -1,4 +1,5 @@
 import '../css/modal.css'
+const animationTime = 200
 
 function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior, defaultBehavior = () => { }) {
     const modalContainer = document.createElement('div')
@@ -29,8 +30,12 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
     backdrop.classList.add('backdrop')
 
     backdrop.addEventListener('click', () => {
-        modalContainer.parentNode.removeChild(modalContainer)
-        defaultBehavior()
+        modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
+        backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
+        let timeout = setTimeout(() => {
+            defaultBehavior()
+            modalContainer.parentNode.removeChild(modalContainer)
+        }, animationTime);
     })
 
     document.addEventListener('keydown', e => {
@@ -39,8 +44,12 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
                 return
             }
 
-            modalContainer.parentNode.removeChild(modalContainer)
-            defaultBehavior()
+            modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
+            backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
+            let timeout = setTimeout(() => {
+                defaultBehavior()
+                modalContainer.parentNode.removeChild(modalContainer)
+            }, animationTime);
         }
 
     })
@@ -53,8 +62,12 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
         submitButton.textContent = submitButtonBehavior[0]
 
         submitButton.addEventListener('click', () => {
-            submitButtonBehavior[1]()
-            modalContainer.parentNode.removeChild(modalContainer)
+            modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
+            backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
+            let timeout = setTimeout(() => {
+                submitButtonBehavior[1]()
+                modalContainer.parentNode.removeChild(modalContainer)
+            }, animationTime);
         })
 
         modalButtonsContainer.appendChild(submitButton)
@@ -65,8 +78,12 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
         cancelButton.textContent = cancelButtonBehavior[0]
 
         cancelButton.addEventListener('click', () => {
-            cancelButtonBehavior[1]()
-            modalContainer.parentNode.removeChild(modalContainer)
+            modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
+            backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
+            let timeout = setTimeout(() => {
+                cancelButtonBehavior[1]()
+                modalContainer.parentNode.removeChild(modalContainer)
+            }, animationTime);
         })
 
         modalButtonsContainer.appendChild(cancelButton)

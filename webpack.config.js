@@ -1,4 +1,6 @@
 const path = require('path');
+const CopyPlugin = require("copy-webpack-plugin");
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = {
     mode: 'production',
@@ -20,5 +22,19 @@ module.exports = {
                 type: 'asset/resource',
             },
         ],
-    }
+    },
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                { from: "./src/media/images/icon", to: "./media/icon" },
+                { from: "./src/index.html", to: "./" },
+                { from: "./src/manifest.json", to: "./" },
+            ],
+        }),
+        new InjectManifest({
+            swSrc: './src/js/src-sw.js',
+            swDest: './sw.js',
+            maximumFileSizeToCacheInBytes: 10485760,
+        })
+    ]
 };
