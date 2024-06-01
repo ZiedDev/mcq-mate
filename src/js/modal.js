@@ -1,5 +1,6 @@
 import '../css/modal.css'
 const animationTime = 200
+let modalTimeout
 
 function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior, defaultBehavior = () => { }) {
     const modalContainer = document.createElement('div')
@@ -32,7 +33,8 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
     backdrop.addEventListener('click', () => {
         modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
         backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
-        let timeout = setTimeout(() => {
+        clearTimeout(modalTimeout)
+        modalTimeout = setTimeout(() => {
             defaultBehavior()
             modalContainer.parentNode.removeChild(modalContainer)
         }, animationTime);
@@ -46,7 +48,8 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
 
             modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
             backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
-            let timeout = setTimeout(() => {
+            clearTimeout(modalTimeout)
+            modalTimeout = setTimeout(() => {
                 defaultBehavior()
                 modalContainer.parentNode.removeChild(modalContainer)
             }, animationTime);
@@ -64,7 +67,8 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
         submitButton.addEventListener('click', () => {
             modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
             backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
-            let timeout = setTimeout(() => {
+            clearTimeout(modalTimeout)
+            modalTimeout = setTimeout(() => {
                 submitButtonBehavior[1]()
                 modalContainer.parentNode.removeChild(modalContainer)
             }, animationTime);
@@ -80,7 +84,8 @@ function createModal(title, contents, submitButtonBehavior, cancelButtonBehavior
         cancelButton.addEventListener('click', () => {
             modal.style.animation = `zoomOut forwards ${animationTime}ms ease-out`
             backdrop.style.animation = `fadeOut forwards ${animationTime}ms`
-            let timeout = setTimeout(() => {
+            clearTimeout(modalTimeout)
+            modalTimeout = setTimeout(() => {
                 cancelButtonBehavior[1]()
                 modalContainer.parentNode.removeChild(modalContainer)
             }, animationTime);

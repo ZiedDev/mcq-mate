@@ -27,7 +27,10 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "./src/media/images/icon", to: "./media/icon" },
+                { from: "./src/media/images/screenshots", to: "./media/screenshots" },
+                { from: "./src/media/images/guides", to: "./media/guides" },
                 { from: "./src/index.html", to: "./" },
+                { from: "./src/guides.html", to: "./" },
                 { from: "./src/manifest.json", to: "./" },
             ],
         }),
@@ -35,6 +38,7 @@ module.exports = {
             swSrc: './src/js/src-sw.js',
             swDest: './sw.js',
             maximumFileSizeToCacheInBytes: 10485760,
+
         })
     ]
 };

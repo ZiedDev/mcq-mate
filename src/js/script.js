@@ -11,6 +11,127 @@ import WebViewer from '@pdftron/pdfjs-express'
 import registerServiceWorker from "./serviceWorkerRegistration.js"
 registerServiceWorker()
 
+const hamburgerMenuContainer = document.getElementById('hamburger-menu-container')
+const hamburgerMenuButtonOpen = document.getElementById('hamburger-menu-button-opened')
+const hamburgerMenuButtonClose = document.getElementById('hamburger-menu-button-closed')
+const headerContent = document.getElementById('header-content')
+let hamburgerOpened = false
+hamburgerMenuContainer.addEventListener('click', () => {
+    if (!hamburgerOpened) {
+        headerContent.style.animation = ''
+        hamburgerMenuButtonOpen.classList.add('hidden')
+        hamburgerMenuButtonClose.classList.remove('hidden')
+        headerContent.classList.add('header-content-opened')
+        hamburgerMenuContainer.classList.add('hamburger-menu-container-opened')
+        let timeout = setTimeout(() => {
+            hamburgerOpened = true
+            clearTimeout(timeout)
+        }, 1);
+    }
+})
+document.addEventListener('click', e => {
+    if (hamburgerOpened) {
+        const headerContentMousePos = {
+            x: (e.clientX - headerContent.getBoundingClientRect().x) / headerContent.getBoundingClientRect().width,
+            y: (e.clientY - headerContent.getBoundingClientRect().y) / headerContent.getBoundingClientRect().height
+        }
+        if ((headerContentMousePos.x < 0 || headerContentMousePos.x > 1) || (headerContentMousePos.y < 0 || headerContentMousePos.y > 1)) {
+            hamburgerMenuButtonOpen.classList.remove('hidden')
+            hamburgerMenuButtonClose.classList.add('hidden')
+            headerContent.style.animation = 'closeHeaderContent 100ms'
+            hamburgerMenuContainer.classList.remove('hamburger-menu-container-opened')
+            headerContent.classList.remove('header-content-opened')
+            hamburgerOpened = false
+        }
+    }
+})
+
+let importedFile
+
+async function readImport(e) {
+    const file = e.target.files.item(0)
+    const content = await file.text()
+
+    importedFile = content
+}
+
+const dataButton = document.getElementById('data')
+dataButton.addEventListener('click', () => {
+    createModal(
+        'Your data', // title
+        [
+            'Here you can Export or Import your data to not lose your progress',
+        ], // content
+        [
+            'Import',
+            () => {
+                createModal(
+                    'Import',
+                    [
+                        'Import an existing data.json file to load it.',
+                        'WARNING: Importing clears your current local data.',
+                        ['<input type="file" id="imported-file" style="padding: 2rem;background: transparent;border-radius: 1rem;border: #0D1117 2pt dashed; color: #010409;" accept=".json">', () => {
+                            addGlobalEventListener('change', '#imported-file', readImport)
+                        }],
+                    ],
+                    ['  Import  ', () => {
+                        try {
+                            importJson(importedFile)
+                            document.body.appendChild(createModal(
+                                'Done',
+                                ['Date Imported'],
+                                ['  Ok  ', () => { }]
+                            ))
+                        } catch (error) {
+                            document.body.appendChild(createModal(
+                                'Error',
+                                ['Invalid Import'],
+                                ['  Ok  ', () => { }]
+                            ))
+                        }
+                    }]
+                )
+            }
+        ],
+        [
+            'Export',
+            () => {
+                let blob = new Blob([getExportJson()], { type: 'application/json' })
+
+                const a = document.createElement('a')
+                a.download = 'My MCQ Mate data.json'
+                a.href = window.URL.createObjectURL(blob)
+                a.click() // Trigger download
+            }
+        ]
+    )
+})
+
+function getExportJson() {
+    let dict = localStorage
+    delete dict["persist:viewer"]
+    return JSON.stringify(dict)
+}
+
+function importJson(content) {
+    try {
+        const parsed = JSON.parse(content)
+        const regexPattern = new RegExp(/[a-z]{3}[oac][0-9]{2}[wsm][1-3][s]?/gmi)
+        Object.keys(parsed).forEach(key => {
+            if (JSON.stringify(key.match(regexPattern)) != JSON.stringify([`${key}`])) {
+                throw new Error('bro gave us a broken file 😔')
+            }
+        })
+
+        localStorage.clear()
+        Object.keys(parsed).forEach(key => {
+            localStorage.setItem(key, parsed[key])
+        })
+    } catch (error) {
+        throw new Error('bro gave us a broken file 😔')
+    }
+}
+
 import JSConfetti from 'js-confetti'
 const jsConfetti = new JSConfetti()
 
@@ -32,7 +153,8 @@ creditsButton.addEventListener('click', () => {
         [
             'Thanks For using <br> the website <3',
             'Website created by <br> <a href="https://github.com/ZiedDev" target="_blank">Zied</a> & <a href="https://github.com/omar-elsherbiny" target="_blank">Sherbo</a>',
-            'Repository: <br> <a href="https://github.com/ZiedDev/mcq-mate" target="_blank">MCQ Mate</a>'
+            'Special Thanks to: <br> <a href="https://gceguide.net/" target="_blank">GCE Guide</a> <br> <a href="https://papacambridge.com/" target="_blank">Papa Cambridge</a>',
+            'Repository: <br> <a href="https://github.com/ZiedDev/mcq-mate" target="_blank">MCQ Mate</a>',
         ], // content
     )
 })
@@ -76,6 +198,10 @@ function backwardPath() {
 }
 
 function changePath(new_path) {
+    if (current_path == new_path) {
+        return;
+    }
+
     randomImagesArray = generateRandomImages()
     randomImageCounter = 0
     backward_stack.push(current_path);
@@ -254,7 +380,6 @@ const pathIcon = document.getElementById('path-icon')
 pathIcon.addEventListener('click', () => {
     if (current_path != 'home') {
         changePath('home')
-        path.innerHTML = ''
     }
 })
 
@@ -889,53 +1014,94 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         }
 
         questionA.addEventListener('click', () => {
-            questionA.classList.add('bubble-chosen')
-            questionB.classList.remove('bubble-chosen')
-            questionC.classList.remove('bubble-chosen')
-            questionD.classList.remove('bubble-chosen')
-            userAnswers[i] = 'A'
-            let localAnswersString = localStorage.getItem(localKey).split('')
-            localAnswersString[i] = 'A'
-            localStorage.setItem(localKey, localAnswersString.join(''))
+            if (userAnswers[i] != 'A') {
+                questionA.classList.add('bubble-chosen')
+                questionB.classList.remove('bubble-chosen')
+                questionC.classList.remove('bubble-chosen')
+                questionD.classList.remove('bubble-chosen')
+                userAnswers[i] = 'A'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'A'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            } else {
+                questionA.classList.remove('bubble-chosen')
+                questionB.classList.remove('bubble-chosen')
+                questionC.classList.remove('bubble-chosen')
+                questionD.classList.remove('bubble-chosen')
+                userAnswers[i] = 'N'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'N'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            }
         })
         bubbleSheetContainer.appendChild(questionA)
 
         questionB.addEventListener('click', () => {
-            questionA.classList.remove('bubble-chosen')
-            questionB.classList.add('bubble-chosen')
-            questionC.classList.remove('bubble-chosen')
-            questionD.classList.remove('bubble-chosen')
-            userAnswers[i] = 'B'
-            let localAnswersString = localStorage.getItem(localKey).split('')
-            localAnswersString[i] = 'B'
-            localStorage.setItem(localKey, localAnswersString.join(''))
-
+            if (userAnswers[i] != 'B') {
+                questionA.classList.remove('bubble-chosen')
+                questionB.classList.add('bubble-chosen')
+                questionC.classList.remove('bubble-chosen')
+                questionD.classList.remove('bubble-chosen')
+                userAnswers[i] = 'B'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'B'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            } else {
+                questionA.classList.remove('bubble-chosen')
+                questionB.classList.remove('bubble-chosen')
+                questionC.classList.remove('bubble-chosen')
+                questionD.classList.remove('bubble-chosen')
+                userAnswers[i] = 'N'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'N'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            }
         })
         bubbleSheetContainer.appendChild(questionB)
 
         questionC.addEventListener('click', () => {
-            questionA.classList.remove('bubble-chosen')
-            questionB.classList.remove('bubble-chosen')
-            questionC.classList.add('bubble-chosen')
-            questionD.classList.remove('bubble-chosen')
-            userAnswers[i] = 'C'
-            let localAnswersString = localStorage.getItem(localKey).split('')
-            localAnswersString[i] = 'C'
-            localStorage.setItem(localKey, localAnswersString.join(''))
-
+            if (userAnswers[i] != 'C') {
+                questionA.classList.remove('bubble-chosen')
+                questionB.classList.remove('bubble-chosen')
+                questionC.classList.add('bubble-chosen')
+                questionD.classList.remove('bubble-chosen')
+                userAnswers[i] = 'C'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'C'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            } else {
+                questionA.classList.remove('bubble-chosen')
+                questionB.classList.remove('bubble-chosen')
+                questionC.classList.remove('bubble-chosen')
+                questionD.classList.remove('bubble-chosen')
+                userAnswers[i] = 'N'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'N'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            }
         })
         bubbleSheetContainer.appendChild(questionC)
 
         questionD.addEventListener('click', () => {
-            questionA.classList.remove('bubble-chosen')
-            questionB.classList.remove('bubble-chosen')
-            questionC.classList.remove('bubble-chosen')
-            questionD.classList.add('bubble-chosen')
-            userAnswers[i] = 'D'
-            let localAnswersString = localStorage.getItem(localKey).split('')
-            localAnswersString[i] = 'D'
-            localStorage.setItem(localKey, localAnswersString.join(''))
-
+            if (userAnswers[i] != 'D') {
+                questionA.classList.remove('bubble-chosen')
+                questionB.classList.remove('bubble-chosen')
+                questionC.classList.remove('bubble-chosen')
+                questionD.classList.add('bubble-chosen')
+                userAnswers[i] = 'D'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'D'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            } else {
+                questionA.classList.remove('bubble-chosen')
+                questionB.classList.remove('bubble-chosen')
+                questionC.classList.remove('bubble-chosen')
+                questionD.classList.remove('bubble-chosen')
+                userAnswers[i] = 'N'
+                let localAnswersString = localStorage.getItem(localKey).split('')
+                localAnswersString[i] = 'N'
+                localStorage.setItem(localKey, localAnswersString.join(''))
+            }
         })
         bubbleSheetContainer.appendChild(questionD)
     }
@@ -1119,7 +1285,14 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     const switchToPdf = document.createElement('div')
     switchToPdf.classList.add('switch-to-pdf')
     switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M200 164v8h12a12 12 0 0 1 0 24h-12v12a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h32a12 12 0 0 1 0 24Zm-108 8a32 32 0 0 1-32 32h-4v4a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h16a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8h-4v16h4a8 8 0 0 0 8-8m100 8a40 40 0 0 1-40 40h-16a12 12 0 0 1-12-12v-56a12 12 0 0 1 12-12h16a40 40 0 0 1 40 40m-24 0a16 16 0 0 0-16-16h-4v32h4a16 16 0 0 0 16-16M36 108V40a20 20 0 0 1 20-20h96a12 12 0 0 1 8.49 3.52l56 56A12 12 0 0 1 220 88v20a12 12 0 0 1-24 0v-4h-48a12 12 0 0 1-12-12V44H60v64a12 12 0 0 1-24 0m124-51v23h23Z"/></svg>`
-    switchToPdf.addEventListener('click', () => {
+    switchToPdf.addEventListener('click', openPdf)
+    document.addEventListener('keyup', e => {
+        if (e.key == 'z') {
+            openPdf()
+        }
+    })
+
+    function openPdf() {
         if (!pdfViewOpened) {
             if (navigator.onLine) {
                 const pdfViewer = document.createElement('div')
@@ -1135,7 +1308,14 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                     instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
                     instance.enableFeatures([instance.Feature.Download]);
                     pdfViewOpened = true
+
+                    instance.addEventListener('keydown', e => {
+                        if (e.key == 'z') {
+                            openPdf()
+                        }
+                    })
                 })
+
                 pdfViewerContainer.appendChild(pdfViewer)
             } else {
                 createModal(
@@ -1154,8 +1334,8 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
             const pdfViewer = document.getElementById('pdf-viewer')
             pdfViewer.classList.toggle('hide-viewer')
         }
+    }
 
-    })
     pdfViewerContainer.appendChild(switchToPdf)
 
     globalPdfViewer = pdfViewerContainer
@@ -1206,7 +1386,15 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         const switchToPdf = document.createElement('div')
         switchToPdf.classList.add('switch-to-periodic-table-pdf')
         switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 25.52 22.13"><path d="M21.58,22.13H3.94c-.55,0-1-.45-1-1v-2.87c0-.55,.45-1,1-1H21.58c.55,0,1,.45,1,1v2.87c0,.55-.45,1-1,1Zm-16.64-2h15.64v-.87H4.94v.87Z"/><path d="M24.52,16.83H1c-.55,0-1-.45-1-1V1C0,.45,.45,0,1,0H3.94c.55,0,1,.45,1,1v1.94h1.94c.55,0,1,.45,1,1v1.94h3.88v-1.94c0-.55,.45-1,1-1h7.82V1c0-.55,.45-1,1-1h2.94c.55,0,1,.45,1,1V15.83c0,.55-.45,1-1,1ZM2,14.83H23.52V2h-.94v1.94c0,.55-.45,1-1,1h-7.82v1.94c0,.55-.45,1-1,1H6.88c-.55,0-1-.45-1-1v-1.94h-1.94c-.55,0-1-.45-1-1v-1.94h-.94V14.83Z"/></svg>`
-        switchToPdf.addEventListener('click', () => {
+        switchToPdf.addEventListener('click', openPeriodicTable)
+        document.addEventListener('keyup', e => {
+            if (e.key == 'x') {
+                openPeriodicTable()
+            }
+        })
+
+
+        function openPeriodicTable() {
             if (!periodicTablePdfViewOpened) {
                 if (navigator.onLine) {
                     const pdfViewer = document.createElement('div')
@@ -1221,6 +1409,11 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                         instance.UI.setTheme('dark');
                         instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
                         instance.enableFeatures([instance.Feature.Download]);
+                        instance.addEventListener('keyup', e => {
+                            if (e.key == 'x') {
+                                openPeriodicTable()
+                            }
+                        })
                     })
 
                     periodicTablePdfViewOpened = true
@@ -1243,7 +1436,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                 const pdfViewer = document.getElementById('periodic-table-pdf-viewer')
                 pdfViewer.classList.toggle('hide-viewer')
             }
-        })
+        }
 
         periodicTablePdfViewContainer.appendChild(switchToPdf)
 
@@ -1278,25 +1471,23 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     function submitBehavior(userAnswers) {
         let correctAnswers = 0;
         for (let i = 0; i < modelAnswers.length; i++) {
+            const Question = document.getElementById(`question-${i}-number`)
+            const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
+
+            correctedQuestion.classList.remove('corrected-question')
+            Question.classList.remove('wrong-question')
+            Question.classList.remove('correct-question')
+            Question.classList.remove('discounted-question')
+
             if (modelAnswers[i] == 'Q') {
                 correctAnswers++
-
-                const discountedQuestion = document.getElementById(`question-${i}-number`)
-                discountedQuestion.classList.remove('wrong-question')
-                discountedQuestion.classList.remove('correct-question')
-                discountedQuestion.classList.add('discounted-question')
-
+                Question.classList.add('discounted-question')
             } else if (modelAnswers[i] == userAnswers[i]) {
                 correctAnswers++
-                const correctQuestion = document.getElementById(`question-${i}-number`)
-                correctQuestion.classList.remove('wrong-question')
-                correctQuestion.classList.add('correct-question')
+                Question.classList.add('correct-question')
             } else if (userAnswers[i] == '' || userAnswers[i] == 'N') { } else {
-                const wrongQuestion = document.getElementById(`question-${i}-number`)
-                wrongQuestion.classList.remove('correct-question')
-                wrongQuestion.classList.add('wrong-question')
+                Question.classList.add('wrong-question')
 
-                const correctedQuestion = document.getElementById(`question-${i}-${modelAnswers[i].toLowerCase()}`)
                 correctedQuestion.classList.add('corrected-question')
             }
         }
@@ -1326,6 +1517,17 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     }
 
     return menu
+}
+
+// Global EventListener
+function addGlobalEventListener(type, selector, callback, options) {
+    document.addEventListener(
+        type,
+        e => {
+            if (e.target.matches(selector)) callback(e)
+        },
+        options
+    )
 }
 
 // appending home to main

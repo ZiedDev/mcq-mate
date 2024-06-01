@@ -26,7 +26,7 @@
     <link rel="manifest" href="manifest.json">
 
     <!-- Favicon -->
-    <link rel="shortcut icon" href="./media/icon/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="./media/icon/favicon-x64.ico" type="image/x-icon">
 
     <!-- Linking my stuff -->
     <script src="./bundle.js" defer></script>
@@ -152,9 +152,29 @@
             <h1>MCQ Mate</h1>
         </div>
         <div class="content" id="content">
-            <button class="credits" id="credits">
-                <strong>Credits</strong>
-            </button>
+            <div class="hamburger-menu-container" id="hamburger-menu-container">
+                <svg class="hamburger-menu-button" id="hamburger-menu-button-opened" xmlns="http://www.w3.org/2000/svg"
+                    width="32" height="32" viewBox="0 0 256 256">
+                    <path fill="#ffffff"
+                        d="M228 128a12 12 0 0 1-12 12H40a12 12 0 0 1 0-24h176a12 12 0 0 1 12 12M40 76h176a12 12 0 0 0 0-24H40a12 12 0 0 0 0 24m176 104H40a12 12 0 0 0 0 24h176a12 12 0 0 0 0-24" />
+                </svg>
+                <svg class="hamburger-menu-button hidden" id="hamburger-menu-button-closed"
+                    xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256">
+                    <path fill="#ffffff"
+                        d="M208.49 191.51a12 12 0 0 1-17 17L128 145l-63.51 63.49a12 12 0 0 1-17-17L111 128L47.51 64.49a12 12 0 0 1 17-17L128 111l63.51-63.52a12 12 0 0 1 17 17L145 128Z" />
+                </svg>
+            </div>
+            <div class="header-content" id="header-content">
+                <button class="data" id="data">
+                    <strong>Data</strong>
+                </button>
+                <a href="./guides.html" target="_blank" class="Guides" id="Guides">
+                    <strong>Guides</strong>
+                </a>
+                <button class="credits" id="credits">
+                    <strong>Credits</strong>
+                </button>
+            </div>
         </div>
     </header>
 

@@ -21,6 +21,7 @@ body {
 body {
     color: #E6EDF3;
     min-height: 100dvh;
+    overflow-x: hidden;
 }
 
 @media (pointer: fine) {
@@ -92,18 +93,96 @@ header>.content {
     align-items: center;
 }
 
-header>.content>.credits {
+header>.content>.header-content>* {
     width: 7rem;
     height: 5rem;
     background: transparent;
+    text-decoration: none;
     border: none;
     cursor: pointer;
     font-size: larger;
 }
 
+header>.content>.hamburger-menu-container {
+    display: none;
+}
+
 @media (pointer: fine) {
-    header>.content>.credits:hover {
-        text-decoration: underline solid 2pt;
+    header>.content>.header-content>*:hover {
+        text-decoration: #E6EDF3 underline solid 2pt;
+    }
+}
+
+@media only screen and (max-width: 993px) {
+    header>.title {
+        width: 100%;
+    }
+
+    header>.content {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 0;
+    }
+
+    header>.content>.hamburger-menu-container {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 4rem;
+        height: calc(4.75rem - 1pt);
+        background-color: #010409;
+        border-radius: 1rem 0 0 1rem;
+    }
+
+    header>.content>.hamburger-menu-container-opened {
+        position: fixed;
+    }
+
+    header>.content>.hamburger-menu-button {
+        display: block;
+        right: 2rem;
+        top: 1.25rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        padding: 0;
+    }
+
+    header>.content>.hamburger-menu-button>svg {
+        pointer-events: none;
+    }
+
+    header>.content>.header-content {
+        transition: transform 100ms ease;
+        transform: translateX(100%);
+        position: fixed;
+        right: 0;
+        top: 7.75rem;
+        width: 10rem;
+        height: fit-content;
+        border-radius: 1rem 0 0 1rem;
+        border: #21262D solid 1pt;
+        overflow: hidden;
+    }
+
+    header>.content>.header-content-opened {
+        transform: translateX(0%);
+    }
+
+    header>.content>.header-content>* {
+        width: 100%;
+        height: 100%;
+        padding: 1rem;
+        background-color: #010409;
+    }
+
+    header>.content>.header-content>a {
+        display: block;
+        text-align: center;
+        width: calc(100% - 2rem)
     }
 }
 
@@ -118,23 +197,18 @@ header>.content>.credits {
         padding: 0;
     }
 
-    header>.content {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        /* display: none; */
+    header>.title>h1 {
+        margin-top: 0.75rem;
+    }
+}
+
+@keyframes closeHeaderContent {
+    0% {
+        transform: translateX(0%);
     }
 
-    header>.content>.credits {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        color: transparent;
-    }
-
-    header>.content>.credits>strong {
-        color: transparent;
+    100% {
+        transform: translateX(100%);
     }
 }
 
@@ -906,6 +980,10 @@ header>.content>.credits {
 @media only screen and (max-width: 921px) {
     header {
         z-index: 101;
+    }
+
+    header>.content>.header-content {
+        top: 4.75rem;
     }
 
     .top-bar {
