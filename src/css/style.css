@@ -162,7 +162,8 @@ header>.content>.hamburger-menu-container {
         right: 0;
         top: 7.75rem;
         width: 10rem;
-        height: fit-content;
+        display: grid;
+        grid-template-rows: 3.5rem 3.5rem 3.5rem;
         border-radius: 1rem 0 0 1rem;
         border: #21262D solid 1pt;
         overflow: hidden;
@@ -177,12 +178,6 @@ header>.content>.hamburger-menu-container {
         height: 100%;
         padding: 1rem;
         background-color: #010409;
-    }
-
-    header>.content>.header-content>a {
-        display: block;
-        text-align: center;
-        width: calc(100% - 2rem)
     }
 }
 
