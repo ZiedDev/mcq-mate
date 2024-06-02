@@ -706,6 +706,10 @@ header>.content>.hamburger-menu-container {
         cursor: pointer;
         background-color: #21262D;
     }
+    .bubble-choice.bubble-chosen:hover {
+        cursor: pointer;
+        background-color: color-mix(in srgb, #21262D 50%, #5E656E 50%);
+    }
 }
 
 .bubble-sheet-menu button {
