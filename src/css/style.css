@@ -113,6 +113,12 @@ header>.content>.hamburger-menu-container {
     }
 }
 
+@media only screen and (max-width: 1144px) {
+    header>.content {
+        width: 100%;
+    }
+}
+
 @media only screen and (max-width: 993px) {
     header>.title {
         width: 100%;
@@ -706,6 +712,7 @@ header>.content>.hamburger-menu-container {
         cursor: pointer;
         background-color: #21262D;
     }
+
     .bubble-choice.bubble-chosen:hover {
         cursor: pointer;
         background-color: color-mix(in srgb, #21262D 50%, #5E656E 50%);
@@ -843,8 +850,8 @@ header>.content>.hamburger-menu-container {
 .switch-to-periodic-table-pdf {
     pointer-events: all;
     position: fixed;
-    z-index: 151;
-    bottom: 6rem;
+    z-index: 150;
+    bottom: 6.5rem;
     right: 1rem;
     padding: 1rem;
     width: 2.5rem;
@@ -859,6 +866,48 @@ header>.content>.hamburger-menu-container {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.switch-to-pdf:hover::after {
+    content: 'PDF (Z)';
+}
+
+.switch-to-periodic-table-pdf:hover::after {
+    content: 'Periodic Table (X)';
+}
+
+.switch-to-pdf:hover::after,
+.switch-to-periodic-table-pdf:hover::after {
+    z-index: 200;
+    position: absolute;
+    width: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #E6EDF3;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    bottom: calc(100% + 0.5rem);
+    color: #010409;
+    right: -0.25rem;
+    animation: fadeIn 200ms ease;
+}
+
+.switch-to-pdf:hover::before,
+.switch-to-periodic-table-pdf:hover::before {
+    z-index: 200;
+    content: '';
+    position: absolute;
+    display: flex;
+    width: 0;
+    height: 0;
+    border-left: 0.25rem solid transparent;
+    border-right: 0.25rem solid transparent;
+    border-top: 0.25rem solid #E6EDF3;
+    bottom: calc(100% + 0.25rem + 0.25pt);
+    right: 2rem;
+    animation: fadeIn 200ms ease;
 }
 
 .i-button {
@@ -1097,5 +1146,15 @@ header>.content>.hamburger-menu-container {
 @media only screen and (max-width: 551px) {
     .card-container {
         height: 7rem;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
