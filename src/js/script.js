@@ -1288,11 +1288,11 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     switchToPdf.addEventListener('click', openPdf)
     document.addEventListener('keyup', e => {
         if (e.key == 'z') {
-            openPdf()
+            openPdf(true)
         }
     })
 
-    function openPdf() {
+    function openPdf(dontOpen) {
         if (!pdfViewOpened) {
             if (navigator.onLine) {
                 const pdfViewer = document.createElement('div')
@@ -1311,7 +1311,9 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
 
                     instance.addEventListener('keydown', e => {
                         if (e.key == 'z') {
-                            openPdf()
+                            if (!dontOpen) {
+                                openPdf()
+                            }
                         }
                     })
                 })
