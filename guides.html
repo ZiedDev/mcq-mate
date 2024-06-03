@@ -91,13 +91,44 @@
             max-width: 80lvw;
             max-height: 30rem;
         }
+
+        .title {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        svg {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(0, -50%);
+            padding: 0.3rem;
+            border-radius: 100%;
+            cursor: pointer;
+            transition: background-color 100ms ease;
+            background-color: transparent;
+        }
+
+        svg:hover {
+            background-color: #363B42;
+        }
     </style>
     <title>MCQ Mate Guide</title>
 </head>
 
 <body>
     <section>
-        <h1>MCQ Mate Guides</h1>
+        <div class="title">
+            <svg onclick="location.href=`/mcq-mate/`" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                viewBox="0 0 256 256">
+                <path fill="currentColor"
+                    d="m222.14 105.85l-80-80a20 20 0 0 0-28.28 0l-80 80A19.86 19.86 0 0 0 28 120v96a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-52h24v52a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-96a19.86 19.86 0 0 0-5.86-14.15M204 204h-40v-52a12 12 0 0 0-12-12h-48a12 12 0 0 0-12 12v52H52v-82.35l76-76l76 76Z">
+                </path>
+            </svg>
+            <h1>MCQ Mate Guides</h1>
+        </div>
         <h3>Guides:</h3>
         <p>
             <span>1-</span><a href="#downloading" style="font-weight: 500;">Downloading Web Application</a><br>
