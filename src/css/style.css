@@ -833,7 +833,7 @@ header>.content>.hamburger-menu-container {
 .switch-to-pdf,
 .switch-to-periodic-table-pdf {
     position: fixed;
-    z-index: 151;
+    z-index: 201;
     bottom: 1rem;
     right: 1rem;
     padding: 1rem;
@@ -850,7 +850,7 @@ header>.content>.hamburger-menu-container {
 .switch-to-periodic-table-pdf {
     pointer-events: all;
     position: fixed;
-    z-index: 150;
+    z-index: 200;
     bottom: 6.5rem;
     right: 1rem;
     padding: 1rem;
@@ -868,46 +868,48 @@ header>.content>.hamburger-menu-container {
     align-items: center;
 }
 
-.switch-to-pdf:hover::after {
-    content: 'PDF (Z)';
-}
+@media (pointer: fine) {
+    .switch-to-pdf:hover::after {
+        content: 'PDF (Z)';
+    }
 
-.switch-to-periodic-table-pdf:hover::after {
-    content: 'Periodic Table (X)';
-}
+    .switch-to-periodic-table-pdf:hover::after {
+        content: 'Periodic Table (X)';
+    }
 
-.switch-to-pdf:hover::after,
-.switch-to-periodic-table-pdf:hover::after {
-    z-index: 200;
-    position: absolute;
-    width: 4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background-color: #E6EDF3;
-    padding: 0.5rem;
-    border-radius: 1rem;
-    bottom: calc(100% + 0.5rem);
-    color: #010409;
-    right: -0.25rem;
-    animation: fadeIn 200ms ease;
-}
+    .switch-to-pdf:hover::after,
+    .switch-to-periodic-table-pdf:hover::after {
+        z-index: 205;
+        position: absolute;
+        width: 4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #E6EDF3;
+        padding: 0.5rem;
+        border-radius: 1rem;
+        bottom: calc(100% + 0.5rem);
+        color: #010409;
+        right: -0.25rem;
+        animation: fadeIn 200ms ease;
+    }
 
-.switch-to-pdf:hover::before,
-.switch-to-periodic-table-pdf:hover::before {
-    z-index: 200;
-    content: '';
-    position: absolute;
-    display: flex;
-    width: 0;
-    height: 0;
-    border-left: 0.25rem solid transparent;
-    border-right: 0.25rem solid transparent;
-    border-top: 0.25rem solid #E6EDF3;
-    bottom: calc(100% + 0.25rem + 0.25pt);
-    right: 2rem;
-    animation: fadeIn 200ms ease;
+    .switch-to-pdf:hover::before,
+    .switch-to-periodic-table-pdf:hover::before {
+        z-index: 205;
+        content: '';
+        position: absolute;
+        display: flex;
+        width: 0;
+        height: 0;
+        border-left: 0.25rem solid transparent;
+        border-right: 0.25rem solid transparent;
+        border-top: 0.25rem solid #E6EDF3;
+        bottom: calc(100% + 0.25rem + 0.25pt);
+        right: 2rem;
+        animation: fadeIn 200ms ease;
+    }
 }
 
 .i-button {
@@ -1129,6 +1131,10 @@ header>.content>.hamburger-menu-container {
     .periodic-table-pdf-viewer {
         width: 100%;
         height: 100dvh;
+    }
+
+    .switch-to-periodic-table-pdf {
+        bottom: 5.5rem;
     }
 
     .switch-to-pdf,

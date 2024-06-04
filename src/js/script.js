@@ -1391,12 +1391,12 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         switchToPdf.addEventListener('click', openPeriodicTable)
         document.addEventListener('keyup', e => {
             if (e.key == 'x') {
-                openPeriodicTable()
+                openPeriodicTable(true)
             }
         })
 
 
-        function openPeriodicTable() {
+        function openPeriodicTable(dontOpen) {
             if (!periodicTablePdfViewOpened) {
                 if (navigator.onLine) {
                     const pdfViewer = document.createElement('div')
@@ -1413,7 +1413,9 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                         instance.enableFeatures([instance.Feature.Download]);
                         instance.addEventListener('keyup', e => {
                             if (e.key == 'x') {
-                                openPeriodicTable()
+                                if (!dontOpen) {
+                                    openPeriodicTable()
+                                }
                             }
                         })
                     })
