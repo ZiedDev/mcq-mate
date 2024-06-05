@@ -1295,7 +1295,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         "al_physics": [1, 1, 5, 0, 0],
         "al_biology": [1, 0, 0, 0, 0],
         "al_chemistry": [1, 0, 0, 0, 0],
-        "default": [0, 0, 0, 0, 3]
+        "default": [0, 4, 5, 0, 0]
     }
     let timeArray = timerTimes.hasOwnProperty(`${level}_${subject.toLowerCase()}`) ? [...timerTimes[`${level}_${subject.toLowerCase()}`]] : [...timerTimes['default']]
 
