@@ -2,6 +2,7 @@ import "../css/style.css"
 import olSubjectsMS from "../json/OL_subjects_ms.json"
 import alSubjectsMS from "../json/AL_subjects_ms.json"
 import crSubjectsMS from "../json/CR_subjects_ms.json"
+import TimerAudio from "../media/audio/timer-audio.mp3"
 
 import { generateSideButton, generateMainButton, generateRandomImages } from "./generateElements.js"
 import createModal from "./modal.js"
@@ -138,6 +139,8 @@ const jsConfetti = new JSConfetti()
 // GLOBAL VARIABLES
 let globalPdfViewer
 let globalPeriodicTablePdfViewer
+let globalTimer
+let timerInterval
 let userAnswers
 let confirm = true
 const subjectCode = { CRBiology: '0610', CRChemistry: '0620', CRCombined: '0653', CRPhysics: '0625', OLBiology: '0610', OLChemistry: '0620', OLCombined: '0653', OLEconomics: '0455', OLPhysics: '0625', ALBiology: '9700', ALChemistry: '9701', ALPhysics: '9702' }
@@ -261,6 +264,14 @@ function updatePathElement(createSheet) {
         if (globalPeriodicTablePdfViewer != undefined) {
             globalPeriodicTablePdfViewer.parentNode.removeChild(globalPeriodicTablePdfViewer)
             globalPeriodicTablePdfViewer = undefined
+        }
+        if (globalTimer != undefined) {
+            globalTimer.parentNode.removeChild(globalTimer)
+            globalTimer = undefined
+        }
+        if (timerInterval != undefined) {
+            clearInterval(timerInterval)
+            timerInterval = undefined
         }
         if (pathText.length == 5) {
             path.innerHTML = ''
@@ -1208,6 +1219,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                     () => {
                         localStorage.setItem(localKey, Array.from({ length: 40 }).fill('N').join(''))
                         localStorage.setItem(localKey + 's', '')
+                        resetBubbleSheet()
                     }
                 ],
                 () => {
@@ -1278,21 +1290,171 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     menu.appendChild(buttonsContainer)
     menu.appendChild(mark)
 
+    // timer
+    let timerTimes = {
+        "al_physics": [1, 1, 5, 0, 0],
+        "al_biology": [1, 0, 0, 0, 0],
+        "al_chemistry": [1, 0, 0, 0, 0],
+        "default": [0, 0, 0, 0, 3]
+    }
+    let timeArray = timerTimes.hasOwnProperty(`${level}_${subject.toLowerCase()}`) ? [...timerTimes[`${level}_${subject.toLowerCase()}`]] : [...timerTimes['default']]
+
+    let isTimerRunning
+    let timerModal = createClock()
+    let timerAudio = new Audio(TimerAudio);
+
+    globalTimer = timerModal
+    document.getElementById('top-bar').after(globalTimer)
+
+    document.querySelector('.timer-play-pause-button').addEventListener('click', () => {
+        document.querySelector('.timer-play-icon').classList.toggle('hidden')
+        document.querySelector('.timer-pause-icon').classList.toggle('hidden')
+        if (!isTimerRunning) {
+            autoClock()
+        } else {
+            clearInterval(timerInterval)
+            isTimerRunning = false
+            timerAudio.pause(); timerAudio.currentTime = 0;
+        }
+    })
+
+    document.querySelector('.timer-stop-button').addEventListener('click', () => {
+        document.querySelector('.timer-play-icon').classList.remove('hidden')
+        document.querySelector('.timer-pause-icon').classList.add('hidden')
+        clearInterval(timerInterval)
+        isTimerRunning = false
+        timeArray = timerTimes.hasOwnProperty(`${level}_${subject.toLowerCase()}`) ? [...timerTimes[`${level}_${subject.toLowerCase()}`]] : [...timerTimes['default']]
+        setClock(timeArray);
+    })
+
+    document.querySelector('.timer-toggle-button').addEventListener('click', () => {
+        document.querySelector('.clock').classList.remove('clock-opened')
+        document.querySelector('.toggle-clock').classList.remove('toggle-clock-opened')
+    })
+
+    document.addEventListener('keyup', e => {
+        if (e.key == 'c' && !e.shiftKey && !e.ctrlKey) {
+            document.querySelector('.clock').classList.toggle('clock-opened')
+            document.querySelector('.toggle-clock').classList.toggle('toggle-clock-opened')
+        }
+    })
+
+    function setClock(time) {
+        const digits = document.querySelectorAll('.digit')
+        digits.forEach((digit, dIndex) => {
+            let numbers = digit.children;
+            let target = time[dIndex];
+            if (target != null) {
+                for (let i = 0; i < 10; i++) {
+                    const number = numbers[i];
+                    number.classList.remove('current');
+                    number.classList.remove('out');
+                    if (i < target) {
+                        number.classList.add('out');
+                    } else if (i == target) {
+                        number.classList.add('current');
+                    }
+                }
+            }
+        });
+    }
+
+    function autoClock() {
+        isTimerRunning = true
+        setClock(timeArray);
+        if (timeArray[0] > 0 || timeArray[1] > 0 || timeArray[2] > 0 || timeArray[3] > 0 || timeArray[4] > 0) {
+            timerInterval = setInterval(() => {
+                timeArray[4] -= 1;
+                if (timeArray[4] < 0) {
+                    timeArray[3] -= 1;
+                    timeArray[4] = 9;
+                }
+                if (timeArray[3] < 0) {
+                    timeArray[2] -= 1;
+                    timeArray[3] = 5;
+                }
+                if (timeArray[2] < 0) {
+                    timeArray[1] -= 1;
+                    timeArray[2] = 9;
+                }
+                if (timeArray[1] < 0) {
+                    timeArray[0] -= 1;
+                    timeArray[1] = 5;
+                }
+                if (timeArray[0] <= 0 && timeArray[1] <= 0 && timeArray[2] <= 0 && timeArray[3] <= 0 && timeArray[4] <= 0) {
+                    clearInterval(timerInterval); //finish
+                    timerAudio.play();
+                    setTimeout(() => {
+                        timerAudio.pause(); timerAudio.currentTime = 0;
+                    }, 14000);
+                    createModal('Time is finished', [], ['OK', () => { timerAudio.pause(); timerAudio.currentTime = 0; }], undefined, () => { timerAudio.pause(); timerAudio.currentTime = 0; })
+                }
+
+                setClock(timeArray);
+            }, 1000);
+        }
+    }
+
+    function createClock() {
+        let clockElementContainer = document.createElement('div');
+        clockElementContainer.classList.add('clock-container');
+
+        let toggleClock = document.createElement('div');
+        toggleClock.classList.add('toggle-clock');
+        toggleClock.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#000000" d="M128 44a96 96 0 1 0 96 96a96.11 96.11 0 0 0-96-96m0 168a72 72 0 1 1 72-72a72.08 72.08 0 0 1-72 72m36.49-112.49a12 12 0 0 1 0 17l-28 28a12 12 0 0 1-17-17l28-28a12 12 0 0 1 17 0M92 16a12 12 0 0 1 12-12h48a12 12 0 0 1 0 24h-48a12 12 0 0 1-12-12"/></svg>'
+
+        let clockElement = document.createElement('div');
+        clockElement.classList.add('clock');
+        clockElement.innerHTML = `
+        <div class="digit"><p class="current">0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p></div>
+        <p>:</p>
+        <div class="digit"><p class="current">0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p></div>
+        <div class="digit"><p class="current">0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p></div>
+        <p>:</p>
+        <div class="digit"><p class="current">0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p></div>
+        <div class="digit"><p class="current">0</p><p>1</p><p>2</p><p>3</p><p>4</p><p>5</p><p>6</p><p>7</p><p>8</p><p>9</p>
+        </div>
+        <button class="timer-toggle-button" id="timer-toggle-button">
+        <svg class="timer-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#000000" d="M168.49 199.51a12 12 0 0 1-17 17l-80-80a12 12 0 0 1 0-17l80-80a12 12 0 0 1 17 17L97 128Z"/></svg>
+        </button>
+        <button class="timer-stop-button" id="class="timer-stop-button">
+        <svg class="timer-play-stop" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#000000" d="M140 80v41.21l34.17 20.5a12 12 0 1 1-12.34 20.58l-40-24A12 12 0 0 1 116 128V80a12 12 0 0 1 24 0m-12-52a99.38 99.38 0 0 0-70.76 29.34c-4.69 4.74-9 9.37-13.24 14V64a12 12 0 0 0-24 0v40a12 12 0 0 0 12 12h40a12 12 0 0 0 0-24H57.77c5.23-6 10.6-11.78 16.49-17.74a76 76 0 1 1 1.58 109a12 12 0 0 0-16.48 17.46A100 100 0 1 0 128 28"/></svg>
+        </button>
+        <button class="timer-play-pause-button" id="class="timer-play-pause-button">
+        <svg class="timer-play-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#000000" d="M240 128a15.74 15.74 0 0 1-7.6 13.51L88.32 229.65a16 16 0 0 1-16.2.3A15.86 15.86 0 0 1 64 216.13V39.87a15.86 15.86 0 0 1 8.12-13.82a16 16 0 0 1 16.2.3l144.08 88.14A15.74 15.74 0 0 1 240 128"/></svg>
+        <svg class="timer-pause-icon hidden" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#000000" d="M216 48v160a16 16 0 0 1-16 16h-40a16 16 0 0 1-16-16V48a16 16 0 0 1 16-16h40a16 16 0 0 1 16 16M96 32H56a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h40a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16"/></svg>
+        </button>`;
+
+        toggleClock.addEventListener('click', () => {
+            toggleClock.classList.add('toggle-clock-opened');
+            clockElement.classList.add('clock-opened');
+            setClock(timeArray);
+        });
+
+        clockElementContainer.appendChild(clockElement);
+        clockElementContainer.appendChild(toggleClock);
+        return clockElementContainer;
+    }
+
     // pdf viewer
     let pdfViewOpened = false
+    let periodicTablePdfViewOpened = false
+
     const pdfViewerContainer = document.createElement('div')
     pdfViewerContainer.classList.add('pdf-viewer-container')
     const switchToPdf = document.createElement('div')
     switchToPdf.classList.add('switch-to-pdf')
-    switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M200 164v8h12a12 12 0 0 1 0 24h-12v12a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h32a12 12 0 0 1 0 24Zm-108 8a32 32 0 0 1-32 32h-4v4a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h16a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8h-4v16h4a8 8 0 0 0 8-8m100 8a40 40 0 0 1-40 40h-16a12 12 0 0 1-12-12v-56a12 12 0 0 1 12-12h16a40 40 0 0 1 40 40m-24 0a16 16 0 0 0-16-16h-4v32h4a16 16 0 0 0 16-16M36 108V40a20 20 0 0 1 20-20h96a12 12 0 0 1 8.49 3.52l56 56A12 12 0 0 1 220 88v20a12 12 0 0 1-24 0v-4h-48a12 12 0 0 1-12-12V44H60v64a12 12 0 0 1-24 0m124-51v23h23Z"/></svg>`
+    switchToPdf.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M200 164v8h12a12 12 0 0 1 0 24h-12v12a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h32a12 12 0 0 1 0 24Zm-108 8a32 32 0 0 1-32 32h-4v4a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h16a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8h-4v16h4a8 8 0 0 0 8-8m100 8a40 40 0 0 1-40 40h-16a12 12 0 0 1-12-12v-56a12 12 0 0 1 12-12h16a40 40 0 0 1 40 40m-24 0a16 16 0 0 0-16-16h-4v32h4a16 16 0 0 0 16-16M36 108V40a20 20 0 0 1 20-20h96a12 12 0 0 1 8.49 3.52l56 56A12 12 0 0 1 220 88v20a12 12 0 0 1-24 0v-4h-48a12 12 0 0 1-12-12V44H60v64a12 12 0 0 1-24 0m124-51v23h23Z"/></svg>'
     switchToPdf.addEventListener('click', openPdf)
     document.addEventListener('keyup', e => {
         if (e.key == 'z') {
-            openPdf(true)
+            try {
+                openPdf()
+            } catch (error) { }
         }
     })
 
-    function openPdf(dontOpen) {
+    function openPdf() {
         if (!pdfViewOpened) {
             if (navigator.onLine) {
                 const pdfViewer = document.createElement('div')
@@ -1307,13 +1469,16 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                     instance.UI.setTheme('dark');
                     instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
                     instance.enableFeatures([instance.Feature.Download]);
+                    instance.UI.disableTools(['calloutTool']);
                     pdfViewOpened = true
 
-                    instance.addEventListener('keydown', e => {
-                        if (e.key == 'z') {
-                            if (!dontOpen) {
-                                openPdf()
-                            }
+                    instance.addEventListener('keyup', e => {
+                        if (e.key == 'z' && !e.shiftKey && !e.ctrlKey) {
+                            openPdf()
+                        }
+
+                        if (e.key == 'x' && !e.shiftKey && !e.ctrlKey && (subject == 'Chemistry' || subject == 'Combined')) {
+                            openPeriodicTable()
                         }
                     })
                 })
@@ -1345,14 +1510,14 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
 
     const iButton = document.createElement('div')
     iButton.classList.add('i-button')
-    iButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 5 15"><circle cx="2" cy="2" r="2"/><path d="M5,13.51c0,.65-.42,1.21-1.01,1.4-.15,.06-.31,.09-.48,.09h-.01c-1.37,0-2.49-1.11-2.49-2.49v-4.11C.42,8.21,0,7.65,0,6.99s.42-1.21,1.01-1.4c.15-.06,.31-.09,.48-.09h.01c1.37,0,2.49,1.11,2.49,2.49v4.11c.59,.19,1.01,.75,1.01,1.41Z"/></svg>`
+    iButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 5 15"><circle cx="2" cy="2" r="2"/><path d="M5,13.51c0,.65-.42,1.21-1.01,1.4-.15,.06-.31,.09-.48,.09h-.01c-1.37,0-2.49-1.11-2.49-2.49v-4.11C.42,8.21,0,7.65,0,6.99s.42-1.21,1.01-1.4c.15-.06,.31-.09,.48-.09h.01c1.37,0,2.49,1.11,2.49,2.49v4.11c.59,.19,1.01,.75,1.01,1.41Z"/></svg>'
     iButton.addEventListener('click', () => {
         createModal(
             'Color Code for answers', // title
             [
                 '<span class="green">Green</span> → Correct Answer',
                 '<span class="red">Red</span> → Incorrect Answer',
-                `<span class="purple">Purple</span> → Discounted Answer <button id="i-button-discounted"><svg class="discounted-question-info" id="discounted-question-info" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 5 15"><circle cx="2" cy="2" r="2"/><path d="M5,13.51c0,.65-.42,1.21-1.01,1.4-.15,.06-.31,.09-.48,.09h-.01c-1.37,0-2.49-1.11-2.49-2.49v-4.11C.42,8.21,0,7.65,0,6.99s.42-1.21,1.01-1.4c.15-.06,.31-.09,.48-.09h.01c1.37,0,2.49,1.11,2.49,2.49v4.11c.59,.19,1.01,.75,1.01,1.41Z"/></svg></button>`
+                '<span class="purple">Purple</span> → Discounted Answer <button id="i-button-discounted"><svg class="discounted-question-info" id="discounted-question-info" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 5 15"><circle cx="2" cy="2" r="2"/><path d="M5,13.51c0,.65-.42,1.21-1.01,1.4-.15,.06-.31,.09-.48,.09h-.01c-1.37,0-2.49-1.11-2.49-2.49v-4.11C.42,8.21,0,7.65,0,6.99s.42-1.21,1.01-1.4c.15-.06,.31-.09,.48-.09h.01c1.37,0,2.49,1.11,2.49,2.49v4.11c.59,.19,1.01,.75,1.01,1.41Z"/></svg></button>'
             ], // content
             [
                 'Close',
@@ -1381,9 +1546,8 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     })
     menu.appendChild(iButton)
 
+    const periodicTablePdfViewContainer = document.createElement('div')
     if (subject == 'Chemistry' || subject == 'Combined') {
-        let periodicTablePdfViewOpened = false
-        const periodicTablePdfViewContainer = document.createElement('div')
         periodicTablePdfViewContainer.classList.add('periodic-table-pdf-viewer-container')
         const switchToPdf = document.createElement('div')
         switchToPdf.classList.add('switch-to-periodic-table-pdf')
@@ -1391,61 +1555,66 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         switchToPdf.addEventListener('click', openPeriodicTable)
         document.addEventListener('keyup', e => {
             if (e.key == 'x') {
-                openPeriodicTable(true)
+                try {
+                    openPeriodicTable()
+                } catch (error) { }
             }
         })
-
-
-        function openPeriodicTable(dontOpen) {
-            if (!periodicTablePdfViewOpened) {
-                if (navigator.onLine) {
-                    const pdfViewer = document.createElement('div')
-                    pdfViewer.id = 'periodic-table-pdf-viewer'
-                    pdfViewer.classList.add('periodic-table-pdf-viewer')
-
-                    WebViewer({
-                        licenseKey: 'QFn6U78TMfzwzFamsiBl',
-                        path: './pdf-viewer', // point to where the files you copied are served from
-                        initialDoc: `./pdfs/periodic-table.pdf` // path to your document
-                    }, pdfViewer).then((instance) => {
-                        instance.UI.setTheme('dark');
-                        instance.UI.disableElements(['toolbarGroup-FillAndSign', 'themeChangeButton', 'languageButton', 'toggleNotesButton', 'stickyToolGroupButton', 'toolbarGroup-Insert', 'stickyToolButton', 'polygonCloudToolGroupButton', 'printButton']);
-                        instance.enableFeatures([instance.Feature.Download]);
-                        instance.addEventListener('keyup', e => {
-                            if (e.key == 'x') {
-                                if (!dontOpen) {
-                                    openPeriodicTable()
-                                }
-                            }
-                        })
-                    })
-
-                    periodicTablePdfViewOpened = true
-                    periodicTablePdfViewContainer.appendChild(pdfViewer)
-
-                } else {
-                    createModal(
-                        'You are currently offline', // title
-                        [
-                            'Unable to load the pdfs while in offline.',
-                            'Check you internet connectivity and try again.'
-                        ], // content,
-                        [
-                            'Close',
-                            () => { },
-                        ]
-                    )
-                }
-            } else {
-                const pdfViewer = document.getElementById('periodic-table-pdf-viewer')
-                pdfViewer.classList.toggle('hide-viewer')
-            }
-        }
 
         periodicTablePdfViewContainer.appendChild(switchToPdf)
 
         globalPeriodicTablePdfViewer = periodicTablePdfViewContainer
         document.body.appendChild(periodicTablePdfViewContainer)
+    }
+
+    function openPeriodicTable() {
+        if (!periodicTablePdfViewOpened) {
+            if (navigator.onLine) {
+                const pdfViewer = document.createElement('div')
+                pdfViewer.id = 'periodic-table-pdf-viewer'
+                pdfViewer.classList.add('periodic-table-pdf-viewer')
+
+                WebViewer({
+                    licenseKey: 'QFn6U78TMfzwzFamsiBl',
+                    path: './pdf-viewer', // point to where the files you copied are served from
+                    initialDoc: `./pdfs/periodic-table.pdf` // path to your document
+                }, pdfViewer).then((instance) => {
+                    instance.UI.setTheme('dark');
+                    instance.enableFeatures([instance.Feature.Download]);
+                    instance.UI.disableTools(['calloutTool']);
+                    periodicTablePdfViewOpened = true
+
+                    instance.addEventListener('keyup', e => {
+                        if (e.key == 'z' && !e.shiftKey && !e.ctrlKey) {
+                            openPdf()
+                        }
+
+                        if (e.key == 'x' && !e.shiftKey && !e.ctrlKey && (subject == 'Chemistry' || subject == 'Combined')) {
+                            openPeriodicTable()
+                        }
+                    })
+
+                    console.clear()
+                })
+
+                periodicTablePdfViewContainer.appendChild(pdfViewer)
+            } else {
+                createModal(
+                    'You are currently offline', // title
+                    [
+                        'Unable to load the pdfs while in offline.',
+                        'Check you internet connectivity and try again.'
+                    ], // content,
+                    [
+                        'Close',
+                        () => { },
+                    ]
+                )
+            }
+        } else {
+            const pdfViewer = document.getElementById('periodic-table-pdf-viewer')
+            pdfViewer.classList.toggle('hide-viewer')
+        }
     }
 
     function recalculatePastExam(userAnswers) {
@@ -1468,6 +1637,14 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         if (globalPeriodicTablePdfViewer != undefined) {
             globalPeriodicTablePdfViewer.parentNode.removeChild(globalPeriodicTablePdfViewer)
             globalPeriodicTablePdfViewer = undefined
+        }
+        if (globalTimer != undefined) {
+            globalTimer.parentNode.removeChild(globalTimer)
+            globalTimer = undefined
+        }
+        if (timerInterval != undefined) {
+            clearInterval(timerInterval)
+            timerInterval = undefined
         }
         main.appendChild(createBubbleSheetMenu(level, subject, year, session, variant, useLocalAnswers))
     }

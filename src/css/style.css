@@ -20,8 +20,19 @@ body {
 
 body {
     color: #E6EDF3;
+    min-height: 100vh;
     min-height: 100dvh;
     overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    background-color: #0D1117;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
 }
 
 @media (pointer: fine) {
@@ -394,13 +405,14 @@ header>.content>.hamburger-menu-container {
     flex-direction: column;
     gap: 1.5rem;
     width: 15rem;
+    height: calc(100vh - 16.75rem - 1pt);
     height: calc(100dvh - 16.75rem - 1pt);
     overflow: auto;
 
     background-color: #010409;
     border-right: #21262D solid 1pt;
 
-    z-index: 9;
+    z-index: 300;
     position: relative;
 }
 
@@ -538,6 +550,7 @@ header>.content>.hamburger-menu-container {
 
 .main-container {
     width: calc(100% - 17rem);
+    height: calc(100vh - 7.75rem - 1pt);
     height: calc(100dvh - 7.75rem - 1pt);
     overflow: hidden;
 }
@@ -815,6 +828,167 @@ header>.content>.hamburger-menu-container {
     height: 1rem;
 }
 
+.clock-container {
+    z-index: 100;
+}
+
+.toggle-clock {
+    cursor: pointer;
+    z-index: 100;
+    position: fixed;
+    background-color: #E6EDF3;
+    left: 16rem;
+    top: 10rem;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 0 1rem 1rem 0;
+    padding: 1rem 1rem 1rem 2rem;
+    box-shadow: var(--shadow-elevation-medium);
+    transition: left 250ms ease;
+}
+
+.clock-container>.toggle-clock-opened {
+    left: 12rem !important;
+}
+
+.toggle-clock svg {
+    width: 100%;
+    height: 100%;
+}
+
+@media (pointer: fine) {
+    .toggle-clock:hover {
+        left: 16.5rem;
+    }
+
+    .toggle-clock:hover::after {
+        content: 'Timer (C)';
+    }
+
+    .toggle-clock:hover::after {
+        pointer-events: none;
+        z-index: 205;
+        position: absolute;
+        width: 4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #E6EDF3;
+        padding: 0.5rem;
+        border-radius: 1rem;
+        bottom: 0.25rem;
+        color: #010409;
+        right: -5.5rem;
+        animation: fadeIn 200ms ease;
+    }
+
+    .toggle-clock:hover::before {
+        pointer-events: none;
+        z-index: 205;
+        content: '';
+        position: absolute;
+        display: flex;
+        width: 0;
+        height: auto;
+        border-top: 0.25rem solid transparent;
+        border-bottom: 0.25rem solid transparent;
+        border-right: 0.25rem solid #E6EDF3;
+        bottom: 1.75rem;
+        right: -0.5rem;
+        animation: fadeIn 200ms ease;
+    }
+}
+
+.clock {
+    z-index: 100;
+    position: fixed;
+    top: 9rem;
+    left: 6rem;
+    padding: 0.75rem;
+    background-color: #E6EDF3;
+    border-radius: 1rem;
+    display: grid;
+    grid-template-columns: 1rem 1rem 1rem 1rem 1rem 1rem 1rem 1.5rem;
+    grid-template-rows: 2rem;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    gap: 0.125rem;
+    height: 5rem;
+    transition: left 250ms ease;
+}
+
+.clock-opened {
+    left: 18rem;
+}
+
+.digit {
+    height: 100%;
+    position: relative;
+    height: 1.7rem;
+    overflow: hidden;
+}
+
+.clock p {
+    background-color: inherit;
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.digit p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 150%);
+    transition: transform 0.6s cubic-bezier(.28, -0.05, .57, 1.5), opacity 0.6s cubic-bezier(.28, -0.05, .57, 1.5);
+    opacity: 0.7;
+}
+
+.digit p.current {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+}
+
+.digit p.out {
+    transform: translate(-50%, -150%);
+    opacity: 0.5;
+}
+
+.timer-play-pause-button {
+    grid-column: 3 span;
+}
+
+.timer-stop-button {
+    grid-column: 3 span;
+}
+
+.timer-toggle-button,
+.timer-play-pause-button,
+.timer-stop-button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border: none;
+    width: 100%;
+    height: 1.5rem;
+}
+
+.timer-toggle-button {
+    grid-row: 2 span;
+    height: 100%;
+}
+
+.timer-play-pause-button svg,
+.timer-stop-button svg {
+    width: 100%;
+    height: 100%;
+}
+
 .pdf-viewer-container,
 .periodic-table-pdf-viewer-container {
     pointer-events: none;
@@ -940,6 +1114,7 @@ header>.content>.hamburger-menu-container {
 
 @media (pointer: fine) {
 
+    .timer-button:hover,
     .switch-to-pdf:hover,
     .switch-to-periodic-table-pdf:hover {
         scale: 1.05;
@@ -953,7 +1128,7 @@ header>.content>.hamburger-menu-container {
 }
 
 .i-button svg,
-.switch-to-periodic-table-pdfsvg {
+.switch-to-periodic-table-pdf svg {
     width: 90%;
     height: 90%;
 }
@@ -976,6 +1151,7 @@ header>.content>.hamburger-menu-container {
     bottom: 0;
     right: 0;
     width: calc(100% - 17rem);
+    height: calc(100vh - 7.75rem - 1pt);
     height: calc(100dvh - 7.75rem - 1pt);
     transition: bottom 100ms ease;
 }
@@ -1058,25 +1234,17 @@ header>.content>.hamburger-menu-container {
     }
 
     .main {
-        overflow: visible;
-        height: fit-content;
-    }
-
-    .main-container {
-        width: 100%;
-        min-height: calc(100dvh - 3.75rem - 1pt);
-        height: fit-content;
-        overflow: hidden;
-    }
-
-    .main {
         width: 100%;
         height: 100%;
-        overflow: auto;
+        overflow: visible;
     }
 
     .main-container {
+        width: 100%;
+        min-height: calc(100vh - 3.75rem - 1pt);
+        min-height: calc(100dvh - 3.75rem - 1pt);
         height: fit-content;
+        overflow: visible;
     }
 
     .side-panel {
@@ -1124,12 +1292,14 @@ header>.content>.hamburger-menu-container {
     .pdf-viewer-container,
     .periodic-table-pdf-viewer-container {
         width: 100%;
+        height: 100vh;
         height: 100dvh;
     }
 
     .pdf-viewer,
     .periodic-table-pdf-viewer {
         width: 100%;
+        height: 100vh;
         height: 100dvh;
     }
 
@@ -1143,9 +1313,59 @@ header>.content>.hamburger-menu-container {
         height: 1.5rem;
     }
 
+    @media (pointer: fine) {
+
+        .switch-to-pdf:hover::before,
+        .switch-to-periodic-table-pdf:hover::before {
+            right: 1.55rem;
+        }
+    }
+
     .i-button {
         width: 1rem;
         height: 1rem;
+    }
+
+    .toggle-clock {
+        position: relative;
+        top: -5rem;
+        left: -1rem;
+
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .toggle-clock {
+        padding: 0.75rem 1rem 0.75rem 2rem;
+    }
+
+    .clock-container>.toggle-clock-opened {
+        left: -6rem !important;
+    }
+
+    @media (pointer: fine) {
+        .toggle-clock:hover {
+            left: -0.5rem;
+        }
+    }
+
+    .clock-container {
+        height: 0;
+        position: sticky;
+        top: 6rem;
+        margin-top: 1rem;
+    }
+
+    .clock {
+        position: relative;
+        top: 0;
+        left: -11rem;
+        width: fit-content;
+        height: fit-content;
+    }
+
+    .clock-opened {
+        left: 1rem;
     }
 }
 
