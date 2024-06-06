@@ -1250,6 +1250,12 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                         if (recalculatePastExam(localStorage.getItem(localKey + 's'))[0] == recalculatePastExam(localStorage.getItem(localKey + 's'))[1]) {
                             jsConfetti.addConfetti()
                         }
+                        document.querySelector('.timer-play-icon').classList.toggle('hidden')
+                        document.querySelector('.timer-pause-icon').classList.toggle('hidden')
+                        clearInterval(timerInterval)
+                        isTimerRunning = false
+                        timerAudio.pause(); timerAudio.currentTime = 0;
+                        document.querySelector('.toggle-clock path').style.fill = '';
                     },
                 ],
                 [
@@ -1263,6 +1269,12 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
             if (recalculatePastExam(localStorage.getItem(localKey + 's'))[0] == recalculatePastExam(localStorage.getItem(localKey + 's'))[1]) {
                 jsConfetti.addConfetti()
             }
+            document.querySelector('.timer-play-icon').classList.toggle('hidden')
+            document.querySelector('.timer-pause-icon').classList.toggle('hidden')
+            clearInterval(timerInterval)
+            isTimerRunning = false
+            timerAudio.pause(); timerAudio.currentTime = 0;
+            document.querySelector('.toggle-clock path').style.fill = '';
         }
     })
 
@@ -1311,16 +1323,19 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         document.querySelector('.timer-pause-icon').classList.toggle('hidden')
         if (!isTimerRunning) {
             autoClock()
+            document.querySelector('.toggle-clock path').style.fill = '#1aad72';
         } else {
             clearInterval(timerInterval)
             isTimerRunning = false
             timerAudio.pause(); timerAudio.currentTime = 0;
+            document.querySelector('.toggle-clock path').style.fill = '';
         }
     })
 
     document.querySelector('.timer-stop-button').addEventListener('click', () => {
         document.querySelector('.timer-play-icon').classList.remove('hidden')
         document.querySelector('.timer-pause-icon').classList.add('hidden')
+        document.querySelector('.toggle-clock path').style.fill = '';
         clearInterval(timerInterval)
         isTimerRunning = false
         timeArray = timerTimes.hasOwnProperty(`${level}_${subject.toLowerCase()}`) ? [...timerTimes[`${level}_${subject.toLowerCase()}`]] : [...timerTimes['default']]
@@ -1330,13 +1345,6 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     document.querySelector('.timer-toggle-button').addEventListener('click', () => {
         document.querySelector('.clock').classList.remove('clock-opened')
         document.querySelector('.toggle-clock').classList.remove('toggle-clock-opened')
-    })
-
-    document.addEventListener('keyup', e => {
-        if (e.key == 'c' && !e.shiftKey && !e.ctrlKey) {
-            document.querySelector('.clock').classList.toggle('clock-opened')
-            document.querySelector('.toggle-clock').classList.toggle('toggle-clock-opened')
-        }
     })
 
     function setClock(time) {
@@ -1401,7 +1409,7 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
 
         let toggleClock = document.createElement('div');
         toggleClock.classList.add('toggle-clock');
-        toggleClock.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#000000" d="M128 44a96 96 0 1 0 96 96a96.11 96.11 0 0 0-96-96m0 168a72 72 0 1 1 72-72a72.08 72.08 0 0 1-72 72m36.49-112.49a12 12 0 0 1 0 17l-28 28a12 12 0 0 1-17-17l28-28a12 12 0 0 1 17 0M92 16a12 12 0 0 1 12-12h48a12 12 0 0 1 0 24h-48a12 12 0 0 1-12-12"/></svg>'
+        toggleClock.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path d="M128 44a96 96 0 1 0 96 96a96.11 96.11 0 0 0-96-96m0 168a72 72 0 1 1 72-72a72.08 72.08 0 0 1-72 72m36.49-112.49a12 12 0 0 1 0 17l-28 28a12 12 0 0 1-17-17l28-28a12 12 0 0 1 17 0M92 16a12 12 0 0 1 12-12h48a12 12 0 0 1 0 24h-48a12 12 0 0 1-12-12"/></svg>'
 
         let clockElement = document.createElement('div');
         clockElement.classList.add('clock');
@@ -1446,12 +1454,27 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
     switchToPdf.classList.add('switch-to-pdf')
     switchToPdf.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M200 164v8h12a12 12 0 0 1 0 24h-12v12a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h32a12 12 0 0 1 0 24Zm-108 8a32 32 0 0 1-32 32h-4v4a12 12 0 0 1-24 0v-56a12 12 0 0 1 12-12h16a32 32 0 0 1 32 32m-24 0a8 8 0 0 0-8-8h-4v16h4a8 8 0 0 0 8-8m100 8a40 40 0 0 1-40 40h-16a12 12 0 0 1-12-12v-56a12 12 0 0 1 12-12h16a40 40 0 0 1 40 40m-24 0a16 16 0 0 0-16-16h-4v32h4a16 16 0 0 0 16-16M36 108V40a20 20 0 0 1 20-20h96a12 12 0 0 1 8.49 3.52l56 56A12 12 0 0 1 220 88v20a12 12 0 0 1-24 0v-4h-48a12 12 0 0 1-12-12V44H60v64a12 12 0 0 1-24 0m124-51v23h23Z"/></svg>'
     switchToPdf.addEventListener('click', openPdf)
-    document.addEventListener('keyup', e => {
-        if (e.key == 'z') {
-            try {
+
+    function shortcutsFunc(e) {
+        try {
+            if (e.key == 'z' && !e.shiftKey && !e.ctrlKey) {
                 openPdf()
-            } catch (error) { }
+            }
+
+            if (e.key == 'x' && !e.shiftKey && !e.ctrlKey && (subject == 'Chemistry' || subject == 'Combined')) {
+                openPeriodicTable()
+            }
+
+            if (e.key == 'c' && !e.shiftKey && !e.ctrlKey) {
+                document.querySelector('.clock').classList.toggle('clock-opened')
+                document.querySelector('.toggle-clock').classList.toggle('toggle-clock-opened')
+            }
+        } catch (error) {
+            console.log('error', error)
         }
+    }
+    document.addEventListener('keyup', e => {
+        shortcutsFunc(e)
     })
 
     function openPdf() {
@@ -1473,14 +1496,10 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                     pdfViewOpened = true
 
                     instance.addEventListener('keyup', e => {
-                        if (e.key == 'z' && !e.shiftKey && !e.ctrlKey) {
-                            openPdf()
-                        }
-
-                        if (e.key == 'x' && !e.shiftKey && !e.ctrlKey && (subject == 'Chemistry' || subject == 'Combined')) {
-                            openPeriodicTable()
-                        }
+                        shortcutsFunc(e);
                     })
+
+                    //console.clear()
                 })
 
                 pdfViewerContainer.appendChild(pdfViewer)
@@ -1553,13 +1572,6 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
         switchToPdf.classList.add('switch-to-periodic-table-pdf')
         switchToPdf.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 25.52 22.13"><path d="M21.58,22.13H3.94c-.55,0-1-.45-1-1v-2.87c0-.55,.45-1,1-1H21.58c.55,0,1,.45,1,1v2.87c0,.55-.45,1-1,1Zm-16.64-2h15.64v-.87H4.94v.87Z"/><path d="M24.52,16.83H1c-.55,0-1-.45-1-1V1C0,.45,.45,0,1,0H3.94c.55,0,1,.45,1,1v1.94h1.94c.55,0,1,.45,1,1v1.94h3.88v-1.94c0-.55,.45-1,1-1h7.82V1c0-.55,.45-1,1-1h2.94c.55,0,1,.45,1,1V15.83c0,.55-.45,1-1,1ZM2,14.83H23.52V2h-.94v1.94c0,.55-.45,1-1,1h-7.82v1.94c0,.55-.45,1-1,1H6.88c-.55,0-1-.45-1-1v-1.94h-1.94c-.55,0-1-.45-1-1v-1.94h-.94V14.83Z"/></svg>`
         switchToPdf.addEventListener('click', openPeriodicTable)
-        document.addEventListener('keyup', e => {
-            if (e.key == 'x') {
-                try {
-                    openPeriodicTable()
-                } catch (error) { }
-            }
-        })
 
         periodicTablePdfViewContainer.appendChild(switchToPdf)
 
@@ -1585,16 +1597,10 @@ function createBubbleSheetMenu(level, subject, year, session, variant, useLocalA
                     periodicTablePdfViewOpened = true
 
                     instance.addEventListener('keyup', e => {
-                        if (e.key == 'z' && !e.shiftKey && !e.ctrlKey) {
-                            openPdf()
-                        }
-
-                        if (e.key == 'x' && !e.shiftKey && !e.ctrlKey && (subject == 'Chemistry' || subject == 'Combined')) {
-                            openPeriodicTable()
-                        }
+                        shortcutsFunc(e)
                     })
 
-                    console.clear()
+                    //console.clear()
                 })
 
                 periodicTablePdfViewContainer.appendChild(pdfViewer)

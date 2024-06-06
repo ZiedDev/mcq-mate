@@ -856,6 +856,10 @@ header>.content>.hamburger-menu-container {
     height: 100%;
 }
 
+.toggle-clock path {
+    fill: #000000;
+}
+
 @media (pointer: fine) {
     .toggle-clock:hover {
         left: 16.5rem;
