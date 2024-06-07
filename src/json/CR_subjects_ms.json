@@ -237,6 +237,23 @@
                 "BCBBCDDCAADBABCADADDBABCCCABDADABDBCACBC",
                 "ABCDAACDCACDCACBDBCBCDBCBDBBCBABBCDABACD"
             ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "BACADBCCCDDBBACDDADACBCADBACBCCBCADACDAD",
+                null
+            ],
+            "s": [
+                null,
+                null,
+                null
+            ],
+            "w": [
+                null,
+                null,
+                null
+            ]
         }
     },
     "Biology": {
@@ -477,6 +494,23 @@
                 "CBABBABABBDBABCCCCAADCDABCABBBCACABCBCBA",
                 "DBCCBDDACCDDBADBDBABDACBBCCCABACADBCBBAD"
             ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "CDCAABCCABDCDCBABADDACBABABABDCDACCABBDD",
+                null
+            ],
+            "s": [
+                null,
+                null,
+                null
+            ],
+            "w": [
+                null,
+                null,
+                null
+            ]
         }
     },
     "Chemistry": {
@@ -716,6 +750,23 @@
                 "DCBABDBACDDABBAADADADBBBCBCBACAADADCCADA",
                 "DCDDBAABABDCDDAADCBAADBBDCBDBACDBCCCCACD",
                 "DAABBAADCDBBBACBDBADACBAACDCBBCCABDACACA"
+            ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "DCBCADDABDBCAACBCBADBBDCACADCABABAACDDDC",
+                null
+            ],
+            "s": [
+                null,
+                null,
+                null
+            ],
+            "w": [
+                null,
+                null,
+                null
             ]
         }
     },
