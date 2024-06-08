@@ -1,4 +1,3 @@
-import "../css/style.css"
 import olSubjectsMS from "../json/OL_subjects_ms.json"
 import alSubjectsMS from "../json/AL_subjects_ms.json"
 import crSubjectsMS from "../json/CR_subjects_ms.json"

@@ -31,6 +31,7 @@ module.exports = {
                 { from: "./src/media/images/guides", to: "./media/guides" },
                 { from: "./src/index.html", to: "./" },
                 { from: "./src/guides.html", to: "./" },
+                { from: "./src/css/style-min.css", to: "./" },
                 { from: "./src/manifest.json", to: "./" },
             ],
         }),

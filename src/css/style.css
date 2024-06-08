@@ -9,6 +9,7 @@
 @font-face {
     font-family: 'Mona Sans';
     src: url('../media/fonts/Mona Sans/Mona-Sans.woff2');
+    font-display: swap;
 }
 
 html,
