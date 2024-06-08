@@ -100,7 +100,8 @@ dataButton.addEventListener('click', () => {
                 let blob = new Blob([getExportJson()], { type: 'application/json' })
 
                 const a = document.createElement('a')
-                a.download = 'My MCQ Mate data.json'
+                const todayDate = new Date().toISOString().slice(0, 10)
+                a.download = `My MCQ Mate data ${todayDate}.json`
                 a.href = window.URL.createObjectURL(blob)
                 a.click() // Trigger download
             }
