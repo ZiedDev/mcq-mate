@@ -104,45 +104,45 @@
     ],
     "screenshots": [
         {
-            "src": "media/screenshots/screenshot1.png",
+            "src": "media/screenshots/screenshot1.webp",
             "sizes": "1280x1024",
-            "type": "image/png",
+            "type": "image/webp",
             "form_factor": "wide",
             "label": "MCQ Mate HomePage"
         },
         {
-            "src": "media/screenshots/screenshot2.png",
+            "src": "media/screenshots/screenshot2.webp",
             "sizes": "1280x1024",
-            "type": "image/png",
+            "type": "image/webp",
             "form_factor": "wide",
             "label": "MCQ Mate Solving Menu"
         },
         {
-            "src": "media/screenshots/screenshot3.png",
+            "src": "media/screenshots/screenshot3.webp",
             "sizes": "1280x1024",
-            "type": "image/png",
+            "type": "image/webp",
             "form_factor": "wide",
             "label": "MCQ Mate PdfViewer"
         },
         {
-            "src": "media/screenshots/screenshot-mobile1.png",
+            "src": "media/screenshots/screenshot-mobile1.webp",
             "form_factor": "narrow",
             "sizes": "1179x2556",
-            "type": "image/png",
+            "type": "image/webp",
             "label": "MCQ Mate HomePage"
         },
         {
-            "src": "media/screenshots/screenshot-mobile2.png",
+            "src": "media/screenshots/screenshot-mobile2.webp",
             "form_factor": "narrow",
             "sizes": "1179x2556",
-            "type": "image/png",
+            "type": "image/webp",
             "label": "MCQ Mate Solving Menu"
         },
         {
-            "src": "media/screenshots/screenshot-mobile3.png",
+            "src": "media/screenshots/screenshot-mobile3.webp",
             "form_factor": "narrow",
             "sizes": "1179x2556",
-            "type": "image/png",
+            "type": "image/webp",
             "label": "MCQ Mate PdfViewer"
         }
     ]
