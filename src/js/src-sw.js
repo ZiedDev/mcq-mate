@@ -4,4 +4,4 @@ import { precacheAndRoute } from "workbox-precaching";
 clientsClaim();
 self.skipWaiting();
 
-precacheAndRoute(self.__WB_MANIFEST)
+precacheAndRoute(self.__WB_MANIFEST);

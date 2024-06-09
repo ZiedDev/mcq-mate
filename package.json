@@ -20,10 +20,13 @@
   },
   "homepage": "https://github.com/ZiedDev/cambridge-mcq-checker#readme",
   "devDependencies": {
+    "@eslint/js": "^9.4.0",
     "@pdftron/pdfjs-express": "^8.7.4",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.1",
+    "eslint": "^9.4.0",
     "file-loader": "^6.2.0",
+    "globals": "^15.4.0",
     "js-confetti": "^0.12.0",
     "style-loader": "^4.0.0",
     "webpack": "^5.91.0",
