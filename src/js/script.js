@@ -203,7 +203,7 @@ const moveBackwardsArrow = document.getElementById("backwards-arrow");
 const moveForwardsArrow = document.getElementById("forwards-arrow");
 
 let backward_stack = [];
-let current_path = "home"; // important to put in datatype and format of root path
+let current_path = ''; // important to put in datatype and format of root path
 let forward_stack = [];
 
 function isBackwardAvailable() {
@@ -1062,10 +1062,10 @@ function createHomeMenu() {
 function CreateSubMenu(level, subject, year, session) {
   const menu = document.createElement("div");
   menu.id = `Select a ${session == undefined
-      ? year == undefined
-        ? "years-menu"
-        : "sessions-menu"
-      : "variants-menu"
+    ? year == undefined
+      ? "years-menu"
+      : "sessions-menu"
+    : "variants-menu"
     }`;
   menu.classList.add("sub-menu");
   const title = document.createElement("h2");
@@ -2001,10 +2001,10 @@ function createBubbleSheetMenu(
             licenseKey: "QFn6U78TMfzwzFamsiBl",
             path: "./pdf-viewer", // point to where the files you copied are served from
             initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == "s"
-                ? "May-Jun"
-                : session == "w"
-                  ? "Oct-Nov"
-                  : "Feb-Mar"
+              ? "May-Jun"
+              : session == "w"
+                ? "Oct-Nov"
+                : "Feb-Mar"
               }/${subjectCode[level.toUpperCase() + subject]}_${session}${Number(year) - 2000
               }_qp_${subject == "Economics"
                 ? 1
@@ -2261,4 +2261,4 @@ function addGlobalEventListener(type, selector, callback, options) {
 
 // appending home to main
 const main = document.getElementById("main");
-main.appendChild(createHomeMenu());
+changePath('home')
