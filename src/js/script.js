@@ -130,8 +130,15 @@ dataButton.addEventListener("click", () => {
 });
 
 function getExportJson() {
-  let dict = localStorage;
-  delete dict["persist:viewer"];
+  const regexPattern = new RegExp(/[a-z]{3}[oac][0-9]{2}[wsm][1-3][s]?/gim);
+  let dict = JSON.parse(JSON.stringify(localStorage));
+
+  Object.keys(dict).forEach((key) => {
+    if (JSON.stringify(key.match(regexPattern)) != JSON.stringify([`${key}`])) {
+      delete dict[key]
+    }
+  });
+
   return JSON.stringify(dict);
 }
 
@@ -139,7 +146,13 @@ function importJson(content) {
   try {
     const parsed = JSON.parse(content);
     const regexPattern = new RegExp(/[a-z]{3}[oac][0-9]{2}[wsm][1-3][s]?/gim);
+
+    console.log('parsed:', parsed)
+    console.log('parsed:', regexPattern)
+
     Object.keys(parsed).forEach((key) => {
+      console.log(JSON.stringify(key.match(regexPattern)), JSON.stringify([`${key}`]))
+      console.log(key.match(regexPattern))
       if (
         JSON.stringify(key.match(regexPattern)) != JSON.stringify([`${key}`])
       ) {
