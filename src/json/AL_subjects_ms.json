@@ -237,6 +237,23 @@
                 "BDDADBACBCACBCACDBDDCACCCBBADBBDADABDABC",
                 "BACADCBDACCBBADBBCADDABCABAACCADACCDDBAD"
             ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "AADBBBADBCCDDCCBDACDDBDDACBBDCCACBBCCABB",
+                null
+            ],
+            "s": [
+                "AACBBDCCBDABDAABBABBDCCACABDBBDDCCCDDBCA",
+                "CDADBBCACABCDCDABCCDCDBBCADDACDCBADABDCC",
+                "CDBACADAACBBCBADCABBCCCADABDABDDCACCDADB"
+            ],
+            "w": [
+                "DDCCDDCBBBBDACACBADBDABADACCBCBBCDCAADDC",
+                "CADABCCBDCDACDDBCCACBACCCBDBBBABABBADBDC",
+                "DCBCACABBCBADDDADCCAADBDCCCACBAAABBDCBAD"
+            ]
         }
     },
     "Biology": {
@@ -477,6 +494,23 @@
                 "DDBADAADBCDDABCCCBAACCCDBABBCCBDADBDBCBB",
                 "CBCDABCCBACBDADCBDDBBDBDBDAABDCDBCDDCBDC"
             ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "ACDACBCABDCDBCBDBACCDCADBAADBDBDDABCDCCA",
+                null
+            ],
+            "s": [
+                "ABACDCDBDACDBCBBDDCCCBDCBCACBADAAABDDBAD",
+                "CACCCDDACABBADDCCBDDBDBAAABBAABDDCDCBBDB",
+                "AACBCDBACCABCCBCDBABDDCCBDCABDBBDBACADBA"
+            ],
+            "w": [
+                "DDDCBBABACBACCDCCABADDDCCBACBDDADBABAABD",
+                "CDACBAAACBADABDDDDBABBDCCBBACCBCBAABAACB",
+                "DACBCBDACBACBCCDCBDADADBDDABABBBCCDCCBAA"
+            ]
         }
     },
     "Chemistry": {
@@ -716,6 +750,23 @@
                 "BDACAAAADDABCDDADADABABCBBDDDBDDDBDDCCCA",
                 "DCBACCDBACBBCCDCDDDBBACDBBCBCADDACACCCCB",
                 "BDACAAAADDABCDDADADABABCBBDDDBDDDBDDCCCA"
+            ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "DCDDCBDCBCACADAACCDBCCDCBDBDDDDADACADBCC",
+                null
+            ],
+            "s": [
+                "CCCDABBBCBABDDCDCDBCBCACBCABABDDDBCDDABB",
+                "CCAACABBCCBDDABDBCAADDDACDBAADDDDCACCBDA",
+                "ACADBDCCCCAABBCDCBCDABACBACACCDCDBBCBABD"
+            ],
+            "w": [
+                "ACCDADBDBAAACAABDCCBCCCCBDBCDBBDDDBABCAA",
+                "DCDCDBCCBDCCADDDACABCAACBDABACABCBBDADBA",
+                "ACCDADBDBAAACAABDCCBCCCCBDBCDBBDDDBABCAA"
             ]
         }
     }

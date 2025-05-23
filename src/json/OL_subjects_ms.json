@@ -143,14 +143,14 @@
                 null
             ],
             "s": [
-                null,
-                null,
-                null
+                "ABCBACBBBCDCDQACDDBDCCDBADDDAAADAACDBCAA",
+                "CCBADDCBCADCBDADBADCCCBDADBDCAAAADBCAAAB",
+                "BABDDAABBDDBCADCCDBAACBABDDBCDBAADCCACBC"
             ],
             "w": [
-                null,
-                null,
-                null
+                "BCACCDDDDBBBDACDABCBADCACCDCABDBDCBBCADB",
+                "ADCACDADDBCCABCDBBAABCBACCAABDACBBBBCBBC",
+                "BCAABDACBBABCCCDCBACBBBDDBDCDCBAAAADBBCD"
             ]
         }
     },
@@ -298,14 +298,14 @@
                 null
             ],
             "s": [
-                null,
-                null,
-                null
+                "DBBDDACCAABCBBDBCCCBCBAAACCDDCBDBDDBDBAC",
+                "AABCDBDCDADBDDDAACDBDDACBBDDCCDCCCADBDDC",
+                "BCCCBBBDADCDCDDBCBADABDCDCABBBADDDCCCADB"
             ],
             "w": [
-                null,
-                null,
-                null
+                "CCBAADCCDDCACBCCCADBBACDBCBDCDCCAAABCADA",
+                "ABDCBDACBCCBCDCABBCCCDABCDCCCDBBBDDDCDCC",
+                "CDACABAAAACBCAABAACCBDDDDCCBCCCAABBBBADC"
             ]
         }
     },
@@ -453,14 +453,14 @@
                 null
             ],
             "s": [
-                null,
-                null,
-                null
+                "BDDBACDCCCBCDCCAADCBBABACBBBABDCADDCABBC",
+                "DBCCDDBABBDCDCBCCDCCBCAADDABABAABAACBDCC",
+                "DAABCBBDBACACCCBCDCBDADAABBADBDADADDCBAA"
             ],
             "w": [
-                null,
-                null,
-                null
+                "ACBADDBBDCBCDAABBABCCDBBBADADCCDCDAACCCD",
+                "BCBCCCDCCBCADBADBDDBDACADACBCDCDABACADBB",
+                "CDBDBCBDACDCCADCADBAADACCBADBCDABADADCBA"
             ]
         }
     },
@@ -582,6 +582,23 @@
                 "BBAAACADDDBCABCACBDCDACCABDDBCCBDDDCACDB",
                 "CDCACDBBCCAACCDDBBAACCCABBCCCBBCAABDDBBA",
                 "ADCDACBCDADDBAABBCCDCAACBCDBAADACCABDBCB"
+            ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "DDABCCADCBABCCBCCDADCABBADDDBCDCCCAACBBA",
+                null
+            ],
+            "s": [
+                "ADBABCCACBDADCBADACCDBBADCACDCBBAADCCBAB",
+                "ADBCABCDDCBADBADBADACCDDCCBCDCBDBBBDAABB",
+                "CADABDBCCABDDBBDCBCAACABDBDBABDCBADDDCCB"
+            ],
+            "w": [
+                "ABDACADCDDBCBDBCCBBABADAACDABBADCCBADBCD",
+                "BABCDCBACDDCABCDBCADCABDACDABBDBDAACDCBC",
+                "DBCBACCBDAABCCBDABDDCCAACBBDDCDCCDADBBAA"
             ]
         }
     },
@@ -822,6 +839,23 @@
                 "DBADCDDBBCCDBBACCCBACACBAAACCA",
                 "DACCDADDDAAADACDACBBCBCADBCBAB",
                 "DCADCDDABBBACBBACBDDBCBDBABCBA"
+            ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "BCBABCDBABBABDAACBCCDBDADABBBA",
+                null
+            ],
+            "s": [
+                "DCDDACCCCADDAACDABADADADDBDCBA",
+                "DBBDBDADBDACABDDACDADABAAABABC",
+                "CDCABBBCBACCCABBBCCCBBACCDDCCD"
+            ],
+            "w": [
+                "BDBDDCCDCBDACDBBDACBDDCCCAABCA",
+                "DDCBBCCABADCBBCBBBDBCCCBDAAACC",
+                "BACDBACBCACBBBCDCBDCBCDDBBCBBA"
             ]
         }
     }

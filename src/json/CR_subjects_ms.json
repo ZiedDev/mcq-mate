@@ -245,14 +245,14 @@
                 null
             ],
             "s": [
-                null,
-                null,
-                null
+                "ADACDBCABAAACDBDADDCBDAABBDBDBCCBDBBCABC",
+                "DCDBBABDACCCCDABCAABCBCCBBABBBDBDADCDCAA",
+                "BACDABADBABCDAADADCBBCACCDBDBBADBADABDCC"
             ],
             "w": [
-                null,
-                null,
-                null
+                "ABAABBAADADCBDDBADDCABCACCDCDDDBCBDCCCCD",
+                "CBADCDAAACBBCAABBCADDDADDDDCCBCDDAAADBAC",
+                "BDDBBABDCDBDABCDBBCDBCCDDBDABBDADAADACCA"
             ]
         }
     },
@@ -502,14 +502,14 @@
                 null
             ],
             "s": [
-                null,
-                null,
-                null
+                "ACBBAABDCDDBADCCCADDBDCBCCCDDDABDBAABBAA",
+                "CDDBBBBDDAACBCABBBCDBCCADDCCCACCCDCDCCAC",
+                "DDADCADCCDDCCBDBACDBCCAABDCACBCBCBBDBADC"
             ],
             "w": [
-                null,
-                null,
-                null
+                "BADBCBCAACDBDBCACCABBABCCCBACDACDABBDBCC",
+                "ADCDDCABDDBBBAAABBAACDACBBDDDADDDBCBAAAA",
+                "CCCCACBCCACDDAACBCCAACBBBDACCBBBAACCBDBA"
             ]
         }
     },
@@ -759,14 +759,14 @@
                 null
             ],
             "s": [
-                null,
-                null,
-                null
+                "DABCCCDBDADABBADBABCABBDCACDACADDDCAACCD",
+                "CDDADBCAABDCCDCBDBBDDBBDACBCCACACCDAABCD",
+                "ACBDDADBDCAABBCBDAABDBACCCBDDBCDBDDCBCAB"
             ],
             "w": [
-                null,
-                null,
-                null
+                "ABDADDADCBABCCBACADCBBCAACDBCDCABDBBBCCD",
+                "CBACABBCDDBAABBCAADBCDBDADCCBDDBACCCABAD",
+                "CCDCAACCDDBDBCBACABACCDABABDBDBADCCDBBAA"
             ]
         }
     },
@@ -1007,6 +1007,23 @@
                 "BACCAAADBBCDCBCCACBDADDCBDADBAABBDACCDBC",
                 "DDBCDABDCAAAACDBBCAACCCAACCCADBAABDBDCCD",
                 "DDBCDABDCAAAACDBBCAACCCAACCCADBAABDBDCCD"
+            ]
+        },
+        "2024": {
+            "m": [
+                null,
+                "BDCDABCBADCABCBCDABAABCADDCCBCDBDDACDBDC",
+                null
+            ],
+            "s": [
+                "ADACBDABCDBCDBCACADADDCCACBDDAADABDCBBDA",
+                "DDAACABBDDBCDDBDBDDACADACBCDBDBCCACDBDDB",
+                "CABABBBCCDADDBCDABADCDCBDABBDBCCAAACCBDD"
+            ],
+            "w": [
+                "DCBCADBCDBAADCCBCDBACBCAAADDBDADCABDCBCA",
+                "CBCDBADDABACAABDDADBBAACCDBBAAACBDDBCBDC",
+                "CBCDBADDABACAABDDADBBAACCDBBAAACBDDBCBDC"
             ]
         }
     }
