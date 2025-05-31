@@ -4,6 +4,7 @@ const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = {
     mode: 'production',
+    // mode: 'development',
     // devtool: 'inline-source-map',
     entry: './src/js/script.js',
     output: {

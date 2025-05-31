@@ -2212,7 +2212,7 @@ function createBubbleSheetMenu(
         `question-${i}-${modelAnswers[i].toLowerCase()}`
       );
 
-      correctedQuestion.classList.remove("corrected-question");
+
       Question.classList.remove("wrong-question");
       Question.classList.remove("correct-question");
       Question.classList.remove("discounted-question");
@@ -2224,7 +2224,7 @@ function createBubbleSheetMenu(
         correctAnswers++;
         Question.classList.add("correct-question");
       } else if (userAnswers[i] == "" || userAnswers[i] == "N") {
-        return;
+        continue;
       } else {
         Question.classList.add("wrong-question");
 
