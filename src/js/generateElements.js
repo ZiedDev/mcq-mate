@@ -27,8 +27,14 @@ import randomImage11 from "../media/images/Random/11.webp";
 import randomImage12 from "../media/images/Random/12.webp";
 import randomImage13 from "../media/images/Random/13.webp";
 import randomImage14 from "../media/images/Random/14.webp";
+import randomImage15 from "../media/images/Random/15.webp";
+import randomImage16 from "../media/images/Random/16.webp";
+import randomImage17 from "../media/images/Random/17.webp";
+import randomImage18 from "../media/images/Random/18.webp";
+import randomImage19 from "../media/images/Random/19.webp";
+import randomImage20 from "../media/images/Random/20.webp";
 
-const randomImages = {
+const randomImages = [
     randomImage1,
     randomImage2,
     randomImage3,
@@ -43,7 +49,13 @@ const randomImages = {
     randomImage12,
     randomImage13,
     randomImage14,
-};
+    randomImage15,
+    randomImage16,
+    randomImage17,
+    randomImage18,
+    randomImage19,
+    randomImage20,
+];
 const images = {
     al_biology,
     al_chemistry,
@@ -277,7 +289,7 @@ function generateMainButton(
         imageIcon.classList.add("hidden");
     };
     if (randomImage != undefined) {
-        image.src = randomImages[`randomImage${randomImage + 1}`];
+        image.src = randomImages[randomImage];
         image.alt = "random image";
     } else {
         image.src = images[`${level}_${subject.toLowerCase()}`];
@@ -312,7 +324,7 @@ function generateMainButton(
 }
 
 function generateRandomImages() {
-    const randomImagesArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+    const randomImagesArray = [...Object.keys(randomImages)];
     shuffle(randomImagesArray);
 
     function shuffle(array) {
