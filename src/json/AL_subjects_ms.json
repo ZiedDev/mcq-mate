@@ -254,6 +254,25 @@
                 "CADABCCBDCDACDDBCCACBACCCBDBBBABABBADBDC",
                 "DCBCACABBCBADDDADCCAADBDCCCACBAAABBDCBAD"
             ]
+        },
+        "2025": {
+            "m": [
+                null,
+                "DDCAACBBAACDDABABADDBADCBACCCDCACBCBBBDD",
+                null
+            ],
+            "s": [
+                "CDBBDDCABCCDBABCDAABDCDCCACBBDACDDABCDCB",
+                "DDBCACABBCBDCDAABCBCABDCBDBDCDCADCDDABAB",
+                "ACCBBAABBBCDDCDBBDCDDADDCBCBADACCDCCADAA",
+                "BDACDCABCBDDACBCBDCBADDAAABBDBACAABBBDCD"
+            ],
+            "w": [
+                "DDBCDDBCCDAABCCBBCAADBCABBDCDADCAADDCAAB",
+                "BDCCBBACDBADACCACABBAACDBDCDACCDBDBDACDA",
+                "DDBCDDBCCDAABCCBBCAADBCABBDCDADCAADDCAAB",
+                "CBBCABDCADBCDCCABCBDBACDABCCCBBAADDCADAD"
+            ]
         }
     },
     "Biology": {
@@ -511,6 +530,25 @@
                 "CDACBAAACBADABDDDDBABBDCCBBACCBCBAABAACB",
                 "DACBCBDACBACBCCDCBDADADBDDABABBBCCDCCBAA"
             ]
+        },
+        "2025": {
+            "m": [
+                null,
+                "DABBBDCBDCCDBDABACCDDACBDDCBBAABCDCBAADA",
+                null
+            ],
+            "s": [
+                "DABBBDCBDCCDBDABACCDDACBDDCBBAABCDCBAADA",
+                "BBBBACADDACAACCBADADDDDBCDDACCBABCAABBCB",
+                "CACACBABCBBABBDAADCDABCDCCDBBCCBCDCCBADC",
+                "CCAABBAACDCAACCBDCCDCDAADDBBABBDBDDCADAB"
+            ],
+            "w": [
+                "DBAADCDDCBACBABBBDACACBADBCACABDBDCACCCC",
+                "CAACBBBDBCDCBBCDAADABDADBDCBCBCDAADACCDC",
+                "BBCCBBBCABAAABCDADACDDCDBBACDACCCDABABAB",
+                "DCACAACDBBDDDBBCCCCDADDAADCABBBDABBCCABD"
+            ]
         }
     },
     "Chemistry": {
@@ -767,6 +805,25 @@
                 "ACCDADBDBAAACAABDCCBCCCCBDBCDBBDDDBABCAA",
                 "DCDCDBCCBDCCADDDACABCAACBDABACABCBBDADBA",
                 "ACCDADBDBAAACAABDCCBCCCCBDBCDBBDDDBABCAA"
+            ]
+        },
+        "2025": {
+            "m": [
+                null,
+                "DDCBACACDABABBCADCBABABCADCBCDBCCCBDBADD",
+                null
+            ],
+            "s": [
+                "CBBCADABBCBCADACCDDBADDABDBABCCABDCACDAC",
+                "ACDDCAABCDCBDCADCADBADBCCADBBADDABCDBBCB",
+                "ACBACCCBAABBBDCBADCDDADCDBABCADCDBADDBCA",
+                "CACADCBBDBBBDACACCADABAADCDACDBDDCCDBBAB"
+            ],
+            "w": [
+                "BCBBABDBBACACAACADDBBDBCBDACCDADADADCCBD",
+                "DABCBCBDCDDBDBCADDCBAABAAABADACCCBBCCDAD",
+                "BCBBABDBBACACAACADDBBDBCBDACCDADADADCCBD",
+                "BBCBDBDABCBDDCBABCABBBCCACCAAADAABDCDBDB"
             ]
         }
     }

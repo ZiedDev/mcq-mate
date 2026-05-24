@@ -254,6 +254,23 @@
                 "CBADCDAAACBBCAABBCADDDADDDDCCBCDDAAADBAC",
                 "BDDBBABDCDBDABCDBBCDBCCDDBDABBDADAADACCA"
             ]
+        },
+        "2025": {
+            "m": [
+                null,
+                "DBABDABDDDDADABBBBDBCBCADDBCACDDDCDCACAB",
+                null
+            ],
+            "s": [
+                "CCDABDCCDBDAAACAACBBCBDABCDDCBDDCBCCABBA",
+                "CBCDADCDADBBDAACBDCABABCABBDDBDBCBCABCBA",
+                "CBCDADCDADBBDAACBDCABABCABBDDBDBCBCABCBA"
+            ],
+            "w": [
+                "BDABACBBCACDDADBDABABCDDBDCADCABBCBADCCB",
+                "ABADACDBBDBACBBBDCCCDAADCCACADDCBBAABCCB",
+                "BDACABCDBAADDBDCCBBCDCBBADCABDDBACCCACBD"
+            ]
         }
     },
     "Biology": {
@@ -510,6 +527,23 @@
                 "BADBCBCAACDBDBCACCABBABCCCBACDACDABBDBCC",
                 "ADCDDCABDDBBBAAABBAACDACBBDDDADDDBCBAAAA",
                 "CCCCACBCCACDDAACBCCAACBBBDACCBBBAACCBDBA"
+            ]
+        },
+        "2025": {
+            "m": [
+                null,
+                "BCCBBDDBCBCBCACCDABCCABDBBBBDCABADBADBBB",
+                null
+            ],
+            "s": [
+                "BBDDBBBACDDBCADDDDCCDABBDBDABACADAABACDD",
+                "DDBDDCCDBBABCCDBBCDDBDDACDBAABBCDCCAABAB",
+                "DADCABCACDAACBCDDABDCCCCBDAADADBADDACCAC"
+            ],
+            "w": [
+                "CDCDBCDCABCDBADDDCADBAACDCDCDDACDCDABBBA",
+                "BDCBCAABBBCDDDCBCDDABBDAACCCCDCACDADCCCB",
+                "DCAABCDAAAACACCCCCDCABACAADBCCBCDCCBDBCB"
             ]
         }
     },
@@ -768,6 +802,23 @@
                 "CBACABBCDDBAABBCAADBCDBDADCCBDDBACCCABAD",
                 "CCDCAACCDDBDBCBACABACCDABABDBDBADCCDBBAA"
             ]
+        },
+        "2025": {
+            "m": [
+                null,
+                "ABCDCDDABBAADCBDDBBAAABCABDCDCDDCCBAABBA",
+                null
+            ],
+            "s": [
+                "BCBBADDCBCACDABADABDAABDCACDBCAADBCCACDB",
+                "CCDCDAABDDBACCDABADBBABACBCBCCBBACCDDBDA",
+                "CDDACCDAAABDAABDCBBBABCDDCCADDCDDBBDBABC"
+            ],
+            "w": [
+                "CAACACCABBADBBDDADBDBDCCABDDACCADCCCDBBC",
+                "DABDCBCDDCCCBBADDBCBAACDADABCACDDBADBDBA",
+                "BCACAAADDDCBBBCDDCDBCDBCABABBACDDBDCBCBC"
+            ]
         }
     },
     "Combined": {
@@ -1024,6 +1075,23 @@
                 "DCBCADBCDBAADCCBCDBACBCAAADDBDADCABDCBCA",
                 "CBCDBADDABACAABDDADBBAACCDBBAAACBDDBCBDC",
                 "CBCDBADDABACAABDDADBBAACCDBBAAACBDDBCBDC"
+            ]
+        },
+        "2025": {
+            "m": [
+                null,
+                "CDCBBADDABCBADBCBCADDABABCCBADADCACBBADC",
+                null
+            ],
+            "s": [
+                "CCDDBABDABDCADDABADCBCCABDBBCAAABBCDDDCA",
+                "CDADABACCBBDDCCAABABBCBDDCDABCADDCBBCBCA",
+                "CCCBAABBDDADBACACBDDBADBDCBAACDBBBCADDCA"
+            ],
+            "w": [
+                "DCCABBAACBDBDBADDACCABDCDBBADCCDBADCBBAD",
+                "DADBCDCABCDACDBCAAABCDABBCDAADBBDCCCABDB",
+                "DADBCDCABCDACDBCAAABCDABBCDAADBBDCCCABDB"
             ]
         }
     }
