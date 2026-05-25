@@ -1,3 +1,4 @@
+import "../css/style.css";
 import olSubjectsMS from "../json/OL_subjects_ms.json";
 import alSubjectsMS from "../json/AL_subjects_ms.json";
 import crSubjectsMS from "../json/CR_subjects_ms.json";
@@ -11,17 +12,21 @@ import {
 import createModal from "./modal.js";
 import WebViewer from "../../node_modules/@pdftron/pdfjs-express";
 
+import JSConfetti from "js-confetti";
+const jsConfetti = new JSConfetti();
+
 import registerServiceWorker from "./serviceWorkerRegistration.js";
 registerServiceWorker();
 
+// Hamburger Menu
 const hamburgerMenuContainer = document.getElementById(
-  "hamburger-menu-container"
+  "hamburger-menu-container",
 );
 const hamburgerMenuButtonOpen = document.getElementById(
-  "hamburger-menu-button-opened"
+  "hamburger-menu-button-opened",
 );
 const hamburgerMenuButtonClose = document.getElementById(
-  "hamburger-menu-button-closed"
+  "hamburger-menu-button-closed",
 );
 const headerContent = document.getElementById("header-content");
 let hamburgerOpened = false;
@@ -58,7 +63,7 @@ document.addEventListener("click", (e) => {
       hamburgerMenuButtonClose.classList.add("hidden");
       headerContent.style.animation = "closeHeaderContent 100ms";
       hamburgerMenuContainer.classList.remove(
-        "hamburger-menu-container-opened"
+        "hamburger-menu-container-opened",
       );
       headerContent.classList.remove("header-content-opened");
       hamburgerOpened = false;
@@ -66,15 +71,30 @@ document.addEventListener("click", (e) => {
   }
 });
 
-let importedFile;
+// Guides
+const guides = document.getElementById("guides");
+guides.addEventListener("click", () => {
+  createModal(
+    "", // title
+    ["You are are about to redirected"], // content,
+    [
+      "Go to Guides",
+      () => {
+        window.open(`./guides.html`, "_self");
+      },
+    ],
+    ["Cancel", () => {}],
+  );
+});
 
+// Importing / Exporting Data
+let importedFile;
 async function readImport(e) {
   const file = e.target.files.item(0);
   const content = await file.text();
 
   importedFile = content;
 }
-
 const dataButton = document.getElementById("data");
 dataButton.addEventListener("click", () => {
   createModal(
@@ -101,16 +121,20 @@ dataButton.addEventListener("click", () => {
               try {
                 importJson(importedFile);
                 document.body.appendChild(
-                  createModal("Done", ["Date Imported"], ["  Ok  ", () => { }])
+                  createModal("Done", ["Date Imported"], ["  Ok  ", () => {}]),
                 );
               } catch (error) {
                 console.log(error);
                 document.body.appendChild(
-                  createModal("Error", ["Invalid Import"], ["  Ok  ", () => { }])
+                  createModal(
+                    "Error",
+                    ["Invalid Import"],
+                    ["  Ok  ", () => {}],
+                  ),
                 );
               }
             },
-          ]
+          ],
         );
       },
     ],
@@ -125,34 +149,35 @@ dataButton.addEventListener("click", () => {
         a.href = window.URL.createObjectURL(blob);
         a.click(); // Trigger download
       },
-    ]
+    ],
   );
 });
-
 function getExportJson() {
   const regexPattern = new RegExp(/[a-z]{3}[oac][0-9]{2}[wsm][1-3][s]?/gim);
   let dict = JSON.parse(JSON.stringify(localStorage));
 
   Object.keys(dict).forEach((key) => {
     if (JSON.stringify(key.match(regexPattern)) != JSON.stringify([`${key}`])) {
-      delete dict[key]
+      delete dict[key];
     }
   });
 
   return JSON.stringify(dict);
 }
-
 function importJson(content) {
   try {
     const parsed = JSON.parse(content);
     const regexPattern = new RegExp(/[a-z]{3}[oac][0-9]{2}[wsm][1-3][s]?/gim);
 
-    console.log('parsed:', parsed)
-    console.log('parsed:', regexPattern)
+    console.log("parsed:", parsed);
+    console.log("parsed:", regexPattern);
 
     Object.keys(parsed).forEach((key) => {
-      console.log(JSON.stringify(key.match(regexPattern)), JSON.stringify([`${key}`]))
-      console.log(key.match(regexPattern))
+      console.log(
+        JSON.stringify(key.match(regexPattern)),
+        JSON.stringify([`${key}`]),
+      );
+      console.log(key.match(regexPattern));
       if (
         JSON.stringify(key.match(regexPattern)) != JSON.stringify([`${key}`])
       ) {
@@ -170,8 +195,88 @@ function importJson(content) {
   }
 }
 
-import JSConfetti from "js-confetti";
-const jsConfetti = new JSConfetti();
+// Settings
+const settingsButton = document.getElementById("settings");
+settingsButton.addEventListener("click", () => {
+  const modal = createModal(
+    "Settings", // title
+    [
+      `
+      Order 
+      <div style="color: #0D1117; margin-bottom: 0.5rem; display: flex; gap: 0.25rem;" id="order-controls">
+        <select id="order-select-0">
+          <option value="">None</option>
+          <option value="ol">OL</option>
+          <option value="al">AL</option>
+          <option value="cr">Core</option>
+        </select>
+
+        <select id="order-select-1">
+          <option value="">None</option>
+          <option value="ol">OL</option>
+          <option value="al">AL</option>
+          <option value="cr">Core</option>
+        </select>
+
+        <select id="order-select-2">
+          <option value="">None</option>
+          <option value="ol">OL</option>
+          <option value="al">AL</option>
+          <option value="cr">Core</option>
+        </select>
+      </div>
+      <div style="color: #0D1117;">
+       Your Data 
+        <button id="update-data-button">
+          Update
+        </button>
+      </div>
+      `,
+    ], // content
+  );
+
+  // Attach event listeners after modal is created
+  setTimeout(() => {
+    const selects = modal.querySelectorAll("#order-controls select");
+    const updateDataButton = modal.querySelector("#update-data-button");
+
+    // Set default values
+    selects[0].value = order[0];
+    selects[1].value = order[1];
+    selects[2].value = order[2];
+
+    function disableDuplicates() {
+      document
+        .querySelectorAll("#order-controls option")
+        .forEach((o) => (o.disabled = false));
+
+      selects.forEach((select) => {
+        if (select.value) {
+          document
+            .querySelectorAll(`#order-controls option[value='${select.value}']`)
+            .forEach((o) => {
+              if (o.parentElement !== select) o.disabled = true;
+            });
+        }
+      });
+    }
+
+    function handleOrderChange() {
+      disableDuplicates();
+      updateOrder([selects[0].value, selects[1].value, selects[2].value]);
+    }
+
+    disableDuplicates();
+
+    selects.forEach((select) => {
+      select.addEventListener("change", handleOrderChange);
+    });
+
+    updateDataButton.addEventListener("click", () => dataButton.click());
+  }, 0);
+
+  document.body.appendChild(modal);
+});
 
 // GLOBAL VARIABLES
 let globalPdfViewer;
@@ -197,6 +302,23 @@ const subjectCode = {
 let randomImagesArray = generateRandomImages();
 let randomImageCounter = 0;
 
+let order =
+  localStorage.getItem("order") == null
+    ? ["ol", "cr", "al"]
+    : JSON.parse(localStorage.getItem("order"));
+
+function updateOrder(newOrder = ["ol", "cr", "al"]) {
+  order = newOrder;
+  localStorage.setItem("order", JSON.stringify(order));
+  sidePanel.innerHTML = "";
+  CreateSideBar(order);
+
+  if (current_path == "home") {
+    main.innerHTML = "";
+    main.appendChild(createHomeMenu(order));
+  }
+}
+
 // credits button behavior
 const creditsButton = document.getElementById("credits");
 creditsButton.addEventListener("click", () => {
@@ -207,7 +329,7 @@ creditsButton.addEventListener("click", () => {
       `Website created by <br> <a href="https://github.com/ZiedDev" target="_blank">Zied</a> & <a href="https://github.com/omar-elsherbiny" target="_blank">Sherbo</a>`,
       `Special Thanks to: <br> <a href="https://gceguide.net/" target="_blank">GCE Guide</a> <br> <a href="https://papacambridge.com/" target="_blank">Papa Cambridge</a>`,
       `Repository: <br> <a href="https://github.com/ZiedDev/mcq-mate" target="_blank">MCQ Mate</a>`,
-    ] // content
+    ], // content
   );
 });
 
@@ -216,17 +338,15 @@ const moveBackwardsArrow = document.getElementById("backwards-arrow");
 const moveForwardsArrow = document.getElementById("forwards-arrow");
 
 let backward_stack = [];
-let current_path = ''; // important to put in datatype and format of root path
+let current_path = ""; // important to put in datatype and format of root path
 let forward_stack = [];
 
 function isBackwardAvailable() {
   return backward_stack.length > 0 ? 1 : 0;
 }
-
 function isForwardAvailable() {
   return forward_stack.length > 0 ? 1 : 0;
 }
-
 function backwardPath() {
   randomImagesArray = generateRandomImages();
   randomImageCounter = 0;
@@ -248,7 +368,6 @@ function backwardPath() {
   updatePathElement(true);
   updatePathIcon();
 }
-
 function changePath(new_path) {
   if (current_path == new_path) {
     return;
@@ -274,7 +393,6 @@ function changePath(new_path) {
   updatePathElement();
   updatePathIcon();
 }
-
 function forwardPath() {
   randomImagesArray = generateRandomImages();
   randomImageCounter = 0;
@@ -295,7 +413,6 @@ function forwardPath() {
   updatePathElement(true);
   updatePathIcon();
 }
-
 let timeout;
 function updatePathElement() {
   const path = document.getElementById("path");
@@ -312,7 +429,7 @@ function updatePathElement() {
     }
     if (globalPeriodicTablePdfViewer != undefined) {
       globalPeriodicTablePdfViewer.parentNode.removeChild(
-        globalPeriodicTablePdfViewer
+        globalPeriodicTablePdfViewer,
       );
       globalPeriodicTablePdfViewer = undefined;
     }
@@ -327,7 +444,7 @@ function updatePathElement() {
     if (pathText.length == 5) {
       path.innerHTML = "";
       path.appendChild(
-        createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true)
+        createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true),
       );
       path.appendChild(createPathElement(pathText[2]));
       path.appendChild(
@@ -336,11 +453,11 @@ function updatePathElement() {
             ? "Feb / Mar"
             : pathText[3] == "s"
               ? "May / Jun"
-              : "Oct / Nov"
-        )
+              : "Oct / Nov",
+        ),
       );
       path.appendChild(
-        createPathElement(`Variant ${Number(pathText[4]) + 1}`, false, true)
+        createPathElement(`Variant ${Number(pathText[4]) + 1}`, false, true),
       );
       main.appendChild(
         createBubbleSheetMenu(
@@ -348,13 +465,13 @@ function updatePathElement() {
           pathText[1],
           pathText[2],
           pathText[3],
-          pathText[4]
-        )
+          pathText[4],
+        ),
       );
     } else if (pathText.length == 4) {
       path.innerHTML = "";
       path.appendChild(
-        createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true)
+        createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true),
       );
       path.appendChild(createPathElement(pathText[2]));
       path.appendChild(
@@ -365,16 +482,16 @@ function updatePathElement() {
               ? "May / Jun"
               : "Oct / Nov",
           false,
-          true
-        )
+          true,
+        ),
       );
       main.appendChild(
-        CreateSubMenu(pathText[0], pathText[1], pathText[2], pathText[3])
+        CreateSubMenu(pathText[0], pathText[1], pathText[2], pathText[3]),
       );
     } else if (pathText.length == 3) {
       path.innerHTML = "";
       path.appendChild(
-        createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true)
+        createPathElement(`${pathText[0].toUpperCase()} ${pathText[1]}`, true),
       );
       path.appendChild(createPathElement(pathText[2], false, true));
       main.appendChild(CreateSubMenu(pathText[0], pathText[1], pathText[2]));
@@ -384,18 +501,17 @@ function updatePathElement() {
         createPathElement(
           `${pathText[0].toUpperCase()} ${pathText[1]}`,
           true,
-          true
-        )
+          true,
+        ),
       );
       main.appendChild(CreateSubMenu(pathText[0], pathText[1]));
     } else if (pathText.length <= 1) {
       path.innerHTML = "";
-      main.appendChild(createHomeMenu());
+      main.appendChild(createHomeMenu(order));
     }
     main.style.animation = "200ms openMenu forwards ease";
   }, 100);
 }
-
 moveBackwardsArrow.addEventListener("click", () => {
   if (isBackwardAvailable()) {
     backwardPath();
@@ -406,7 +522,6 @@ moveForwardsArrow.addEventListener("click", () => {
     forwardPath();
   }
 });
-
 document.addEventListener("mousedown", (e) => {
   if (e.buttons == 8) {
     if (isBackwardAvailable()) {
@@ -424,7 +539,6 @@ document.addEventListener("mousedown", (e) => {
 document.addEventListener("mouseup", (e) => {
   e.preventDefault();
 });
-
 function createPathElement(title, first, last) {
   const element = document.createElement("div");
 
@@ -437,7 +551,7 @@ function createPathElement(title, first, last) {
   if (!first) {
     const arrowElement = document.createElementNS(
       "http://www.w3.org/2000/svg",
-      "svg"
+      "svg",
     );
     arrowElement.setAttribute("width", "32");
     arrowElement.setAttribute("height", "32");
@@ -471,7 +585,6 @@ function createPathElement(title, first, last) {
 
   return element;
 }
-
 function updatePathIcon() {
   const pathIcon = document.getElementById("path-icon");
 
@@ -489,7 +602,6 @@ function updatePathIcon() {
     pathIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256"><path fill="#ffffff" d="M219.23 159.2a196.66 196.66 0 0 0-18-31.2a196.66 196.66 0 0 0 18-31.2c11.84-26.31 11.69-47.48-.43-59.6s-33.29-12.27-59.6-.43a196.66 196.66 0 0 0-31.2 18a196.66 196.66 0 0 0-31.2-18c-26.31-11.84-47.48-11.69-59.6.43s-12.27 33.29-.43 59.6a196.66 196.66 0 0 0 18 31.2a196.66 196.66 0 0 0-18 31.2c-11.84 26.31-11.69 47.48.43 59.6c6.13 6.13 14.58 9.2 24.8 9.2c10 0 21.77-2.92 34.76-8.77a196.66 196.66 0 0 0 31.2-18a196.66 196.66 0 0 0 31.2 18c13 5.85 24.74 8.77 34.76 8.77c10.26 0 18.71-3.07 24.84-9.2c12.16-12.12 12.31-33.29.47-59.6m-17.41-105c5.25 5.26 1.79 26-16 53.78c-5.61-6.66-11.65-13.25-18.07-19.67S154.7 75.83 148 70.22c27.82-17.83 48.56-21.29 53.82-16.04ZM171.24 128a288.6 288.6 0 0 1-20.51 22.73A288.6 288.6 0 0 1 128 171.24a288.6 288.6 0 0 1-22.73-20.51A288.6 288.6 0 0 1 84.76 128A298.55 298.55 0 0 1 128 84.76a286.83 286.83 0 0 1 22.73 20.51A286.83 286.83 0 0 1 171.24 128M54.18 54.18c1.46-1.45 4.1-2.24 7.75-2.24c9.53 0 25.94 5.39 46 18.28c-6.66 5.61-13.25 11.65-19.67 18.07S75.83 101.3 70.22 108C52.39 80.18 48.93 59.44 54.18 54.18m0 147.64c-5.25-5.26-1.79-26 16-53.78c5.61 6.66 11.65 13.25 18.07 19.67s13 12.46 19.67 18.07c-27.74 17.83-48.48 21.29-53.74 16.04m147.64 0c-5.26 5.25-26 1.79-53.78-16c6.66-5.61 13.25-11.65 19.67-18.07s12.46-13 18.07-19.67c17.83 27.74 21.29 48.48 16.04 53.74M144 128a16 16 0 1 1-16-16a16 16 0 0 1 16 16"/></svg>`;
   }
 }
-
 const pathIcon = document.getElementById("path-icon");
 pathIcon.addEventListener("click", () => {
   if (current_path != "home") {
@@ -498,575 +610,661 @@ pathIcon.addEventListener("click", () => {
 });
 
 // side bar
-const openedSideBarArray = [];
+const sidePanel = document.getElementById("side-panel");
+function CreateSideBar(order = ["ol", "al", "cr"]) {
+  const openedSideBarArray = [];
+  for (let i = 0; i < order.length; i++) {
+    // creating side buttons for ol subjects
+    let contentParent = document.createElement("div");
+    if (order[i] == "ol") {
+      const sideGroupOl = document.createElement("div");
+      sideGroupOl.id = "side-group-ol";
+      sideGroupOl.classList.add("side-group");
 
-// creating side buttons for ol subjects
-const sideGroupOl = document.getElementById("side-group-ol");
-Object.keys(olSubjectsMS).forEach((subject) => {
-  const subjectElement = generateSideButton({
-    level: "ol",
-    subject: subject,
-    generateContainerCallback: () => {
-      const sideSubjectYears = document.getElementById(
-        `side-ol-${subject}-years`
-      );
-      Object.keys(olSubjectsMS[subject]).forEach((year) => {
-        let opened =
-          openedSideBarArray.indexOf(`ol-${subject}-${year}`) == -1
-            ? false
-            : true;
-        const yearElement = generateSideButton({
-          opened: opened,
+      const sideGroupTitleOl = document.createElement("div");
+      sideGroupTitleOl.id = "side-group-title-ol";
+      sideGroupTitleOl.classList.add("side-group-title");
+      sideGroupTitleOl.textContent = "OL Subjects";
+
+      Object.keys(olSubjectsMS).forEach((subject) => {
+        const subjectElement = generateSideButton({
           level: "ol",
           subject: subject,
-          year: year,
           generateContainerCallback: () => {
-            if (!opened) {
-              openedSideBarArray.push(`ol-${subject}-${year}`);
-            }
-            const sideYearSessions = document.getElementById(
-              `side-ol-${subject}-${year}-sessions`
+            const sideSubjectYears = document.getElementById(
+              `side-ol-${subject}-years`,
             );
-            Object.keys(olSubjectsMS[subject][year]).forEach((session) => {
-              if (
-                JSON.stringify(olSubjectsMS[subject][year][session]) !=
-                JSON.stringify([null, null, null])
-              ) {
-                let opened =
-                  openedSideBarArray.indexOf(
-                    `ol-${subject}-${year}-${session}`
-                  ) == -1
-                    ? false
-                    : true;
-                const sessionElement = generateSideButton({
-                  opened: opened,
-                  level: "ol",
-                  subject: subject,
-                  year: year,
-                  session: session,
-                  generateContainerCallback: () => {
-                    if (!opened) {
-                      openedSideBarArray.push(
-                        `ol-${subject}-${year}-${session}`
-                      );
-                    }
-                    const sideSessionVariants = document.getElementById(
-                      `side-ol-${subject}-${year}-${session}-variants`
-                    );
-                    Object.keys(olSubjectsMS[subject][year][session]).forEach(
-                      (variant) => {
-                        if (
-                          olSubjectsMS[subject][year][session][variant] != null
-                        ) {
-                          const variantElement = generateSideButton({
-                            level: "ol",
-                            subject: subject,
-                            year: year,
-                            session: session,
-                            variant: variant,
-                          });
-                          variantElement.addEventListener("click", (e) => {
-                            if (
-                              e.target.id ==
-                              `side-ol-button-${subject}-${year}-${session}-${variant}` ||
-                              e.target.id ==
-                              `side-ol-${subject}-${year}-${session}-${variant}-title`
-                            ) {
-                              changePath(
-                                `ol>${subject}>${year}>${session}>${variant}`
+            Object.keys(olSubjectsMS[subject]).forEach((year) => {
+              let opened =
+                openedSideBarArray.indexOf(`ol-${subject}-${year}`) == -1
+                  ? false
+                  : true;
+              const yearElement = generateSideButton({
+                opened: opened,
+                level: "ol",
+                subject: subject,
+                year: year,
+                generateContainerCallback: () => {
+                  if (!opened) {
+                    openedSideBarArray.push(`ol-${subject}-${year}`);
+                  }
+                  const sideYearSessions = document.getElementById(
+                    `side-ol-${subject}-${year}-sessions`,
+                  );
+                  Object.keys(olSubjectsMS[subject][year]).forEach(
+                    (session) => {
+                      if (
+                        JSON.stringify(olSubjectsMS[subject][year][session]) !=
+                        JSON.stringify([null, null, null])
+                      ) {
+                        let opened =
+                          openedSideBarArray.indexOf(
+                            `ol-${subject}-${year}-${session}`,
+                          ) == -1
+                            ? false
+                            : true;
+                        const sessionElement = generateSideButton({
+                          opened: opened,
+                          level: "ol",
+                          subject: subject,
+                          year: year,
+                          session: session,
+                          generateContainerCallback: () => {
+                            if (!opened) {
+                              openedSideBarArray.push(
+                                `ol-${subject}-${year}-${session}`,
                               );
                             }
-                          });
-                          sideSessionVariants.appendChild(variantElement);
-                        }
+                            const sideSessionVariants = document.getElementById(
+                              `side-ol-${subject}-${year}-${session}-variants`,
+                            );
+                            Object.keys(
+                              olSubjectsMS[subject][year][session],
+                            ).forEach((variant) => {
+                              if (
+                                olSubjectsMS[subject][year][session][variant] !=
+                                null
+                              ) {
+                                const variantElement = generateSideButton({
+                                  level: "ol",
+                                  subject: subject,
+                                  year: year,
+                                  session: session,
+                                  variant: variant,
+                                });
+                                variantElement.addEventListener(
+                                  "click",
+                                  (e) => {
+                                    if (
+                                      e.target.id ==
+                                        `side-ol-button-${subject}-${year}-${session}-${variant}` ||
+                                      e.target.id ==
+                                        `side-ol-${subject}-${year}-${session}-${variant}-title`
+                                    ) {
+                                      changePath(
+                                        `ol>${subject}>${year}>${session}>${variant}`,
+                                      );
+                                    }
+                                  },
+                                );
+                                sideSessionVariants.appendChild(variantElement);
+                              }
+                            });
+                          },
+                          removeContainerCallback: () => {
+                            let index = openedSideBarArray.indexOf(
+                              `ol-${subject}-${year}-${session}`,
+                            );
+                            if (index != -1) {
+                              openedSideBarArray.splice(index, 1);
+                            }
+                            const sideSessionVariants = document.getElementById(
+                              `side-ol-${subject}-${year}-${session}-variants`,
+                            );
+                            const variantsLength =
+                              sideSessionVariants.childNodes.length;
+                            for (let i = 0; i < variantsLength; i++) {
+                              let timeout = setTimeout(() => {
+                                sideSessionVariants.removeChild(
+                                  sideSessionVariants.childNodes[0],
+                                );
+                                clearTimeout(timeout);
+                              }, 100);
+                            }
+                          },
+                        });
+                        sessionElement.addEventListener("click", (e) => {
+                          if (
+                            e.target.id ==
+                              `side-ol-button-${subject}-${year}-${session}` ||
+                            e.target.id ==
+                              `side-ol-${subject}-${year}-${session}-title`
+                          ) {
+                            changePath(`ol>${subject}>${year}>${session}`);
+                          }
+                        });
+                        sideYearSessions.appendChild(sessionElement);
                       }
-                    );
-                  },
-                  removeContainerCallback: () => {
-                    let index = openedSideBarArray.indexOf(
-                      `ol-${subject}-${year}-${session}`
-                    );
-                    if (index != -1) {
-                      openedSideBarArray.splice(index, 1);
-                    }
-                    const sideSessionVariants = document.getElementById(
-                      `side-ol-${subject}-${year}-${session}-variants`
-                    );
-                    const variantsLength =
-                      sideSessionVariants.childNodes.length;
-                    for (let i = 0; i < variantsLength; i++) {
-                      let timeout = setTimeout(() => {
-                        sideSessionVariants.removeChild(
-                          sideSessionVariants.childNodes[0]
-                        );
-                        clearTimeout(timeout);
-                      }, 100);
-                    }
-                  },
-                });
-                sessionElement.addEventListener("click", (e) => {
-                  if (
-                    e.target.id ==
-                    `side-ol-button-${subject}-${year}-${session}` ||
-                    e.target.id == `side-ol-${subject}-${year}-${session}-title`
-                  ) {
-                    changePath(`ol>${subject}>${year}>${session}`);
+                    },
+                  );
+                },
+                removeContainerCallback: () => {
+                  let index = openedSideBarArray.indexOf(
+                    `ol-${subject}-${year}`,
+                  );
+                  if (index != -1) {
+                    openedSideBarArray.splice(index, 1);
                   }
-                });
-                sideYearSessions.appendChild(sessionElement);
-              }
+                  const sideYearSessions = document.getElementById(
+                    `side-ol-${subject}-${year}-sessions`,
+                  );
+                  const sessionsLength = sideYearSessions.childNodes.length;
+                  for (let i = 0; i < sessionsLength; i++) {
+                    let timeout = setTimeout(() => {
+                      sideYearSessions.removeChild(
+                        sideYearSessions.childNodes[0],
+                      );
+                      clearTimeout(timeout);
+                    }, 100);
+                  }
+                },
+              });
+              yearElement.addEventListener("click", (e) => {
+                if (
+                  e.target.id == `side-ol-button-${subject}-${year}` ||
+                  e.target.id == `side-ol-${subject}-${year}-title`
+                ) {
+                  changePath(`ol>${subject}>${year}`);
+                }
+              });
+
+              sideSubjectYears.appendChild(yearElement);
             });
           },
           removeContainerCallback: () => {
-            let index = openedSideBarArray.indexOf(`ol-${subject}-${year}`);
-            if (index != -1) {
-              openedSideBarArray.splice(index, 1);
-            }
-            const sideYearSessions = document.getElementById(
-              `side-ol-${subject}-${year}-sessions`
+            const sideSubjectYears = document.getElementById(
+              `side-ol-${subject}-years`,
             );
-            const sessionsLength = sideYearSessions.childNodes.length;
-            for (let i = 0; i < sessionsLength; i++) {
+            const yearLength = sideSubjectYears.childNodes.length;
+            for (let i = 0; i < yearLength; i++) {
               let timeout = setTimeout(() => {
-                sideYearSessions.removeChild(sideYearSessions.childNodes[0]);
+                sideSubjectYears.removeChild(sideSubjectYears.childNodes[0]);
                 clearTimeout(timeout);
               }, 100);
             }
           },
         });
-        yearElement.addEventListener("click", (e) => {
+        subjectElement.addEventListener("click", (e) => {
           if (
-            e.target.id == `side-ol-button-${subject}-${year}` ||
-            e.target.id == `side-ol-${subject}-${year}-title`
+            e.target.id == `side-ol-button-${subject}` ||
+            e.target.id == `side-ol-${subject}-title`
           ) {
-            changePath(`ol>${subject}>${year}`);
+            changePath(`ol>${subject}`);
           }
         });
 
-        sideSubjectYears.appendChild(yearElement);
+        sideGroupOl.appendChild(subjectElement);
       });
-    },
-    removeContainerCallback: () => {
-      const sideSubjectYears = document.getElementById(
-        `side-ol-${subject}-years`
-      );
-      const yearLength = sideSubjectYears.childNodes.length;
-      for (let i = 0; i < yearLength; i++) {
-        let timeout = setTimeout(() => {
-          sideSubjectYears.removeChild(sideSubjectYears.childNodes[0]);
-          clearTimeout(timeout);
-        }, 100);
-      }
-    },
-  });
-  subjectElement.addEventListener("click", (e) => {
-    if (
-      e.target.id == `side-ol-button-${subject}` ||
-      e.target.id == `side-ol-${subject}-title`
-    ) {
-      changePath(`ol>${subject}`);
+
+      contentParent.appendChild(sideGroupTitleOl);
+      contentParent.appendChild(sideGroupOl);
+      sidePanel.appendChild(contentParent);
     }
-  });
+    // creating side buttons for al subjects
+    if (order[i] == "al") {
+      const sideGroupAl = document.createElement("div");
+      sideGroupAl.id = "side-group-al";
+      sideGroupAl.classList.add("side-group");
 
-  sideGroupOl.appendChild(subjectElement);
-});
+      const sideGroupTitleAl = document.createElement("div");
+      sideGroupTitleAl.id = "side-group-title-al";
+      sideGroupTitleAl.classList.add("side-group-title");
+      sideGroupTitleAl.textContent = "AL Subjects";
 
-// creating side buttons for al subjects
-const sideGroupAl = document.getElementById("side-group-al");
-Object.keys(alSubjectsMS).forEach((subject) => {
-  const subjectElement = generateSideButton({
-    level: "al",
-    subject: subject,
-    generateContainerCallback: () => {
-      const sideSubjectYears = document.getElementById(
-        `side-al-${subject}-years`
-      );
-      Object.keys(alSubjectsMS[subject]).forEach((year) => {
-        let opened =
-          openedSideBarArray.indexOf(`al-${subject}-${year}`) == -1
-            ? false
-            : true;
-        const yearElement = generateSideButton({
-          opened: opened,
+      Object.keys(alSubjectsMS).forEach((subject) => {
+        const subjectElement = generateSideButton({
           level: "al",
           subject: subject,
-          year: year,
           generateContainerCallback: () => {
-            if (!opened) {
-              openedSideBarArray.push(`al-${subject}-${year}`);
-            }
-            const sideYearSessions = document.getElementById(
-              `side-al-${subject}-${year}-sessions`
+            const sideSubjectYears = document.getElementById(
+              `side-al-${subject}-years`,
             );
-            Object.keys(alSubjectsMS[subject][year]).forEach((session) => {
-              if (
-                JSON.stringify(alSubjectsMS[subject][year][session]) !=
-                JSON.stringify([null, null, null])
-              ) {
-                let opened =
-                  openedSideBarArray.indexOf(
-                    `al-${subject}-${year}-${session}`
-                  ) == -1
-                    ? false
-                    : true;
-                const sessionElement = generateSideButton({
-                  opened: opened,
-                  level: "al",
-                  subject: subject,
-                  year: year,
-                  session: session,
-                  generateContainerCallback: () => {
-                    if (!opened) {
-                      openedSideBarArray.push(
-                        `al-${subject}-${year}-${session}`
-                      );
-                    }
-                    const sideSessionVariants = document.getElementById(
-                      `side-al-${subject}-${year}-${session}-variants`
-                    );
-                    Object.keys(alSubjectsMS[subject][year][session]).forEach(
-                      (variant) => {
-                        if (
-                          alSubjectsMS[subject][year][session][variant] != null
-                        ) {
-                          const variantElement = generateSideButton({
-                            level: "al",
-                            subject: subject,
-                            year: year,
-                            session: session,
-                            variant: variant,
-                          });
-                          variantElement.addEventListener("click", (e) => {
-                            if (
-                              e.target.id ==
-                              `side-al-button-${subject}-${year}-${session}-${variant}` ||
-                              e.target.id ==
-                              `side-al-${subject}-${year}-${session}-${variant}-title`
-                            ) {
-                              changePath(
-                                `al>${subject}>${year}>${session}>${variant}`
+            Object.keys(alSubjectsMS[subject]).forEach((year) => {
+              let opened =
+                openedSideBarArray.indexOf(`al-${subject}-${year}`) == -1
+                  ? false
+                  : true;
+              const yearElement = generateSideButton({
+                opened: opened,
+                level: "al",
+                subject: subject,
+                year: year,
+                generateContainerCallback: () => {
+                  if (!opened) {
+                    openedSideBarArray.push(`al-${subject}-${year}`);
+                  }
+                  const sideYearSessions = document.getElementById(
+                    `side-al-${subject}-${year}-sessions`,
+                  );
+                  Object.keys(alSubjectsMS[subject][year]).forEach(
+                    (session) => {
+                      if (
+                        JSON.stringify(alSubjectsMS[subject][year][session]) !=
+                        JSON.stringify([null, null, null])
+                      ) {
+                        let opened =
+                          openedSideBarArray.indexOf(
+                            `al-${subject}-${year}-${session}`,
+                          ) == -1
+                            ? false
+                            : true;
+                        const sessionElement = generateSideButton({
+                          opened: opened,
+                          level: "al",
+                          subject: subject,
+                          year: year,
+                          session: session,
+                          generateContainerCallback: () => {
+                            if (!opened) {
+                              openedSideBarArray.push(
+                                `al-${subject}-${year}-${session}`,
                               );
                             }
-                          });
-                          sideSessionVariants.appendChild(variantElement);
-                        }
+                            const sideSessionVariants = document.getElementById(
+                              `side-al-${subject}-${year}-${session}-variants`,
+                            );
+                            Object.keys(
+                              alSubjectsMS[subject][year][session],
+                            ).forEach((variant) => {
+                              if (
+                                alSubjectsMS[subject][year][session][variant] !=
+                                null
+                              ) {
+                                const variantElement = generateSideButton({
+                                  level: "al",
+                                  subject: subject,
+                                  year: year,
+                                  session: session,
+                                  variant: variant,
+                                });
+                                variantElement.addEventListener(
+                                  "click",
+                                  (e) => {
+                                    if (
+                                      e.target.id ==
+                                        `side-al-button-${subject}-${year}-${session}-${variant}` ||
+                                      e.target.id ==
+                                        `side-al-${subject}-${year}-${session}-${variant}-title`
+                                    ) {
+                                      changePath(
+                                        `al>${subject}>${year}>${session}>${variant}`,
+                                      );
+                                    }
+                                  },
+                                );
+                                sideSessionVariants.appendChild(variantElement);
+                              }
+                            });
+                          },
+                          removeContainerCallback: () => {
+                            let index = openedSideBarArray.indexOf(
+                              `al-${subject}-${year}-${session}`,
+                            );
+                            if (index != -1) {
+                              openedSideBarArray.splice(index, 1);
+                            }
+                            const sideSessionVariants = document.getElementById(
+                              `side-al-${subject}-${year}-${session}-variants`,
+                            );
+                            const variantsLength =
+                              sideSessionVariants.childNodes.length;
+                            for (let i = 0; i < variantsLength; i++) {
+                              let timeout = setTimeout(() => {
+                                sideSessionVariants.removeChild(
+                                  sideSessionVariants.childNodes[0],
+                                );
+                                clearTimeout(timeout);
+                              }, 100);
+                            }
+                          },
+                        });
+                        sessionElement.addEventListener("click", (e) => {
+                          if (
+                            e.target.id ==
+                              `side-al-button-${subject}-${year}-${session}` ||
+                            e.target.id ==
+                              `side-al-${subject}-${year}-${session}-title`
+                          ) {
+                            changePath(`al>${subject}>${year}>${session}`);
+                          }
+                        });
+                        sideYearSessions.appendChild(sessionElement);
                       }
-                    );
-                  },
-                  removeContainerCallback: () => {
-                    let index = openedSideBarArray.indexOf(
-                      `al-${subject}-${year}-${session}`
-                    );
-                    if (index != -1) {
-                      openedSideBarArray.splice(index, 1);
-                    }
-                    const sideSessionVariants = document.getElementById(
-                      `side-al-${subject}-${year}-${session}-variants`
-                    );
-                    const variantsLength =
-                      sideSessionVariants.childNodes.length;
-                    for (let i = 0; i < variantsLength; i++) {
-                      let timeout = setTimeout(() => {
-                        sideSessionVariants.removeChild(
-                          sideSessionVariants.childNodes[0]
-                        );
-                        clearTimeout(timeout);
-                      }, 100);
-                    }
-                  },
-                });
-                sessionElement.addEventListener("click", (e) => {
-                  if (
-                    e.target.id ==
-                    `side-al-button-${subject}-${year}-${session}` ||
-                    e.target.id == `side-al-${subject}-${year}-${session}-title`
-                  ) {
-                    changePath(`al>${subject}>${year}>${session}`);
+                    },
+                  );
+                },
+                removeContainerCallback: () => {
+                  let index = openedSideBarArray.indexOf(
+                    `al-${subject}-${year}`,
+                  );
+                  if (index != -1) {
+                    openedSideBarArray.splice(index, 1);
                   }
-                });
-                sideYearSessions.appendChild(sessionElement);
-              }
+                  const sideYearSessions = document.getElementById(
+                    `side-al-${subject}-${year}-sessions`,
+                  );
+                  const sessionsLength = sideYearSessions.childNodes.length;
+                  for (let i = 0; i < sessionsLength; i++) {
+                    let timeout = setTimeout(() => {
+                      sideYearSessions.removeChild(
+                        sideYearSessions.childNodes[0],
+                      );
+                      clearTimeout(timeout);
+                    }, 100);
+                  }
+                },
+              });
+              yearElement.addEventListener("click", (e) => {
+                if (
+                  e.target.id == `side-al-button-${subject}-${year}` ||
+                  e.target.id == `side-al-${subject}-${year}-title`
+                ) {
+                  changePath(`al>${subject}>${year}`);
+                }
+              });
+
+              sideSubjectYears.appendChild(yearElement);
             });
           },
           removeContainerCallback: () => {
-            let index = openedSideBarArray.indexOf(`al-${subject}-${year}`);
-            if (index != -1) {
-              openedSideBarArray.splice(index, 1);
-            }
-            const sideYearSessions = document.getElementById(
-              `side-al-${subject}-${year}-sessions`
+            const sideSubjectYears = document.getElementById(
+              `side-al-${subject}-years`,
             );
-            const sessionsLength = sideYearSessions.childNodes.length;
-            for (let i = 0; i < sessionsLength; i++) {
+            const yearLength = sideSubjectYears.childNodes.length;
+            for (let i = 0; i < yearLength; i++) {
               let timeout = setTimeout(() => {
-                sideYearSessions.removeChild(sideYearSessions.childNodes[0]);
+                sideSubjectYears.removeChild(sideSubjectYears.childNodes[0]);
                 clearTimeout(timeout);
               }, 100);
             }
           },
         });
-        yearElement.addEventListener("click", (e) => {
+        subjectElement.addEventListener("click", (e) => {
           if (
-            e.target.id == `side-al-button-${subject}-${year}` ||
-            e.target.id == `side-al-${subject}-${year}-title`
+            e.target.id == `side-al-button-${subject}` ||
+            e.target.id == `side-al-${subject}-title`
           ) {
-            changePath(`al>${subject}>${year}`);
+            changePath(`al>${subject}`);
           }
         });
 
-        sideSubjectYears.appendChild(yearElement);
+        sideGroupAl.appendChild(subjectElement);
       });
-    },
-    removeContainerCallback: () => {
-      const sideSubjectYears = document.getElementById(
-        `side-al-${subject}-years`
-      );
-      const yearLength = sideSubjectYears.childNodes.length;
-      for (let i = 0; i < yearLength; i++) {
-        let timeout = setTimeout(() => {
-          sideSubjectYears.removeChild(sideSubjectYears.childNodes[0]);
-          clearTimeout(timeout);
-        }, 100);
-      }
-    },
-  });
-  subjectElement.addEventListener("click", (e) => {
-    if (
-      e.target.id == `side-al-button-${subject}` ||
-      e.target.id == `side-al-${subject}-title`
-    ) {
-      changePath(`al>${subject}`);
+
+      contentParent.appendChild(sideGroupTitleAl);
+      contentParent.appendChild(sideGroupAl);
+      sidePanel.appendChild(contentParent);
     }
-  });
+    // creating side button for core subjects
+    if (order[i] == "cr") {
+      const sideGroupCr = document.createElement("div");
+      sideGroupCr.id = "side-group-cr";
+      sideGroupCr.classList.add("side-group");
 
-  sideGroupAl.appendChild(subjectElement);
-});
+      const sideGroupTitleCr = document.createElement("div");
+      sideGroupTitleCr.id = "side-group-title-cr";
+      sideGroupTitleCr.classList.add("side-group-title");
+      sideGroupTitleCr.textContent = "Core Subjects";
 
-// // creating side button for core subjects
-const sideGroupCr = document.getElementById("side-group-cr");
-Object.keys(crSubjectsMS).forEach((subject) => {
-  const subjectElement = generateSideButton({
-    level: "cr",
-    subject: subject,
-    generateContainerCallback: () => {
-      const sideSubjectYears = document.getElementById(
-        `side-cr-${subject}-years`
-      );
-      Object.keys(crSubjectsMS[subject]).forEach((year) => {
-        let opened =
-          openedSideBarArray.indexOf(`cr-${subject}-${year}`) == -1
-            ? false
-            : true;
-        const yearElement = generateSideButton({
-          opened: opened,
+      Object.keys(crSubjectsMS).forEach((subject) => {
+        const subjectElement = generateSideButton({
           level: "cr",
           subject: subject,
-          year: year,
           generateContainerCallback: () => {
-            if (!opened) {
-              openedSideBarArray.push(`cr-${subject}-${year}`);
-            }
-            const sideYearSessions = document.getElementById(
-              `side-cr-${subject}-${year}-sessions`
+            const sideSubjectYears = document.getElementById(
+              `side-cr-${subject}-years`,
             );
-            Object.keys(crSubjectsMS[subject][year]).forEach((session) => {
-              if (
-                JSON.stringify(crSubjectsMS[subject][year][session]) !=
-                JSON.stringify([null, null, null])
-              ) {
-                let opened =
-                  openedSideBarArray.indexOf(
-                    `cr-${subject}-${year}-${session}`
-                  ) == -1
-                    ? false
-                    : true;
-                const sessionElement = generateSideButton({
-                  opened: opened,
-                  level: "cr",
-                  subject: subject,
-                  year: year,
-                  session: session,
-                  generateContainerCallback: () => {
-                    if (!opened) {
-                      openedSideBarArray.push(
-                        `cr-${subject}-${year}-${session}`
-                      );
-                    }
-                    const sideSessionVariants = document.getElementById(
-                      `side-cr-${subject}-${year}-${session}-variants`
-                    );
-                    Object.keys(crSubjectsMS[subject][year][session]).forEach(
-                      (variant) => {
-                        if (
-                          crSubjectsMS[subject][year][session][variant] != null
-                        ) {
-                          const variantElement = generateSideButton({
-                            level: "cr",
-                            subject: subject,
-                            year: year,
-                            session: session,
-                            variant: variant,
-                          });
-                          variantElement.addEventListener("click", (e) => {
-                            if (
-                              e.target.id ==
-                              `side-cr-button-${subject}-${year}-${session}-${variant}` ||
-                              e.target.id ==
-                              `side-cr-${subject}-${year}-${session}-${variant}-title`
-                            ) {
-                              changePath(
-                                `cr>${subject}>${year}>${session}>${variant}`
+            Object.keys(crSubjectsMS[subject]).forEach((year) => {
+              let opened =
+                openedSideBarArray.indexOf(`cr-${subject}-${year}`) == -1
+                  ? false
+                  : true;
+              const yearElement = generateSideButton({
+                opened: opened,
+                level: "cr",
+                subject: subject,
+                year: year,
+                generateContainerCallback: () => {
+                  if (!opened) {
+                    openedSideBarArray.push(`cr-${subject}-${year}`);
+                  }
+                  const sideYearSessions = document.getElementById(
+                    `side-cr-${subject}-${year}-sessions`,
+                  );
+                  Object.keys(crSubjectsMS[subject][year]).forEach(
+                    (session) => {
+                      if (
+                        JSON.stringify(crSubjectsMS[subject][year][session]) !=
+                        JSON.stringify([null, null, null])
+                      ) {
+                        let opened =
+                          openedSideBarArray.indexOf(
+                            `cr-${subject}-${year}-${session}`,
+                          ) == -1
+                            ? false
+                            : true;
+                        const sessionElement = generateSideButton({
+                          opened: opened,
+                          level: "cr",
+                          subject: subject,
+                          year: year,
+                          session: session,
+                          generateContainerCallback: () => {
+                            if (!opened) {
+                              openedSideBarArray.push(
+                                `cr-${subject}-${year}-${session}`,
                               );
                             }
-                          });
-                          sideSessionVariants.appendChild(variantElement);
-                        }
+                            const sideSessionVariants = document.getElementById(
+                              `side-cr-${subject}-${year}-${session}-variants`,
+                            );
+                            Object.keys(
+                              crSubjectsMS[subject][year][session],
+                            ).forEach((variant) => {
+                              if (
+                                crSubjectsMS[subject][year][session][variant] !=
+                                null
+                              ) {
+                                const variantElement = generateSideButton({
+                                  level: "cr",
+                                  subject: subject,
+                                  year: year,
+                                  session: session,
+                                  variant: variant,
+                                });
+                                variantElement.addEventListener(
+                                  "click",
+                                  (e) => {
+                                    if (
+                                      e.target.id ==
+                                        `side-cr-button-${subject}-${year}-${session}-${variant}` ||
+                                      e.target.id ==
+                                        `side-cr-${subject}-${year}-${session}-${variant}-title`
+                                    ) {
+                                      changePath(
+                                        `cr>${subject}>${year}>${session}>${variant}`,
+                                      );
+                                    }
+                                  },
+                                );
+                                sideSessionVariants.appendChild(variantElement);
+                              }
+                            });
+                          },
+                          removeContainerCallback: () => {
+                            let index = openedSideBarArray.indexOf(
+                              `cr-${subject}-${year}-${session}`,
+                            );
+                            if (index != -1) {
+                              openedSideBarArray.splice(index, 1);
+                            }
+                            const sideSessionVariants = document.getElementById(
+                              `side-cr-${subject}-${year}-${session}-variants`,
+                            );
+                            const variantsLength =
+                              sideSessionVariants.childNodes.length;
+                            for (let i = 0; i < variantsLength; i++) {
+                              let timeout = setTimeout(() => {
+                                sideSessionVariants.removeChild(
+                                  sideSessionVariants.childNodes[0],
+                                );
+                                clearTimeout(timeout);
+                              }, 100);
+                            }
+                          },
+                        });
+                        sessionElement.addEventListener("click", (e) => {
+                          if (
+                            e.target.id ==
+                              `side-cr-button-${subject}-${year}-${session}` ||
+                            e.target.id ==
+                              `side-cr-${subject}-${year}-${session}-title`
+                          ) {
+                            changePath(`cr>${subject}>${year}>${session}`);
+                          }
+                        });
+                        sideYearSessions.appendChild(sessionElement);
                       }
-                    );
-                  },
-                  removeContainerCallback: () => {
-                    let index = openedSideBarArray.indexOf(
-                      `cr-${subject}-${year}-${session}`
-                    );
-                    if (index != -1) {
-                      openedSideBarArray.splice(index, 1);
-                    }
-                    const sideSessionVariants = document.getElementById(
-                      `side-cr-${subject}-${year}-${session}-variants`
-                    );
-                    const variantsLength =
-                      sideSessionVariants.childNodes.length;
-                    for (let i = 0; i < variantsLength; i++) {
-                      let timeout = setTimeout(() => {
-                        sideSessionVariants.removeChild(
-                          sideSessionVariants.childNodes[0]
-                        );
-                        clearTimeout(timeout);
-                      }, 100);
-                    }
-                  },
-                });
-                sessionElement.addEventListener("click", (e) => {
-                  if (
-                    e.target.id ==
-                    `side-cr-button-${subject}-${year}-${session}` ||
-                    e.target.id == `side-cr-${subject}-${year}-${session}-title`
-                  ) {
-                    changePath(`cr>${subject}>${year}>${session}`);
+                    },
+                  );
+                },
+                removeContainerCallback: () => {
+                  let index = openedSideBarArray.indexOf(
+                    `cr-${subject}-${year}`,
+                  );
+                  if (index != -1) {
+                    openedSideBarArray.splice(index, 1);
                   }
-                });
-                sideYearSessions.appendChild(sessionElement);
-              }
+                  const sideYearSessions = document.getElementById(
+                    `side-cr-${subject}-${year}-sessions`,
+                  );
+                  const sessionsLength = sideYearSessions.childNodes.length;
+                  for (let i = 0; i < sessionsLength; i++) {
+                    let timeout = setTimeout(() => {
+                      sideYearSessions.removeChild(
+                        sideYearSessions.childNodes[0],
+                      );
+                      clearTimeout(timeout);
+                    }, 100);
+                  }
+                },
+              });
+              yearElement.addEventListener("click", (e) => {
+                if (
+                  e.target.id == `side-cr-button-${subject}-${year}` ||
+                  e.target.id == `side-cr-${subject}-${year}-title`
+                ) {
+                  changePath(`cr>${subject}>${year}`);
+                }
+              });
+
+              sideSubjectYears.appendChild(yearElement);
             });
           },
           removeContainerCallback: () => {
-            let index = openedSideBarArray.indexOf(`cr-${subject}-${year}`);
-            if (index != -1) {
-              openedSideBarArray.splice(index, 1);
-            }
-            const sideYearSessions = document.getElementById(
-              `side-cr-${subject}-${year}-sessions`
+            const sideSubjectYears = document.getElementById(
+              `side-cr-${subject}-years`,
             );
-            const sessionsLength = sideYearSessions.childNodes.length;
-            for (let i = 0; i < sessionsLength; i++) {
+            const yearLength = sideSubjectYears.childNodes.length;
+            for (let i = 0; i < yearLength; i++) {
               let timeout = setTimeout(() => {
-                sideYearSessions.removeChild(sideYearSessions.childNodes[0]);
+                sideSubjectYears.removeChild(sideSubjectYears.childNodes[0]);
                 clearTimeout(timeout);
               }, 100);
             }
           },
         });
-        yearElement.addEventListener("click", (e) => {
+        subjectElement.addEventListener("click", (e) => {
           if (
-            e.target.id == `side-cr-button-${subject}-${year}` ||
-            e.target.id == `side-cr-${subject}-${year}-title`
+            e.target.id == `side-cr-button-${subject}` ||
+            e.target.id == `side-cr-${subject}-title`
           ) {
-            changePath(`cr>${subject}>${year}`);
+            changePath(`cr>${subject}`);
           }
         });
 
-        sideSubjectYears.appendChild(yearElement);
+        sideGroupCr.appendChild(subjectElement);
       });
-    },
-    removeContainerCallback: () => {
-      const sideSubjectYears = document.getElementById(
-        `side-cr-${subject}-years`
-      );
-      const yearLength = sideSubjectYears.childNodes.length;
-      for (let i = 0; i < yearLength; i++) {
-        let timeout = setTimeout(() => {
-          sideSubjectYears.removeChild(sideSubjectYears.childNodes[0]);
-          clearTimeout(timeout);
-        }, 100);
-      }
-    },
-  });
-  subjectElement.addEventListener("click", (e) => {
-    if (
-      e.target.id == `side-cr-button-${subject}` ||
-      e.target.id == `side-cr-${subject}-title`
-    ) {
-      changePath(`cr>${subject}`);
-    }
-  });
 
-  sideGroupCr.appendChild(subjectElement);
-});
+      contentParent.appendChild(sideGroupTitleCr);
+      contentParent.appendChild(sideGroupCr);
+      sidePanel.appendChild(contentParent);
+    }
+  }
+}
+
+CreateSideBar(order);
 
 // creating home menu
 
-function createHomeMenu() {
+function createHomeMenu(order = ["ol", "al", "cr"]) {
   const home = document.createElement("div");
   home.id = "home";
   home.classList.add("home");
 
-  const olTitle = document.createElement("h2");
-  olTitle.textContent = "OL Subjects";
-  home.appendChild(olTitle);
+  for (let i = 0; i < order.length; i++) {
+    if (order[i] == "ol") {
+      const olTitle = document.createElement("h2");
+      olTitle.textContent = "OL Subjects";
+      home.appendChild(olTitle);
 
-  const olCardsContainer = document.createElement("div");
-  Object.keys(olSubjectsMS).forEach((subject) => {
-    const subjectElement = generateMainButton("ol", subject);
-    createRotatingCard(subjectElement);
-    subjectElement.addEventListener("click", () => {
-      changePath(`ol>${subject}`);
-    });
+      const olCardsContainer = document.createElement("div");
+      Object.keys(olSubjectsMS).forEach((subject) => {
+        const subjectElement = generateMainButton("ol", subject);
+        createRotatingCard(subjectElement);
+        subjectElement.addEventListener("click", () => {
+          changePath(`ol>${subject}`);
+        });
 
-    olCardsContainer.appendChild(subjectElement);
-  });
-  home.appendChild(olCardsContainer);
+        olCardsContainer.appendChild(subjectElement);
+      });
+      home.appendChild(olCardsContainer);
+    }
+    if (order[i] == "al") {
+      const alTitle = document.createElement("h2");
+      alTitle.textContent = "AL Subjects";
+      home.appendChild(alTitle);
 
-  const alTitle = document.createElement("h2");
-  alTitle.textContent = "AL Subjects";
-  home.appendChild(alTitle);
+      const alCardsContainer = document.createElement("div");
+      Object.keys(alSubjectsMS).forEach((subject) => {
+        const subjectElement = generateMainButton("al", subject);
+        createRotatingCard(subjectElement);
+        subjectElement.addEventListener("click", () => {
+          changePath(`al>${subject}`);
+        });
 
-  const alCardsContainer = document.createElement("div");
-  Object.keys(alSubjectsMS).forEach((subject) => {
-    const subjectElement = generateMainButton("al", subject);
-    createRotatingCard(subjectElement);
-    subjectElement.addEventListener("click", () => {
-      changePath(`al>${subject}`);
-    });
+        alCardsContainer.appendChild(subjectElement);
+      });
+      home.appendChild(alCardsContainer);
+    }
+    if (order[i] == "cr") {
+      const crTitle = document.createElement("h2");
+      crTitle.textContent = "Core Subjects";
+      home.appendChild(crTitle);
 
-    alCardsContainer.appendChild(subjectElement);
-  });
-  home.appendChild(alCardsContainer);
+      const crCardsContainer = document.createElement("div");
+      Object.keys(crSubjectsMS).forEach((subject) => {
+        const subjectElement = generateMainButton("cr", subject);
+        createRotatingCard(subjectElement);
+        subjectElement.addEventListener("click", () => {
+          changePath(`cr>${subject}`);
+        });
 
-  const crTitle = document.createElement("h2");
-  crTitle.textContent = "Core Subjects";
-  home.appendChild(crTitle);
-
-  const crCardsContainer = document.createElement("div");
-  Object.keys(crSubjectsMS).forEach((subject) => {
-    const subjectElement = generateMainButton("cr", subject);
-    createRotatingCard(subjectElement);
-    subjectElement.addEventListener("click", () => {
-      changePath(`cr>${subject}`);
-    });
-
-    crCardsContainer.appendChild(subjectElement);
-  });
-  home.appendChild(crCardsContainer);
+        crCardsContainer.appendChild(subjectElement);
+      });
+      home.appendChild(crCardsContainer);
+    }
+  }
 
   return home;
 }
@@ -1074,16 +1272,18 @@ function createHomeMenu() {
 // creating the sub menu buttons
 function CreateSubMenu(level, subject, year, session) {
   const menu = document.createElement("div");
-  menu.id = `Select a ${session == undefined
-    ? year == undefined
-      ? "years-menu"
-      : "sessions-menu"
-    : "variants-menu"
-    }`;
+  menu.id = `Select a ${
+    session == undefined
+      ? year == undefined
+        ? "years-menu"
+        : "sessions-menu"
+      : "variants-menu"
+  }`;
   menu.classList.add("sub-menu");
   const title = document.createElement("h2");
-  title.textContent = `Select a ${session == undefined ? (year == undefined ? "year" : "session") : "variant"
-    }`;
+  title.textContent = `Select a ${
+    session == undefined ? (year == undefined ? "year" : "session") : "variant"
+  }`;
   menu.appendChild(title);
 
   const cardsContainer = document.createElement("div");
@@ -1098,7 +1298,7 @@ function CreateSubMenu(level, subject, year, session) {
             year,
             undefined,
             undefined,
-            randomImagesArray[randomImageCounter]
+            randomImagesArray[randomImageCounter],
           );
           randomImageCounter++;
           createRotatingCard(yearElement);
@@ -1120,7 +1320,7 @@ function CreateSubMenu(level, subject, year, session) {
               year,
               session,
               undefined,
-              randomImagesArray[randomImageCounter]
+              randomImagesArray[randomImageCounter],
             );
             randomImageCounter++;
             createRotatingCard(sessionElement);
@@ -1140,7 +1340,7 @@ function CreateSubMenu(level, subject, year, session) {
             year,
             session,
             variant,
-            randomImagesArray[randomImageCounter]
+            randomImagesArray[randomImageCounter],
           );
           randomImageCounter++;
           createRotatingCard(variantElement);
@@ -1162,7 +1362,7 @@ function CreateSubMenu(level, subject, year, session) {
             year,
             undefined,
             undefined,
-            randomImagesArray[randomImageCounter]
+            randomImagesArray[randomImageCounter],
           );
           randomImageCounter++;
           createRotatingCard(yearElement);
@@ -1184,7 +1384,7 @@ function CreateSubMenu(level, subject, year, session) {
               year,
               session,
               undefined,
-              randomImagesArray[randomImageCounter]
+              randomImagesArray[randomImageCounter],
             );
             randomImageCounter++;
             createRotatingCard(sessionElement);
@@ -1204,7 +1404,7 @@ function CreateSubMenu(level, subject, year, session) {
             year,
             session,
             variant,
-            randomImagesArray[randomImageCounter]
+            randomImagesArray[randomImageCounter],
           );
           randomImageCounter++;
           createRotatingCard(variantElement);
@@ -1226,7 +1426,7 @@ function CreateSubMenu(level, subject, year, session) {
             year,
             undefined,
             undefined,
-            randomImagesArray[randomImageCounter]
+            randomImagesArray[randomImageCounter],
           );
           randomImageCounter++;
           createRotatingCard(yearElement);
@@ -1248,7 +1448,7 @@ function CreateSubMenu(level, subject, year, session) {
               year,
               session,
               undefined,
-              randomImagesArray[randomImageCounter]
+              randomImagesArray[randomImageCounter],
             );
             randomImageCounter++;
             createRotatingCard(sessionElement);
@@ -1268,7 +1468,7 @@ function CreateSubMenu(level, subject, year, session) {
             year,
             session,
             variant,
-            randomImagesArray[randomImageCounter]
+            randomImagesArray[randomImageCounter],
           );
           randomImageCounter++;
           createRotatingCard(variantElement);
@@ -1314,16 +1514,17 @@ function createRotatingCard(elementContainer) {
       x:
         ((e.clientX - elementContainer.getBoundingClientRect().x) /
           elementContainer.getBoundingClientRect().width) *
-        (45 / 2) -
+          (45 / 2) -
         45 / 2 / 2,
       y:
         ((e.clientY - elementContainer.getBoundingClientRect().y) /
           elementContainer.getBoundingClientRect().height) *
-        (45 / 2) -
+          (45 / 2) -
         45 / 2 / 2,
     };
-    element.style.transform = `rotateY(${mousePos.x
-      }deg) rotateX(${-mousePos.y}deg) scale(1.025)`;
+    element.style.transform = `rotateY(${
+      mousePos.x
+    }deg) rotateX(${-mousePos.y}deg) scale(1.025)`;
   }
 }
 
@@ -1333,7 +1534,7 @@ function createBubbleSheetMenu(
   year,
   session,
   variant,
-  useLocalAnswers
+  useLocalAnswers,
 ) {
   const menu = document.createElement("div");
   menu.id = "bubble-sheet-menu";
@@ -1349,10 +1550,13 @@ function createBubbleSheetMenu(
   pdfLink.classList.add("bubble-sheet-pdf-link");
   pdfLink.id = "bubble-sheet-pdf-link";
   pdfLink.textContent = "Open pdf in external tab";
-  pdfLink.href = `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == "s" ? "May-Jun" : session == "w" ? "Oct-Nov" : "Feb-Mar"
-    }/${subjectCode[level.toUpperCase() + subject]}_${session}${Number(year) - 2000
-    }_qp_${subject == "Economics" ? 1 : level == "al" || level == "cr" ? 1 : 2}${Number(variant) + 1
-    }.pdf`;
+  pdfLink.href = `./pdfs/${level.toUpperCase()}-${subject}/${year}/${
+    session == "s" ? "May-Jun" : session == "w" ? "Oct-Nov" : "Feb-Mar"
+  }/${subjectCode[level.toUpperCase() + subject]}_${session}${
+    Number(year) - 2000
+  }_qp_${subject == "Economics" ? 1 : level == "al" || level == "cr" ? 1 : 2}${
+    Number(variant) + 1
+  }.pdf`;
   pdfLink.setAttribute("target", "_blank");
   menu.appendChild(pdfLink);
 
@@ -1375,7 +1579,7 @@ function createBubbleSheetMenu(
   if (localStorage.getItem(localKey) == null) {
     localStorage.setItem(
       localKey,
-      Array.from({ length: 40 }).fill("N").join("")
+      Array.from({ length: 40 }).fill("N").join(""),
     );
     localStorage.setItem(localKey + "s", "");
   }
@@ -1548,7 +1752,7 @@ function createBubbleSheetMenu(
       }
       if (focus > 3) {
         const focusElement = document.getElementById(
-          `question-${focus - 2}-number`
+          `question-${focus - 2}-number`,
         );
         focusElement.scrollIntoView({ behavior: "smooth" });
         clearTimeout(waitForBubbleSheet);
@@ -1634,7 +1838,8 @@ function createBubbleSheetMenu(
       createModal(
         "", // title
         [
-          `You have already submitted this exam before and got ${recalculatePastExam(localStorage.getItem(localKey + "s"))[0]
+          `You have already submitted this exam before and got ${
+            recalculatePastExam(localStorage.getItem(localKey + "s"))[0]
           } / ${recalculatePastExam(localStorage.getItem(localKey + "s"))[1]}.`,
           `Do you want to solve it again or inspect your answers?`,
         ], // content,
@@ -1643,13 +1848,13 @@ function createBubbleSheetMenu(
           () => {
             localStorage.setItem(
               localKey,
-              Array.from({ length: 40 }).fill("N").join("")
+              Array.from({ length: 40 }).fill("N").join(""),
             );
             localStorage.setItem(localKey + "s", "");
             resetBubbleSheet();
           },
         ],
-        ["Inspect", () => { }]
+        ["Inspect", () => {}],
       );
 
       clearTimeout(waitForBubbleSheet);
@@ -1658,7 +1863,7 @@ function createBubbleSheetMenu(
     localStorage.getItem(localKey) != "" &&
     localStorage.getItem(localKey) != null &&
     localStorage.getItem(localKey) !=
-    "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" &&
+      "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" &&
     !useLocalAnswers
   ) {
     let waitForBubbleSheet = setTimeout(() => {
@@ -1679,7 +1884,7 @@ function createBubbleSheetMenu(
           () => {
             localStorage.setItem(
               localKey,
-              Array.from({ length: 40 }).fill("N").join("")
+              Array.from({ length: 40 }).fill("N").join(""),
             );
             localStorage.setItem(localKey + "s", "");
             resetBubbleSheet();
@@ -1687,7 +1892,7 @@ function createBubbleSheetMenu(
         ],
         () => {
           resetBubbleSheet(true);
-        }
+        },
       );
 
       clearTimeout(waitForBubbleSheet);
@@ -1710,7 +1915,7 @@ function createBubbleSheetMenu(
           () => {
             localStorage.setItem(
               localKey + "s",
-              localStorage.getItem(localKey).split("").join("")
+              localStorage.getItem(localKey).split("").join(""),
             );
             submitBehavior(localStorage.getItem(localKey + "s"));
             if (
@@ -1732,12 +1937,12 @@ function createBubbleSheetMenu(
             document.querySelector(".toggle-clock path").style.fill = "";
           },
         ],
-        ["Cancel", () => { }]
+        ["Cancel", () => {}],
       );
     } else {
       localStorage.setItem(
         localKey + "s",
-        localStorage.getItem(localKey).split("").join("")
+        localStorage.getItem(localKey).split("").join(""),
       );
       submitBehavior(localStorage.getItem(localKey + "s"));
       if (
@@ -1768,7 +1973,7 @@ function createBubbleSheetMenu(
           revealBehavior();
         },
       ],
-      ["Cancel", () => { }]
+      ["Cancel", () => {}],
     );
   });
   buttonsContainer.appendChild(submitButton);
@@ -1786,7 +1991,7 @@ function createBubbleSheetMenu(
   };
 
   let timeArray = Object.keys(timerTimes).includes(
-    `${level}_${subject.toLowerCase()}`
+    `${level}_${subject.toLowerCase()}`,
   )
     ? [...timerTimes[`${level}_${subject.toLowerCase()}`]]
     : [...timerTimes["default"]];
@@ -1821,7 +2026,7 @@ function createBubbleSheetMenu(
     clearInterval(timerInterval);
     isTimerRunning = false;
     timeArray = Object.keys(timerTimes).includes(
-      `${level}_${subject.toLowerCase()}`
+      `${level}_${subject.toLowerCase()}`,
     )
       ? [...timerTimes[`${level}_${subject.toLowerCase()}`]]
       : [...timerTimes["default"]];
@@ -1912,7 +2117,7 @@ function createBubbleSheetMenu(
             () => {
               timerAudio.pause();
               timerAudio.currentTime = 0;
-            }
+            },
           );
         }
 
@@ -2013,20 +2218,23 @@ function createBubbleSheetMenu(
           {
             licenseKey: "QFn6U78TMfzwzFamsiBl",
             path: "./pdf-viewer", // point to where the files you copied are served from
-            initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${session == "s"
-              ? "May-Jun"
-              : session == "w"
-                ? "Oct-Nov"
-                : "Feb-Mar"
-              }/${subjectCode[level.toUpperCase() + subject]}_${session}${Number(year) - 2000
-              }_qp_${subject == "Economics"
+            initialDoc: `./pdfs/${level.toUpperCase()}-${subject}/${year}/${
+              session == "s"
+                ? "May-Jun"
+                : session == "w"
+                  ? "Oct-Nov"
+                  : "Feb-Mar"
+            }/${subjectCode[level.toUpperCase() + subject]}_${session}${
+              Number(year) - 2000
+            }_qp_${
+              subject == "Economics"
                 ? 1
                 : level == "al" || level == "cr"
                   ? 1
                   : 2
-              }${Number(variant) + 1}.pdf`, // path to your document
+            }${Number(variant) + 1}.pdf`, // path to your document
           },
-          pdfViewer
+          pdfViewer,
         ).then((instance) => {
           instance.UI.setTheme("dark");
           instance.UI.disableElements([
@@ -2059,7 +2267,7 @@ function createBubbleSheetMenu(
             "Unable to load the pdfs while in offline.",
             "Check you internet connectivity and try again.",
           ], // content,
-          ["Close", () => { }]
+          ["Close", () => {}],
         );
       }
     } else {
@@ -2084,7 +2292,7 @@ function createBubbleSheetMenu(
         `<span class="red">Red</span> → Incorrect Answer`,
         `<span class="purple">Purple</span> → Discounted Answer <button id="i-button-discounted"><svg class="discounted-question-info" id="discounted-question-info" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 5 15"><circle cx="2" cy="2" r="2"/><path d="M5,13.51c0,.65-.42,1.21-1.01,1.4-.15,.06-.31,.09-.48,.09h-.01c-1.37,0-2.49-1.11-2.49-2.49v-4.11C.42,8.21,0,7.65,0,6.99s.42-1.21,1.01-1.4c.15-.06,.31-.09,.48-.09h.01c1.37,0,2.49,1.11,2.49,2.49v4.11c.59,.19,1.01,.75,1.01,1.41Z"/></svg></button>`,
       ], // content
-      ["Close", () => { }]
+      ["Close", () => {}],
     );
 
     const iButtonDiscounted = document.getElementById("i-button-discounted");
@@ -2095,7 +2303,7 @@ function createBubbleSheetMenu(
       createModal(
         "Discounted Questions",
         ["These are disqualified question from the mark scheme."],
-        ["Close", () => { }]
+        ["Close", () => {}],
       );
     });
   });
@@ -2104,7 +2312,7 @@ function createBubbleSheetMenu(
   const periodicTablePdfViewContainer = document.createElement("div");
   if (subject == "Chemistry" || subject == "Combined") {
     periodicTablePdfViewContainer.classList.add(
-      "periodic-table-pdf-viewer-container"
+      "periodic-table-pdf-viewer-container",
     );
     const switchToPdf = document.createElement("div");
     switchToPdf.classList.add("switch-to-periodic-table-pdf");
@@ -2130,7 +2338,7 @@ function createBubbleSheetMenu(
             path: "./pdf-viewer", // point to where the files you copied are served from
             initialDoc: `./pdfs/periodic-table.pdf`, // path to your document
           },
-          pdfViewer
+          pdfViewer,
         ).then((instance) => {
           instance.UI.setTheme("dark");
           instance.enableFeatures([instance.Feature.Download]);
@@ -2152,7 +2360,7 @@ function createBubbleSheetMenu(
             "Unable to load the pdfs while in offline.",
             "Check you internet connectivity and try again.",
           ], // content,
-          ["Close", () => { }]
+          ["Close", () => {}],
         );
       }
     } else {
@@ -2180,7 +2388,7 @@ function createBubbleSheetMenu(
     }
     if (globalPeriodicTablePdfViewer != undefined) {
       globalPeriodicTablePdfViewer.parentNode.removeChild(
-        globalPeriodicTablePdfViewer
+        globalPeriodicTablePdfViewer,
       );
       globalPeriodicTablePdfViewer = undefined;
     }
@@ -2199,8 +2407,8 @@ function createBubbleSheetMenu(
         year,
         session,
         variant,
-        useLocalAnswers
-      )
+        useLocalAnswers,
+      ),
     );
   }
 
@@ -2209,9 +2417,8 @@ function createBubbleSheetMenu(
     for (let i = 0; i < modelAnswers.length; i++) {
       const Question = document.getElementById(`question-${i}-number`);
       const correctedQuestion = document.getElementById(
-        `question-${i}-${modelAnswers[i].toLowerCase()}`
+        `question-${i}-${modelAnswers[i].toLowerCase()}`,
       );
-
 
       Question.classList.remove("wrong-question");
       Question.classList.remove("correct-question");
@@ -2241,7 +2448,7 @@ function createBubbleSheetMenu(
     for (let i = 0; i < modelAnswers.length; i++) {
       if (modelAnswers[i].toLowerCase() != "q") {
         const correctedQuestion = document.getElementById(
-          `question-${i}-${modelAnswers[i].toLowerCase()}`
+          `question-${i}-${modelAnswers[i].toLowerCase()}`,
         );
         correctedQuestion.classList.add("corrected-question");
       } else {
@@ -2268,10 +2475,10 @@ function addGlobalEventListener(type, selector, callback, options) {
     (e) => {
       if (e.target.matches(selector)) callback(e);
     },
-    options
+    options,
   );
 }
 
 // appending home to main
 const main = document.getElementById("main");
-changePath('home')
+changePath("home");

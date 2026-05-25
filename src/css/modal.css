@@ -57,7 +57,8 @@
     gap: 1rem;
 }
 
-.modal>.modal-buttons-container>button {
+.modal button,
+.modal select {
     cursor: pointer;
 
     padding: 1rem;
@@ -73,7 +74,8 @@
 }
 
 @media (pointer: fine) {
-    .modal>.modal-buttons-container>button:hover {
+    .modal button:hover,
+    .modal select:hover {
         background-color: #21262D;
     }
 }
@@ -90,7 +92,7 @@
     outline: none;
 }
 
-.modal>button {
+.modal button, .modal select {
     cursor: pointer;
 }
 

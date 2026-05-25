@@ -4,92 +4,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./media/icon/favicon-x64.ico" type="image/x-icon">
+
+    <!-- Linking my stuff -->
+    <title>MCQ Mate Guide</title>
+
     <style>
-        * {
-            background-color: #0D1117;
+        :root {
+            --shadow-color: 0deg 0% 0%;
+        }
+
+        @font-face {
+            font-family: 'Mona Sans';
+            src: url('./media/Mona-Sans.woff2');
+        }
+
+        body * {
+            margin: 0;
+            padding: 0;
             color: #E6EDF3;
             font-family: 'Mona Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            text-align: start;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #010409;
             scroll-behavior: smooth;
         }
 
         body {
-            margin: 0;
-            padding: 0;
+            color: #E6EDF3;
             display: flex;
-            align-items: start;
-            justify-content: space-evenly;
+            align-items: center;
+            justify-content: flex-start;
             flex-direction: column;
+            min-height: 100vh;
+            min-height: 100dvh;
+            padding: 2rem 0;
+        }
+
+        body::before {
+            content: '';
+            background-color: #0D1117;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 0;
         }
 
         section {
-            width: 85%;
+            width: min(90%, 100rem);
             margin: auto;
+            position: relative;
+            z-index: 1;
         }
 
-        h1 {
-            font-size: xx-large;
+        section p {
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        section h1 {
+            font-size: 2.5rem;
             text-align: center;
+            margin: 2rem 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
-        h2 {
-            color: hsl(208, 59%, 60%);
+        section h2 {
+            color: #58a6f7;
+            font-size: 1.8rem;
+            margin-top: 3rem;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 0.8rem;
         }
 
-        h3 {
+        section h2:first-child {
+            margin-top: 1rem;
+        }
+
+        section h3 {
+            color: #79c0ff;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+            font-size: 1.3rem;
+        }
+
+        section h4 {
             font-weight: 500;
-            margin-bottom: 0.5rem;
-        }
-
-        h4 {
-            font-weight: 500;
-            margin: 1rem;
+            margin: 1.5rem 0;
             text-align: center;
+            font-size: 1rem;
         }
 
-        span {
-            font-weight: 800;
-            color: hsl(208, 59%, 43%);
-            margin-right: 5px;
+        section span {
+            font-weight: 700;
+            color: #58a6f7;
         }
 
-        ol {
+        section ol {
             margin: 0;
             list-style-type: none;
         }
 
-        ol>p {
+        section ol>p {
             font-weight: 500;
         }
 
-        a {
-            color: hsl(208, 37%, 58%);
-            text-decoration: underline 1.5pt;
+        section a {
+            color: #79c0ff;
+            text-decoration: none;
+            transition: color 200ms ease;
+            border-bottom: 1.5px solid #79c0ff;
+            padding-bottom: 2px;
+        }
+
+        section a:hover {
+            color: #a6d1ff;
+            border-bottom-color: #a6d1ff;
         }
 
         .img-container {
-            display: flex;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
             justify-content: center;
-            flex-wrap: wrap;
-            width: calc(100% - 2rem);
-            padding: 0.5rem 1rem;
+            align-items: center;
+            gap: 2rem;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .img-container.ios,
+        .img-container.android {
+            grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
         }
 
         .img-container>div {
             display: flex;
             align-items: center;
-            justify-content: space-around;
+            justify-content: center;
             flex-direction: column;
-            flex-wrap: nowrap;
-            margin: 0.2rem;
-            flex: 1;
+            padding: 1.5rem;
+            border-radius: 8px;
+            background-color: rgba(30, 45, 60, 0.3);
+            border: 1px solid #30363d;
+            transition: background-color 200ms ease, border-color 200ms ease;
         }
 
-        img {
-            object-fit: cover;
-            max-width: 80lvw;
-            max-height: 30rem;
+        .img-container>div:hover {
+            background-color: rgba(30, 45, 60, 0.4);
+            border-color: hsla(211, 91%, 66%, 0.5);
+        }
+
+        .img-container>div>h4 {
+            margin: 0;
+            height: 3rem;
+        }
+
+        section img {
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 100ms ease;
+        }
+
+        section img:hover {
+            transform: scale(1.02);
+        }
+
+        .desktop img {
+            width: 100%;
+            max-height: none;
+            object-fit: contain;
+        }
+
+        .ios img,
+        .android img {
+            width: fit-content;
+            max-height: 18rem;
+            object-fit: contain;
+        }
+
+        .image-modal {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 5;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 200ms ease;
+        }
+
+        .image-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .image-modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1rem;
+            flex-direction: column;
+        }
+
+        .image-modal img {
+            width: fit-content;
+            height: auto;
+            object-fit: contain;
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: 1rem;
+            border: 1pt solid rgba(255, 255, 255, 0.1);
+            display: block;
+        }
+
+        .image-modal-comment {
+            background: rgba(30, 45, 60, 0.7);
+            backdrop-filter: blur(10px);
+            color: #E6EDF3;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 1rem;
+            border-top: 1pt solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            box-sizing: border-box;
+            word-wrap: break-word;
+            width: 100%;
+        }
+
+        .image-modal-comment span {
+            font-weight: 700;
+            color: #58a6f7;
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(30, 45, 60, 0.7);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2rem;
+            width: 2rem;
+            height: 2rem;
+            transition: background-color 200ms ease;
+            z-index: 6;
+        }
+
+        .image-modal-close:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
         }
 
         .title {
@@ -97,121 +308,233 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 3rem;
         }
 
-        svg {
+        .title>a {
+            display: flex;
             position: absolute;
+            align-items: center;
+            gap: 0.8rem;
             top: 50%;
             left: 0;
             transform: translate(0, -50%);
-            padding: 0.3rem;
-            border-radius: 100%;
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
             cursor: pointer;
-            transition: background-color 100ms ease;
+            transition: background-color 200ms ease,
+                border-color 200ms ease,
+                color 200ms ease;
             background-color: transparent;
+            border: 1px solid #30363d;
         }
 
-        svg:hover {
-            background-color: #363B42;
+        .title>a>* {
+            padding: 0;
+            margin: 0;
+        }
+
+        .title>a:hover {
+            background-color: #1c2128;
+            border-color: #58a6f7;
+            color: #58a6f7;
+        }
+
+        .title>a svg {
+            transition: transform 200ms ease;
+        }
+
+        .title>a:hover svg {
+            transform: scale(1.1);
+        }
+
+        .title>a h3 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .title>a>* {
+            padding: 0;
+            margin: 0;
+        }
+
+        .title>a:hover {
+            background-color: #1c2128;
+            border-color: #58a6f7;
+            color: #58a6f7;
+        }
+
+        .title>a svg {
+            transition: transform 200ms ease;
+        }
+
+        .title>a:hover svg {
+            transform: scale(1.1);
+        }
+
+        .title>a h3 {
+            margin: 0;
+            font-size: 0.95rem;
         }
     </style>
-    <title>MCQ Mate Guide</title>
 </head>
 
 <body>
     <section>
         <div class="title">
-            <svg onclick="location.href=`/mcq-mate/`" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                viewBox="0 0 256 256">
-                <path fill="currentColor"
-                    d="m222.14 105.85l-80-80a20 20 0 0 0-28.28 0l-80 80A19.86 19.86 0 0 0 28 120v96a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-52h24v52a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-96a19.86 19.86 0 0 0-5.86-14.15M204 204h-40v-52a12 12 0 0 0-12-12h-48a12 12 0 0 0-12 12v52H52v-82.35l76-76l76 76Z">
-                </path>
-            </svg>
             <h1>MCQ Mate Guides</h1>
+            <a href="./index.html">
+                <svg onclick="location.href=`/mcq-mate/`" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                    viewBox="0 0 256 256">
+                    <path fill="currentColor"
+                        d="m222.14 105.85l-80-80a20 20 0 0 0-28.28 0l-80 80A19.86 19.86 0 0 0 28 120v96a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-52h24v52a12 12 0 0 0 12 12h64a12 12 0 0 0 12-12v-96a19.86 19.86 0 0 0-5.86-14.15M204 204h-40v-52a12 12 0 0 0-12-12h-48a12 12 0 0 0-12 12v52H52v-82.35l76-76l76 76Z">
+                    </path>
+                </svg>
+                <h3>Return to app</h3>
+            </a>
         </div>
-        <h3>Guides:</h3>
-        <p>
-            <span>1-</span><a href="#downloading" style="font-weight: 500;">Downloading Web Application</a><br>
-            <span>2-</span><a href="#import-export">Importing / Exporting</a><br>
+        <h2 style="margin-top: 1rem; margin-bottom: 1.5rem;">Content</h2>
+        <p style="margin: 0.8rem 0; padding-left: 1rem;">
+            <span>1-</span> <a href="#downloading" style="font-weight: 500;">Downloading Web Application</a><br>
+            <span>2-</span> <a href="#import-export">Importing / Exporting</a><br>
         </p>
         <h2 id="downloading">Downloading Web Application</h2>
-        <p>Here are the steps required to install the web application on your device<br>
+        <p style="color: #c9d1d9;">Here are the steps required to install the web application on your device<br>
             This will allow the site to be opened offline as an application with the only missing feature is the
             question
             paper pdfs / periodic table pdf, otherwise the website is fully functional in offline mode</p>
-        <h3>Platforms:</h3>
-        <p>
-            <span>1-</span><a href="#windows" style="font-weight: 500;">Windows</a><br>
-            <span>2-</span><a href="#ios" style="font-weight: 500;">iOS</a><br>
-            <span>3-</span><a href="#android" style="font-weight: 500;">Android</a><br>
+        <h3 style="margin-top: 1.5rem;">Platforms:</h3>
+        <p style="margin: 0.8rem 0; padding-left: 1rem;">
+            <span>1-</span> <a href="#desktop" style="font-weight: 500;">Desktop</a><br>
+            <span>2-</span> <a href="#ios" style="font-weight: 500;">iOS</a><br>
+            <span>3-</span> <a href="#android" style="font-weight: 500;">Android</a><br>
         </p>
-        <h3 id="windows">Windows</h3>
-        <div class="img-container">
+        <h3 id="desktop">Desktop</h3>
+        <div class="img-container desktop">
             <div>
-                <img src="./media/guides/win1.webp" alt="first step in installing on windows">
-                <h4><span>1-</span>Click on download icon at top right</h4>
+                <img width="100%" src="./media/guides/win1.webp" alt="first step in installing on desktop">
+                <h4><span>1-</span> Click on <span>Install MCQ Mate</span> icon at top right</h4>
             </div>
             <div>
-                <img src="./media/guides/win2.webp" alt="second step in installing on windows">
-                <h4><span>2-</span>Confirm install in alert</h4>
+                <img width="100%" src="./media/guides/win2.webp" alt="second step in installing on desktop">
+                <h4><span>2-</span> Confirm <span>Install</span> in alert</h4>
             </div>
         </div>
         <h3 id="ios">iOS</h3>
-        <div class="img-container">
+        <div class="img-container ios">
             <div>
-                <img src="./media/guides/ios1.webp" alt="first step in installing on ios">
-                <h4><span>1-</span>Click on share icon</h4>
+                <img width="100%" src="./media/guides/ios1.webp" alt="first step in installing on ios">
+                <h4><span>1-</span> Click on <span>Share</span> icon</h4>
             </div>
             <div>
-                <img src="./media/guides/ios2.webp" alt="second step in installing on ios">
-                <h4><span>2-</span>Select add to Home Screen option from the bottom</h4>
+                <img width="100%" src="./media/guides/ios2.webp" alt="second step in installing on ios">
+                <h4><span>2-</span> Select <span>Add to Home Screen</span> option from the bottom</h4>
             </div>
             <div>
-                <img src="./media/guides/ios3.webp" alt="third step in installing on ios">
-                <h4><span>3-</span>Confirm add button in menu</h4>
+                <img width="100%" src="./media/guides/ios3.webp" alt="third step in installing on ios">
+                <h4><span>3-</span> Confirm <span>Add</span> button in menu</h4>
             </div>
             <div>
-                <img src="./media/guides/ios4.webp" alt="fourth step in installing on ios">
-                <h4><span>4-</span>Application added to Home Screen</h4>
+                <img width="100%" src="./media/guides/ios4.webp" alt="fourth step in installing on ios">
+                <h4><span>4-</span> Application added to Home Screen</h4>
             </div>
         </div>
         <h3 id="android">Android</h3>
-        <div class="img-container">
+        <div class="img-container android">
             <div>
-                <img src="./media/guides/and1.webp" alt="first step in installing on android">
-                <h4><span>1-</span>Click on download icon at top right</h4>
+                <img width="100%" src="./media/guides/and1.webp" alt="first step in installing on android">
+                <h4><span>1-</span> Click on <span>...</span> icon at top right</h4>
             </div>
             <div>
-                <img src="./media/guides/and2.webp" alt="second step in installing on android">
-                <h4><span>2-</span>Select install app option from dropdown menu</h4>
+                <img width="100%" src="./media/guides/and2.webp" alt="second step in installing on android">
+                <h4><span>2-</span> Select <span>Install app</span> option from dropdown menu</h4>
             </div>
             <div>
-                <img src="./media/guides/and3.webp" alt="third step in installing on android">
-                <h4><span>3-</span>Confirm install in alert</h4>
+                <img width="100%" src="./media/guides/and3.webp" alt="third step in installing on android">
+                <h4><span>3-</span> Confirm <span>Install</span> in alert</h4>
             </div>
             <div>
-                <img src="./media/guides/and4.webp" alt="fourth step in installing on android">
-                <h4><span>4-</span>Confirm add button in widget menu</h4>
+                <img width="100%" src="./media/guides/and4.webp" alt="fourth step in installing on android">
+                <h4><span>4-</span> Confirm <span>Add</span> button in widget menu</h4>
             </div>
             <div>
-                <img src="./media/guides/and5.webp" alt="fifth step in installing on android">
-                <h4><span>5-</span>Application added to Home Screen</h4>
+                <img width="100%" src="./media/guides/and5.webp" alt="fifth step in installing on android">
+                <h4><span>5-</span> Application added to Home Screen</h4>
             </div>
         </div>
         <h2 id="import-export">Importing / Exporting</h2>
-        <p>These are the steps for transferring your data from either a backup or from another device
+        <p style="color: #c9d1d9;">These are the steps for transferring your data from either a backup or from
+            another
+            device
             instead of your current data
         </p>
-        <p>
-            <span>1-</span>Click the "Data" tab from the navigation or the menu at the top right on your device<br>
-            <span>2-</span>Click "Export" button to save a ".json" file on your device that has all data related to your
+        <p style="padding-left: 1rem;">
+            <span>1-</span> Click the <span>Data</span> tab from the navigation or the menu at the top right on your
+            device<br>
+            <span>2-</span> Click <span>Export</span> button to save a <span>.json</span> file on your device that
+            has
+            all data related to your
             saved progress in exams<br>
-            <span>3-</span>Transfer the file to your desired device<br>
-            <span>4-</span>Re-open the "Data" tab and choose "Import"<br>
-            <span>5-</span>Choose the ".json" file you have and confirm import<br>
+            <span>3-</span> Transfer the file to your desired device<br>
+            <span>4-</span> Re-open the <span>Data</span> tab and choose "Import"<br>
+            <span>5-</span> Choose the <span>.json</span> file you have and confirm import<br>
         </p>
-        <p><span>This will overwrite all your current data and cant be reversed</span></p>
+        <p style="
+            color: #f85149; 
+            font-weight: 600; 
+            border-left: 3px solid #f85149; 
+            padding-left: 1rem; 
+            margin-top: 2rem;">
+            <span style="color: #f85149;">⚠</span> This will overwrite all your current data and cant be reversed
+        </p>
     </section>
+
+    <!-- Image Modal -->
+    <div class="image-modal" id="modal">
+        <button class="image-modal-close" id="close-modal">&times;</button>
+        <div class="image-modal-content">
+            <img width="100%" id="modal-image" src="" alt="">
+            <div class="image-modal-comment" id="modal-comment"></div>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById("modal");
+        const modalImage = document.getElementById("modal-image");
+        const closeModalButton = document.getElementById("close-modal");
+        const imageContainers = document.querySelectorAll(".img-container > div");
+        const modalComment = document.getElementById("modal-comment");
+
+        function openModal(src, alt, comment) {
+            modalImage.src = src;
+            modalImage.alt = alt;
+            modalComment.innerHTML = comment;
+            modal.classList.add("active");
+        }
+        function closeModal() {
+            modal.classList.remove("active");
+        }
+
+        imageContainers.forEach((container) => {
+            container.style.cursor = "pointer";
+            container.addEventListener("click", () => {
+                const img = container.querySelector("img");
+                const caption = container.querySelector("h4");
+                openModal(img.src, img.alt, caption ? caption.innerHTML : "");
+            });
+        });
+        closeModalButton.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+            if (!modalComment.contains(e.target)) {
+                closeModal();
+            }
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modal.classList.contains("active")) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 
 </html>

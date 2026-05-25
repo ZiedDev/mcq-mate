@@ -29,7 +29,6 @@
     <link rel="shortcut icon" href="./media/icon/favicon-x64.ico" type="image/x-icon">
 
     <!-- Linking my stuff -->
-    <link rel="stylesheet" href="style-min.css" media="all">
     <script src="./bundle.js" defer></script>
     <script type="application/ld+json">
         {
@@ -166,11 +165,13 @@
                 </svg>
             </div>
             <div class="header-content" id="header-content">
-                <button class="data" id="data">
+                <button class="settings" id="settings">
+                    <strong>Settings</strong>
+                </button>
+                <button class="data hidden" id="data">
                     <strong>Data</strong>
                 </button>
-                <button class="Guides" id="Guides"
-                    onclick="window.open(`https://zieddev.github.io/mcq-mate/guides.html`, '_blank')">
+                <button class="guides" id="guides">
                     <strong>Guides</strong>
                 </button>
                 <button class=" credits" id="credits">
@@ -211,18 +212,6 @@
     </section>
     <div class="main-section">
         <aside class="side-panel" id="side-panel">
-            <div>
-                <div class="side-group-title" id="side-group-title-ol">OL Subjects</div>
-                <div class="side-group" id="side-group-ol"></div>
-            </div>
-            <div>
-                <div class="side-group-title" id="side-group-title-al">AL Subjects</div>
-                <div class="side-group" id="side-group-al"></div>
-            </div>
-            <div>
-                <div class="side-group-title" id="side-group-title-cr">Core Subjects</div>
-                <div class="side-group" id="side-group-cr"></div>
-            </div>
 
             <div class="credits">
                 <div>© <a href="http://github.com/ZiedDev" target="_blank">Zied</a> ● <a
