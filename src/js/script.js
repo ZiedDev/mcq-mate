@@ -202,28 +202,33 @@ settingsButton.addEventListener("click", () => {
     "Settings", // title
     [
       `
-      Order 
+      Subjects Order 
       <div style="color: #0D1117; margin-bottom: 0.5rem; display: flex; gap: 0.25rem;" id="order-controls">
-        <select id="order-select-0">
-          <option value="">None</option>
-          <option value="ol">OL</option>
-          <option value="al">AL</option>
-          <option value="cr">Core</option>
-        </select>
+        <div class="select-container">
+          <select id="order-select-0">
+            <option value="">None</option>
+            <option value="ol">OL</option>
+            <option value="al">AL</option>
+            <option value="cr">Core</option>
+          </select>
+        </div>
 
-        <select id="order-select-1">
-          <option value="">None</option>
-          <option value="ol">OL</option>
-          <option value="al">AL</option>
-          <option value="cr">Core</option>
-        </select>
-
-        <select id="order-select-2">
-          <option value="">None</option>
-          <option value="ol">OL</option>
-          <option value="al">AL</option>
-          <option value="cr">Core</option>
-        </select>
+        <div class="select-container">
+          <select id="order-select-1">
+            <option value="">None</option>
+            <option value="ol">OL</option>
+            <option value="al">AL</option>
+            <option value="cr">Core</option>
+          </select>
+        </div>
+        <div class="select-container">
+          <select id="order-select-2">
+            <option value="">None</option>
+            <option value="ol">OL</option>
+            <option value="al">AL</option>
+            <option value="cr">Core</option>
+          </select>
+        </div>
       </div>
       <div style="color: #0D1117;">
        Your Data 

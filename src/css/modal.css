@@ -73,6 +73,27 @@
     transition: background-color 100ms ease;
 }
 
+.modal select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.5rem;
+}
+.modal .select-container {
+    position: relative;
+}
+
+.modal .select-container::after {
+  content: '▼';
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  width: 1rem;
+  transform: translateY(-50%);
+  color: #E6EDF3;
+  pointer-events: none;
+}   
+
 @media (pointer: fine) {
     .modal button:hover,
     .modal select:hover {
