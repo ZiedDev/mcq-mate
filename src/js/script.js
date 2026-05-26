@@ -202,40 +202,49 @@ settingsButton.addEventListener("click", () => {
     "Settings", // title
     [
       `
-      Subjects Order 
-      <div style="color: #0D1117; margin-bottom: 0.5rem; display: flex; gap: 0.25rem;" id="order-controls">
-        <div class="select-container">
-          <select id="order-select-0">
-            <option value="">None</option>
-            <option value="ol">OL</option>
-            <option value="al">AL</option>
-            <option value="cr">Core</option>
-          </select>
+      <p style="color: #0D1117;">
+        Subjects Order 
+        <div style="color: #0D1117; margin-bottom: 0.5rem; display: flex; gap: 0.25rem;" id="order-controls">
+          <div class="select-container">
+            <select id="order-select-0">
+              <option value="">None</option>
+              <option value="ol">OL</option>
+              <option value="al">AL</option>
+              <option value="cr">Core</option>
+            </select>
+          </div>
+          <div class="select-container">
+            <select id="order-select-1">
+              <option value="">None</option>
+              <option value="ol">OL</option>
+              <option value="al">AL</option>
+              <option value="cr">Core</option>
+            </select>
+          </div>
+          <div class="select-container">
+            <select id="order-select-2">
+              <option value="">None</option>
+              <option value="ol">OL</option>
+              <option value="al">AL</option>
+              <option value="cr">Core</option>
+            </select>
+          </div>
         </div>
-
-        <div class="select-container">
-          <select id="order-select-1">
-            <option value="">None</option>
-            <option value="ol">OL</option>
-            <option value="al">AL</option>
-            <option value="cr">Core</option>
-          </select>
+        <br>
+        <div style="color: #0D1117; display: flex; gap: 0.5rem;">
+          Hide feedback button 
+          <div class="input-check-container">
+            <input type="checkbox" id="hide-feedback-check">
+          </div>
         </div>
-        <div class="select-container">
-          <select id="order-select-2">
-            <option value="">None</option>
-            <option value="ol">OL</option>
-            <option value="al">AL</option>
-            <option value="cr">Core</option>
-          </select>
+        <br>
+        <div style="color: #0D1117;">
+        Your Data 
+          <button id="update-data-button">
+            Update
+          </button>
         </div>
-      </div>
-      <div style="color: #0D1117;">
-       Your Data 
-        <button id="update-data-button">
-          Update
-        </button>
-      </div>
+      </p>
       `,
     ], // content
   );
@@ -278,6 +287,26 @@ settingsButton.addEventListener("click", () => {
     });
 
     updateDataButton.addEventListener("click", () => dataButton.click());
+
+    const hideFeedbackCheckbox = document.getElementById("hide-feedback-check");
+    const feedbackButton = document.querySelector(".feedback-button");
+    const hideFeedbackSetting = localStorage.getItem("hideFeedback") === "true" ? true : false;
+    hideFeedbackCheckbox.checked = hideFeedbackSetting;
+    
+    if (hideFeedbackSetting) {
+      if (feedbackButton) feedbackButton.classList.add("hidden");
+    }
+
+    hideFeedbackCheckbox.addEventListener("change", () => {
+      localStorage.setItem("hideFeedback", hideFeedbackCheckbox.checked);
+      if (feedbackButton) {
+        if (hideFeedbackCheckbox.checked) {
+          feedbackButton.classList.add("hidden");
+        } else { 
+          feedbackButton.classList.remove("hidden");
+        }
+      }
+    });
   }, 0);
 
   document.body.appendChild(modal);
@@ -330,7 +359,8 @@ creditsButton.addEventListener("click", () => {
   createModal(
     "Credit", // title
     [
-      "Thanks For using <br> the website <3",
+      "Thanks for using <br> the website <3",
+      `Found a bug or have feedback?<br><a href="https://forms.gle/AFsBGpJETo6x8aAV6" target="_blank">Let us know!</a>`,
       `Website created by <br> <a href="https://github.com/ZiedDev" target="_blank">Zied</a> & <a href="https://github.com/omar-elsherbiny" target="_blank">Sherbo</a>`,
       `Special Thanks to: <br> <a href="https://gceguide.net/" target="_blank">GCE Guide</a> <br> <a href="https://papacambridge.com/" target="_blank">Papa Cambridge</a>`,
       `Repository: <br> <a href="https://github.com/ZiedDev/mcq-mate" target="_blank">MCQ Mate</a>`,
@@ -1269,6 +1299,27 @@ function createHomeMenu(order = ["ol", "al", "cr"]) {
       });
       home.appendChild(crCardsContainer);
     }
+  }
+
+  const feedbackButton = document.createElement("div");
+  feedbackButton.classList.add("feedback-button");
+
+  feedbackButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE --><g fill="none" stroke="#010409" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/><path d="M7.5 9.5c0 .687.265 1.383.697 1.844l3.009 3.264a1.14 1.14 0 0 0 .407.314a1 1 0 0 0 .783-.004a1.14 1.14 0 0 0 .398-.31l3.008-3.264A2.77 2.77 0 0 0 16.5 9.5A2.5 2.5 0 0 0 12 8a2.5 2.5 0 0 0-4.5 1.5"/></g></svg>`;
+  feedbackButton.addEventListener("click", () => {
+    createModal(
+      "", // title
+      [
+        `Found a bug or have feedback?<br><a href="https://forms.gle/AFsBGpJETo6x8aAV6" target="_blank">Let us know!</a>`,
+      ], // content
+      ["Close", () => {}],
+    );
+  });
+
+  home.appendChild(feedbackButton);
+  const hideFeedbackSetting = localStorage.getItem("hideFeedback") === "true";
+  
+  if (hideFeedbackSetting) {
+    if (feedbackButton) feedbackButton.classList.add("hidden");
   }
 
   return home;

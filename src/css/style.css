@@ -1111,6 +1111,24 @@ header>.content>.hamburger-menu-container {
     align-items: center;
 }
 
+.feedback-button {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    cursor: pointer;
+    background-color: #E6EDF3;
+    border: none;
+    padding: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 100%;
+    transition: background-color 100ms ease;
+}
+
+.feedback-button-hidden {
+    display: none;
+}
+
 @media (pointer: fine) {
     .i-button:hover {
         scale: 1.05;
